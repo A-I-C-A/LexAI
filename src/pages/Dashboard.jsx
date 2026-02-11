@@ -1,21 +1,17 @@
-// Dashboard.jsx
-import React from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { AgentCard } from '../components/agents';
+import { Shield, Calendar, BarChart3, MessageSquare, Play, MessageCircle, Mic, Search, FileText } from 'lucide-react';
 import { useUserAuth } from '../context/UserAuthContext';
-
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user } = useUserAuth();
+
   const agents = [
     {
       title: 'Compliance Guardian',
       description: 'Monitor regulatory changes and ensure document compliance across jurisdictions.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-        </svg>
-      ),
+      icon: <Shield className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Compliance Score', value: '94%' },
@@ -26,11 +22,7 @@ const Dashboard = () => {
     {
       title: 'Obligation & Deadline Tracker',
       description: 'Track contract deadlines, payment schedules, and renewal dates automatically.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-        </svg>
-      ),
+      icon: <Calendar className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Upcoming Deadlines', value: '12' },
@@ -41,11 +33,7 @@ const Dashboard = () => {
     {
       title: 'Risk & Fairness Analyzer',
       description: 'Identify and assess contractual risks with interactive heatmaps and scoring.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-        </svg>
-      ),
+      icon: <BarChart3 className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Risk Score', value: '32 (Low)' },
@@ -56,11 +44,7 @@ const Dashboard = () => {
     {
       title: 'Negotiation Strategist',
       description: 'Generate counter-proposals and negotiation strategies based on contract analysis.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-        </svg>
-      ),
+      icon: <MessageSquare className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Success Rate', value: '78%' },
@@ -71,12 +55,7 @@ const Dashboard = () => {
     {
       title: 'Scenario Simulation',
       description: 'Model different contract scenarios and visualize potential outcomes.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-      ),
+      icon: <Play className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Scenarios Created', value: '24' },
@@ -87,11 +66,7 @@ const Dashboard = () => {
     {
       title: 'AI Chatbot',
       description: 'Chat with LegalAxis AI for instant legal insights and support.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6A8.38 8.38 0 0112.5 3c4.7 0 8.5 3.8 8.5 8.5z" />
-        </svg>
-      ),
+      icon: <MessageCircle className="w-6 h-6" />,
       actionText: 'Chat',
       metrics: [
         { label: 'AI Model', value: 'Gemini 1.5' },
@@ -102,12 +77,7 @@ const Dashboard = () => {
     {
       title: 'Voice Assistant',
       description: 'Use your voice to interact with LegalAxis AI for hands-free help.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 19v2m0 0h3m-3 0H9m6-2a6 6 0 10-12 0v.75a6 6 0 0012 0v-.75z" />
-          <circle cx="12" cy="10" r="4" strokeWidth="1.5" stroke="currentColor" fill="none"></circle>
-        </svg>
-      ),
+      icon: <Mic className="w-6 h-6" />,
       actionText: 'Speak',
       metrics: [
         { label: 'AI Model', value: 'Gemini 1.5' },
@@ -118,11 +88,7 @@ const Dashboard = () => {
     {
       title: 'Legal Research & Citation',
       description: 'Access case law, regulations, and generate legal briefs with proper citations.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 01114 0z"></path>
-        </svg>
-      ),
+      icon: <Search className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Sources Accessed', value: '1,892' },
@@ -133,11 +99,7 @@ const Dashboard = () => {
     {
       title: 'Document Management',
       description: 'Upload, organize, and manage all your legal documents in one place.',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-      ),
+      icon: <FileText className="w-6 h-6" />,
       actionText: 'View',
       metrics: [
         { label: 'Total Documents', value: '247' },
@@ -146,109 +108,144 @@ const Dashboard = () => {
       onAction: () => navigate('/documents')
     },
   ];
-  const {user}=useUserAuth();
+
+  const recentActivity = [
+    { action: 'Document Uploaded', item: 'Service Agreement - TechCorp', time: '2 hours ago' },
+    { action: 'Compliance Check', item: 'Privacy Policy v2.1', time: '4 hours ago' },
+    { action: 'Risk Analysis', item: 'Vendor Contract - SupplyChain Inc', time: '1 day ago' },
+    { action: 'Deadline Added', item: 'Renewal - Office Lease', time: '2 days ago' },
+  ];
+
+  const upcomingDeadlines = [
+    { title: 'Contract Renewal', description: 'Software License - CloudTech', date: 'Sep 15, 2026', urgent: true },
+    { title: 'Payment Due', description: 'Legal Research Subscription', date: 'Sep 22, 2026', urgent: false },
+    { title: 'Compliance Review', description: 'Updated Data Protection Policy', date: 'Oct 1, 2026', urgent: false },
+    { title: 'Contract Expiration', description: 'Office Equipment Lease', date: 'Oct 10, 2026', urgent: false },
+  ];
+
   return (
-    <div className="space-y-6 sm:space-y-8 min-h-screen bg-[#000000] text-white p-4 sm:p-6">
+    <div className="min-h-screen bg-dark-background text-dark-foreground p-4 sm:p-6">
       {/* Header Section */}
-        <div className="mb-8 sm:mb-12 relative">
-          <div className="absolute -top-4 -left-4 w-24 h-24 bg-[#f3cf1a]/10 rounded-full blur-xl"></div>
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white relative">
-                Dashboard
-                <span className="block w-16 h-1 bg-[#f3cf1a] mt-2 rounded-full"></span>
-              </h1>
-              <p className="text-[#e0e0e0] mt-3 text-base">Welcome to LegalAxis, your AI-powered legal co-pilot.</p>
-            </div>
-            
-          </div>
-        </div>
-      
-      
-      <div className="dashboard-grid">
+      <motion.div 
+        className="mb-8 sm:mb-12"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1 className="text-4xl sm:text-5xl font-light tracking-tighter text-dark-foreground mb-2">
+          Dashboard
+        </h1>
+        <p className="text-dark-muted-foreground font-light">Welcome back, {user?.displayName || 'User'}</p>
+      </motion.div>
+
+      {/* Agent Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
         {agents.map((agent, index) => (
-          <AgentCard 
+          <motion.div
             key={index}
-            title={agent.title}
-            description={agent.description}
-            icon={agent.icon}
-            actionText={agent.actionText}
-            onAction={agent.onAction}
-            metrics={agent.metrics}
-          />
+            className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 border-white/20 hover:border-white/30 transition-all duration-300 cursor-pointer group"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            whileHover={{ y: -8, scale: 1.02 }}
+            onClick={agent.onAction}
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-dark-primary/20 flex items-center justify-center text-dark-primary group-hover:scale-110 transition-transform duration-300">
+                {agent.icon}
+              </div>
+            </div>
+
+            <h3 className="text-lg font-medium tracking-tight mb-2 text-dark-foreground group-hover:text-dark-primary transition-colors duration-300">
+              {agent.title}
+            </h3>
+            <p className="text-sm text-dark-muted-foreground font-light mb-4 line-clamp-2">
+              {agent.description}
+            </p>
+
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {agent.metrics.map((metric, idx) => (
+                <div key={idx} className="p-2 rounded-xl bg-[#0E0E0E] border border-white/10">
+                  <p className="text-xs text-dark-muted-foreground font-light">{metric.label}</p>
+                  <p className="text-sm font-medium text-dark-foreground">{metric.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <button className="w-full px-4 py-2 rounded-full bg-dark-primary text-dark-background text-sm font-medium hover:scale-105 transition-transform duration-300">
+              {agent.actionText}
+            </button>
+          </motion.div>
         ))}
       </div>
-      
-      <div className="mt-6 sm:mt-8 grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
-        <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 sm:p-6 ring-1 ring-white/5 hover:ring-[#f3cf1a]/20 shadow-lg hover:shadow-xl transition-all duration-500 group h-full flex flex-col">
-          <h3 className="text-lg sm:text-xl font-semibold text-white transition-all duration-500 leading-tight break-words mb-4 sm:mb-6 flex items-center">
-            <div className="w-2 h-4 sm:h-6 bg-[#f3cf1a] rounded-full mr-3"></div>
+
+      {/* Recent Activity & Deadlines */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Recent Activity */}
+        <motion.div
+          className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <h3 className="text-xl font-medium tracking-tight mb-6 text-dark-foreground">
             Recent Activity
           </h3>
-          <div className="space-y-3 sm:space-y-4">
-            {[
-              { action: 'Document Uploaded', item: 'Service Agreement - TechCorp', time: '2 hours ago' },
-              { action: 'Compliance Check', item: 'Privacy Policy v2.1', time: '4 hours ago' },
-              { action: 'Risk Analysis', item: 'Vendor Contract - SupplyChain Inc', time: '1 day ago' },
-              { action: 'Deadline Added', item: 'Renewal - Office Lease', time: '2 days ago' },
-            ].map((activity, index) => (
-              <div key={index} className="flex items-start pb-3 sm:pb-4 border-b border-textcolor/10 last:border-0 group">
-                <div className="bg-iconbg/20 p-2 rounded-full mr-2 sm:mr-3 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-iconbg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+          <div className="space-y-4">
+            {recentActivity.map((activity, index) => (
+              <div key={index} className="flex items-start pb-4 border-b border-white/10 last:border-0">
+                <div className="w-10 h-10 rounded-full bg-dark-primary/20 flex items-center justify-center mr-3 flex-shrink-0">
+                  <FileText className="w-5 h-5 text-dark-primary" />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs sm:text-sm font-medium text-textcolor group-hover:text-iconbg transition-colors duration-300 truncate">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-dark-foreground truncate">
                     {activity.action}: {activity.item}
                   </p>
-                  <p className="text-xs text-textcolor/60 mt-0.5">{activity.time}</p>
+                  <p className="text-xs text-dark-muted-foreground mt-1">{activity.time}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-        
-        <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 sm:p-6 ring-1 ring-white/5 hover:ring-[#f3cf1a]/20 shadow-lg hover:shadow-xl transition-all duration-500 group h-full flex flex-col">
-          <h3 className="text-lg sm:text-xl font-semibold text-white transition-all duration-500 leading-tight break-words mb-4 sm:mb-6 flex items-center">
-            <div className="w-2 h-4 sm:h-6 bg-[#f3cf1a] rounded-full mr-3"></div>
+        </motion.div>
+
+        {/* Upcoming Deadlines */}
+        <motion.div
+          className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <h3 className="text-xl font-medium tracking-tight mb-6 text-dark-foreground">
             Upcoming Deadlines
           </h3>
-          <div className="space-y-3 sm:space-y-4">
-            {[
-              { title: 'Contract Renewal', description: 'Software License - CloudTech', date: 'Sep 15, 2025', urgent: true },
-              { title: 'Payment Due', description: 'Legal Research Subscription', date: 'Sep 22, 2025', urgent: false },
-              { title: 'Compliance Review', description: 'Updated Data Protection Policy', date: 'Oct 1, 2025', urgent: false },
-              { title: 'Contract Expiration', description: 'Office Equipment Lease', date: 'Oct 10, 2025', urgent: false },
-            ].map((deadline, index) => (
-              <div key={index} className="flex items-start pb-3 sm:pb-4 border-b border-textcolor/10 last:border-0 group">
-                <div className={`p-2 rounded-full mr-2 sm:mr-3 group-hover:scale-110 transition-transform duration-300 flex-shrink-0 ${
+          <div className="space-y-4">
+            {upcomingDeadlines.map((deadline, index) => (
+              <div key={index} className="flex items-start pb-4 border-b border-white/10 last:border-0">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 flex-shrink-0 ${
                   deadline.urgent ? 'bg-red-500/20' : 'bg-yellow-500/20'
                 }`}>
-                  <svg className={`w-4 h-4 sm:w-5 sm:h-5 ${deadline.urgent ? 'text-red-400' : 'text-yellow-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+                  <Calendar className={`w-5 h-5 ${deadline.urgent ? 'text-red-400' : 'text-yellow-400'}`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2">
-                    <p className="text-xs sm:text-sm font-medium text-white group-hover:text-[#A9CEF4] transition-colors duration-300 min-w-0">
-                      {deadline.title}
-                    </p>
-                    <span className={`text-xs font-medium px-2 py-1 rounded-full flex-shrink-0 ${
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-sm font-medium text-dark-foreground">{deadline.title}</p>
+                    <span className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${
                       deadline.urgent ? 'bg-red-500/20 text-red-300' : 'bg-yellow-500/20 text-yellow-300'
                     }`}>
                       {deadline.date}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-0.5 truncate">{deadline.description}</p>
+                  <p className="text-xs text-dark-muted-foreground mt-1 truncate">{deadline.description}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 };
 
 export default Dashboard;
+
+

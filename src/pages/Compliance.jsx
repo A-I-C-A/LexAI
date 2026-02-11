@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from 'framer-motion';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   getFirestore,
@@ -328,84 +329,107 @@ Document:\n${text}
   const progressOffset = circumference * (1 - score / 100);
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-6">
-      <h1 className="text-4xl font-bold text-center text-[#f3cf1a] mb-8">
-        Compliance Guardian
-      </h1>
-      <div className="flex justify-center md:justify-end mt-8 mb-10">
-        <button
-          onClick={() => setModalOpen(true)}
-          className="px-6 py-3 bg-[#f3cf1a] text-black font-semibold rounded-lg hover:bg-yellow-400 transition-colors"
+    <div className="min-h-screen bg-dark-background text-dark-foreground p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          Scan New Contract
-        </button>
-      </div>
+          <h1 className="text-4xl font-light tracking-tighter mb-2">Compliance Guardian</h1>
+          <p className="text-muted-foreground font-light">AI-powered regulatory compliance analysis</p>
+        </motion.div>
 
-      {loading && (
-        <div className="text-center text-blue-400 mt-4 mb-10 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-400 mr-2"></div>
-          Analyzing document...
+        <div className="flex justify-center md:justify-end mb-6">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="px-6 py-3 bg-black text-black font-medium rounded-full hover:scale-105 transition-transform duration-300 shadow-lg"
+          >
+            Scan New Contract
+          </button>
         </div>
-      )}
 
-      <div className="grid md:grid-cols-2 gap-6 ">
-        <div className="bg-gray-900 rounded-2xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-[#f3cf1a] mb-4">
-            Compliance Alerts
-            {selectedFile && (
-              <span className="text-sm text-gray-400 ml-2">({selectedFile.name})</span>
+        {loading && (
+          <div className="mb-6 p-4 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-6 w-6 border-2 border-white/20 border-t-white mr-3"></div>
+            <span className="font-light">Analyzing document...</span>
+          </div>
+        )}
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Compliance Alerts */}
+          <motion.div 
+            className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-xl font-medium tracking-tight mb-4">
+              Compliance Alerts
+              {selectedFile && (
+                <span className="text-sm text-muted-foreground font-light ml-2">({selectedFile.name})</span>
+              )}
+            </h2>
+            {!analysis ? (
+              <p className="text-muted-foreground font-light">No document analyzed yet.</p>
+            ) : analysis.alerts.length === 0 ? (
+              <div className="text-center p-8">
+                <p className="text-green-400 font-medium mb-2">No compliance issues found!</p>
+                <p className="text-muted-foreground text-sm font-light">This document appears to be compliant.</p>
+              </div>
+            ) : (
+              <div className="space-y-3 max-h-80 overflow-y-auto">
+                {analysis.alerts.map((alert, idx) => (
+                  <motion.div
+                    key={idx}
+                    className={`border rounded-2xl p-4 backdrop-blur-xl ${
+                      alert.priority === "High"
+                        ? "border-red-500/30 bg-red-500/10"
+                        : "border-yellow-500/30 bg-yellow-500/10"
+                    }`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                  >
+                    <div className="flex items-center mb-2">
+                      <span
+                        className={`inline-block w-3 h-3 rounded-full mr-2 ${
+                          alert.priority === "High" ? "bg-red-500" : "bg-yellow-500"
+                        }`}
+                      ></span>
+                      <span className="font-medium">{alert.priority} Priority</span>
+                    </div>
+                    <p className="mb-2">
+                      <span className="font-medium">Issue:</span>{" "}
+                      <span className="text-foreground/80 font-light">{alert.issue}</span>
+                    </p>
+                    <p className="mb-2">
+                      <span className="font-medium">Location:</span>{" "}
+                      <span className="text-foreground/80 font-light">{alert.location}</span>
+                    </p>
+                    <p>
+                      <span className="font-medium text-green-400">Suggested Fix:</span>{" "}
+                      <span className="text-foreground/80 font-light">{alert.suggestedFix}</span>
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
             )}
-          </h2>
-          {!analysis ? (
-            <p className="text-gray-400">No document analyzed yet.</p>
-          ) : analysis.alerts.length === 0 ? (
-            <div className="text-center p-8">
-              <div className="text-6xl mb-4">✅</div>
-              <p className="text-green-400 font-semibold">No compliance issues found!</p>
-              <p className="text-gray-400 text-sm mt-2">This document appears to be compliant.</p>
-            </div>
-          ) : (
-            <div className="space-y-3 max-h-80 overflow-y-auto">
-              {analysis.alerts.map((alert, idx) => (
-                <div
-                  key={idx}
-                  className={`border rounded-lg p-4 bg-gray-800 ${
-                    alert.priority === "High"
-                      ? "border-red-500 bg-red-900/20"
-                      : "border-yellow-500 bg-yellow-900/20"
-                  }`}
-                >
-                  <div className="flex items-center mb-2">
-                    <span
-                      className={`inline-block w-3 h-3 rounded-full mr-2 ${
-                        alert.priority === "High" ? "bg-red-500" : "bg-yellow-500"
-                      }`}
-                    ></span>
-                    <span className="font-semibold text-white">{alert.priority} Priority</span>
-                  </div>
-                  <p className="mb-2">
-                    <span className="font-semibold text-white">Issue:</span>{" "}
-                    <span className="text-gray-200">{alert.issue}</span>
-                  </p>
-                  <p className="mb-2">
-                    <span className="font-semibold text-white">Location:</span>{" "}
-                    <span className="text-gray-200">{alert.location}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-green-400">Suggested Fix:</span>{" "}
-                    <span className="text-gray-200">{alert.suggestedFix}</span>
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+          </motion.div>
 
-        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 mb-10 flex flex-col items-center text-center">
-          <h2 className="text-xl font-semibold text-[#f3cf1a] mb-6">Compliance Score</h2>
+          {/* Compliance Score */}
+          <motion.div
+          className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 flex flex-col items-center text-center"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-xl font-medium tracking-tight mb-6">Compliance Score</h2>
           <div className="relative w-48 h-48 mb-4">
             <svg className="absolute top-0 left-0 w-full h-full transform -rotate-90" viewBox="0 0 192 192">
-              <circle cx="96" cy="96" r={RADIUS} stroke="#1f2937" strokeWidth="16" fill="none" />
+              <circle cx="96" cy="96" r={RADIUS} stroke="rgba(255,255,255,0.1)" strokeWidth="16" fill="none" />
               <circle
                 cx="96"
                 cy="96"
@@ -422,75 +446,87 @@ Document:\n${text}
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="text-4xl font-bold text-[#f3cf1a]">{analysis ? analysis.complianceScore : 0}%</div>
-              <div className="text-sm text-gray-400 mt-1">
+              <div className="text-4xl font-medium">{analysis ? analysis.complianceScore : 0}%</div>
+              <div className="text-sm text-muted-foreground font-light mt-1">
                 {score >= 80 ? "Excellent" : score >= 60 ? "Good" : "Needs Work"}
               </div>
             </div>
           </div>
           {selectedFile && (
-            <p className="text-sm text-gray-400 text-center truncate max-w-full">{selectedFile.name}</p>
+            <p className="text-sm text-muted-foreground font-light text-center truncate max-w-full">{selectedFile.name}</p>
           )}
-        </div>
+        </motion.div>
       </div>
 
+      {/* Upload Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-gray-900 p-6 rounded-xl shadow-xl w-96">
-            <h2 className="text-xl font-semibold text-[#f3cf1a] mb-4 text-center">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <motion.div 
+            className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 w-96 max-w-[90vw]"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h2 className="text-xl font-medium tracking-tight mb-4 text-center">
               Upload Document
             </h2>
             <input
               type="file"
               accept=".pdf,.docx,.txt"
               onChange={handleFileUpload}
-              className="block w-full text-gray-300 mb-4 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-[#f3cf1a] file:text-black file:font-semibold hover:file:bg-yellow-400"
+              className="block w-full text-foreground mb-4 font-light file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-black file:text-black file:font-medium hover:file:scale-105 file:transition-transform file:duration-300"
             />
             <button
-              className="w-full py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600"
+              className="w-full py-3 bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-white font-medium rounded-full hover:bg-white/15 transition-all duration-300"
               onClick={() => setModalOpen(false)}
             >
               Cancel
             </button>
-          </div>
+          </motion.div>
         </div>
       )}
 
+      {/* Previously Analyzed Documents */}
       {(loadingFiles || analyzedFiles.length > 0) && (
-        <div className="mb-6 mt-6 bg-gray-900 rounded-2xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-[#f3cf1a] mb-4">
+        <motion.div 
+          className="mt-6 p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h2 className="text-xl font-medium tracking-tight mb-4">
             Previously Analyzed Documents
           </h2>
           {loadingFiles ? (
-            <div className="text-center text-gray-400">Loading files...</div>
+            <div className="text-center text-muted-foreground font-light">Loading files...</div>
           ) : (
             <div className="grid gap-2 max-h-60 overflow-y-auto">
               {analyzedFiles.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center justify-between bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors"
+                  className="flex items-center justify-between bg-[#0E0E0E] backdrop-blur-xl border border-white/10 rounded-2xl p-3 hover:bg-[#0E0E0E] transition-all duration-300"
                 >
                   <button
                     onClick={() => handleFileClick(file)}
-                    className={`flex-1 text-left hover:text-[#f3cf1a] transition-colors ${
+                    className={`flex-1 text-left hover:text-white transition-colors font-light ${
                       selectedFile && selectedFile.id === file.id
-                        ? "text-[#f3cf1a] font-semibold"
-                        : "text-white"
+                        ? "text-white font-medium"
+                        : "text-foreground"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="truncate max-w-xs">{file.name}</span>
                       <div className="flex items-center space-x-2 ml-4">
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-muted-foreground font-light">
                           {formatDate(file.uploadDate)}
                         </span>
                         <span
-                          className={`text-xs px-2 py-1 rounded font-medium ${
+                          className={`text-xs px-2 py-1 rounded-full font-medium ${
                             (file?.analysis?.complianceScore ?? 0) >= 80
-                              ? "bg-green-600 text-white"
+                              ? "bg-green-500/20 text-green-400 border border-green-500/30"
                               : (file?.analysis?.complianceScore ?? 0) >= 60
-                              ? "bg-yellow-600 text-black"
-                              : "bg-red-600 text-white"
+                              ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
+                              : "bg-red-500/20 text-red-400 border border-red-500/30"
                           }`}
                         >
                           {file?.analysis?.complianceScore ?? 0}%
@@ -500,57 +536,65 @@ Document:\n${text}
                   </button>
                   <button
                     onClick={() => deleteFile(file.id)}
-                    className="ml-2 text-red-400 hover:text-red-300 text-sm p-1 rounded hover:bg-red-900/30"
+                    className="ml-2 text-red-400 hover:text-red-300 text-sm p-2 rounded-full hover:bg-red-500/20 transition-all duration-300"
                     title="Delete file"
                   >
-                    🗑
+                    ×
                   </button>
                 </div>
               ))}
             </div>
           )}
-        </div>
+        </motion.div>
       )}
 
-      <div className="mt-6 bg-gray-900 rounded-2xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-[#f3cf1a] mb-4">Legal & Regulatory Updates</h2>
-        <ul className="space-y-3 text-gray-300">
+      {/* Legal & Regulatory Updates */}
+      <motion.div 
+        className="mt-6 p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <h2 className="text-xl font-medium tracking-tight mb-4">Legal & Regulatory Updates</h2>
+        <ul className="space-y-3">
           <li className="flex items-start">
-            <span className="text-red-400 mr-2">⚖</span>
+            <span className="text-red-400 mr-2"></span>
             <div>
-              <strong className="text-white">EU AI Act Implementation</strong>
-              <p className="text-sm text-gray-400">New transparency requirements for AI systems effective 2025</p>
+              <strong className="font-medium">EU AI Act Implementation</strong>
+              <p className="text-sm text-muted-foreground font-light">New transparency requirements for AI systems effective 2025</p>
             </div>
           </li>
           <li className="flex items-start">
-            <span className="text-yellow-400 mr-2">📋</span>
+            <span className="text-yellow-400 mr-2"></span>
             <div>
-              <strong className="text-white">GDPR Amendment</strong>
-              <p className="text-sm text-gray-400">Enhanced data processing consent requirements - Under review</p>
+              <strong className="font-medium">GDPR Amendment</strong>
+              <p className="text-sm text-muted-foreground font-light">Enhanced data processing consent requirements - Under review</p>
             </div>
           </li>
           <li className="flex items-start">
-            <span className="text-blue-400 mr-2">🏛</span>
+            <span className="text-blue-400 mr-2"></span>
             <div>
-              <strong className="text-white">Data Privacy Law v2.1</strong>
-              <p className="text-sm text-gray-400">Cross-border data transfer regulations - Enforcement 2025</p>
+              <strong className="font-medium">Data Privacy Law v2.1</strong>
+              <p className="text-sm text-muted-foreground font-light">Cross-border data transfer regulations - Enforcement 2025</p>
             </div>
           </li>
           <li className="flex items-start">
-            <span className="text-green-400 mr-2">⚠</span>
+            <span className="text-green-400 mr-2"></span>
             <div>
-              <strong className="text-white">Contract Law Updates</strong>
-              <p className="text-sm text-gray-400">New standards for digital contract enforceability</p>
+              <strong className="font-medium">Contract Law Updates</strong>
+              <p className="text-sm text-muted-foreground font-light">New standards for digital contract enforceability</p>
             </div>
           </li>
         </ul>
 
-        <div className="mt-4 p-3 bg-amber-900/20 border border-amber-700 rounded-lg">
-          <p className="text-amber-200 text-sm">
-            <strong>⚠ Legal Disclaimer:</strong> This tool provides automated analysis for informational purposes only. Always consult qualified legal counsel for official legal advice and compliance verification.
+        <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl backdrop-blur-xl">
+          <p className="text-amber-200 text-sm font-light">
+            <strong className="font-medium">Legal Disclaimer:</strong> This tool provides automated analysis for informational purposes only. Always consult qualified legal counsel for official legal advice and compliance verification.
           </p>
         </div>
+      </motion.div>
       </div>
     </div>
   );
 }
+

@@ -1,4 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { Upload, Search, Filter, FileText, Download, Share2, Clock } from 'lucide-react';
 import { db } from '../firebase/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { useUserAuth } from '../context/UserAuthContext';
@@ -28,7 +30,7 @@ const Documents = () => {
     {
       id: 2,
       name: 'Privacy Policy v2.1',
-      description: 'Updated privacy policy reflecting latest data protection regulations and compliance requirements.',
+      description: 'Updated privacy policy reflecting latest data protection regulations.',
       type: 'Policy',
       status: 'Under Review',
       tags: ['Compliance', 'GDPR', 'Privacy'],
@@ -41,7 +43,7 @@ const Documents = () => {
     {
       id: 3,
       name: 'Vendor Contract - SupplyChain Inc',
-      description: 'Supply agreement for raw materials and components with quarterly delivery schedule.',
+      description: 'Supply agreement for raw materials with quarterly delivery.',
       type: 'Contract',
       status: 'Active',
       tags: ['Supply Chain', 'Procurement'],
@@ -51,87 +53,33 @@ const Documents = () => {
       size: '3.7 MB',
       ocrProcessed: true
     },
-    {
-      id: 4,
-      name: 'Office Lease Agreement',
-      description: 'Commercial property lease for headquarters office space with renewal options.',
-      type: 'Agreement',
-      status: 'Expiring Soon',
-      tags: ['Real Estate', 'Facilities'],
-      lastUpdated: 'Updated 1 month ago',
-      version: 'v4.3',
-      fileType: 'PDF',
-      size: '5.2 MB',
-      ocrProcessed: true
-    },
-    {
-      id: 5,
-      name: 'Employee Handbook 2025',
-      description: 'Company policies, procedures, and guidelines for all employees.',
-      type: 'Policy',
-      status: 'Draft',
-      tags: ['HR', 'Internal'],
-      lastUpdated: 'Updated 3 days ago',
-      version: 'v0.9',
-      fileType: 'DOCX',
-      size: '4.8 MB',
-      ocrProcessed: false
-    },
-    {
-      id: 6,
-      name: 'Patent Application - Smart Contract System',
-      description: 'Patent filing for proprietary smart contract validation and execution system.',
-      type: 'Legal Brief',
-      status: 'Active',
-      tags: ['IP', 'Patents', 'Blockchain'],
-      lastUpdated: 'Updated 2 months ago',
-      version: 'v1.5',
-      fileType: 'PDF',
-      size: '8.1 MB',
-      ocrProcessed: true
-    },
   ]);
   
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [batchProcessing, setBatchProcessing] = useState(false);
-  const [ocrResults, setOcrResults] = useState({});
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [categorizationResults, setCategorizationResults] = useState({});
   const fileInputRef = useRef(null);
   const { user } = useUserAuth();
   
-  const documentTypes = ['All', 'Contract', 'Agreement', 'Policy', 'Legal Brief', 'NDA', 'Amendment'];
-  const statusOptions = ['All', 'Active', 'Draft', 'Expired', 'Under Review', 'Expiring Soon', 'Archived'];
-  const fileTypes = ['PDF', 'DOC', 'DOCX', 'TXT'];
+  const documentTypes = ['All', 'Contract', 'Agreement', 'Policy', 'Legal Brief', 'NDA'];
+  const statusOptions = ['All', 'Active', 'Draft', 'Expired', 'Under Review', 'Expiring Soon'];
 
-  // Filter documents based on search and filters
   const filteredDocuments = documents.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          doc.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          doc.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+                          doc.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'All' || doc.type === filterType;
     const matchesStatus = filterStatus === 'All' || doc.status === filterStatus;
     
     return matchesSearch && matchesType && matchesStatus;
   });
 
-  // Handle file selection
   const handleFileSelect = (files) => {
-    const validFiles = Array.from(files).filter(file => {
-      const extension = file.name.split('.').pop().toUpperCase();
-      return fileTypes.includes(extension);
-    });
-    
+    const validFiles = Array.from(files);
     if (validFiles.length > 0) {
       setSelectedFiles(validFiles);
-      setShowUploadModal(true);
-    } else {
-      alert('Please select valid files (PDF, DOC, DOCX, TXT)');
+      handleUpload(validFiles);
     }
   };
 
-  // Handle drag and drop
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -149,408 +97,138 @@ const Documents = () => {
     handleFileSelect(files);
   };
 
-  // Process OCR using Gemini API
-  const processOCR = async (file) => {
-    try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) throw new Error('API key not found');
-      const prompt = `Extract text from this document titled "${file.name}". \nProvide a summary of its contents, identify key clauses, and suggest appropriate tags. \nFormat the response as JSON with: summary, keyClauses[], suggestedTags[], and documentType.`;
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.3,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
-          }
-        }),
-      });
-      const data = await res.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-      // Check for template/explanation or non-JSON responses
-      const lower = responseText.toLowerCase();
-      if (
-        lower.includes('template') ||
-        lower.includes('example') ||
-        lower.includes('cannot access local files') ||
-        lower.includes('i need the actual content')
-      ) {
-        // Skip and return fallback
-        return {
-          summary: 'Text extracted successfully',
-          keyClauses: ['General content'],
-          suggestedTags: ['Document'],
-          documentType: 'Unknown'
-        };
-      }
-      try {
-        // Extract the first valid JSON object
-        const jsonMatch = responseText.match(/\{[\s\S]*?\}/);
-        if (jsonMatch) {
-          return JSON.parse(jsonMatch[0]);
-        }
-      } catch (e) {
-        console.error('Error parsing OCR response:', e, '\nRaw response:', responseText);
-      }
-      // Fallback if parsing fails
-      return {
-        summary: 'Text extracted successfully',
-        keyClauses: ['General content'],
-        suggestedTags: ['Document'],
-        documentType: 'Unknown'
-      };
-    } catch (error) {
-      console.error('OCR processing error:', error);
-      return {
-        summary: 'Error processing document',
-        keyClauses: [],
-        suggestedTags: [],
-        documentType: 'Unknown'
-      };
-    }
-  };
-
-  // Helper: Parse file to text
-  const extractTextFromFile = async (file) => {
-    const ext = (file.name.split('.').pop() || '').toLowerCase();
-    if (ext === 'txt') {
-      return await file.text();
-    } else if (ext === 'pdf') {
-      const arrayBuffer = await file.arrayBuffer();
-      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-      }
-      const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-      const pdf = await loadingTask.promise;
-      let fullText = '';
-      for (let p = 1; p <= pdf.numPages; p++) {
-        const page = await pdf.getPage(p);
-        const content = await page.getTextContent();
-        const strings = content.items.map((it) => ('str' in it ? it.str : ''));
-        fullText += strings.join(' ') + '\n\n';
-      }
-      return fullText.trim();
-    } else if (ext === 'docx') {
-      const arrayBuffer = await file.arrayBuffer();
-      const { value } = await mammoth.extractRawText({ arrayBuffer });
-      return value.trim();
-    } else {
-      return '';
-    }
-  };
-
-  // Upload and process files
-  const handleUpload = async () => {
-    if (selectedFiles.length === 0 || !user) return;
-    
+  const handleUpload = async (files) => {
     setIsUploading(true);
     setUploadProgress(0);
     
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
-      const progress = ((i + 1) / selectedFiles.length) * 100;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const progress = ((i + 1) / files.length) * 100;
       setUploadProgress(progress);
       
-      // Parse file to text
-      let extractedText = '';
-      try {
-        extractedText = await extractTextFromFile(file);
-      } catch (err) {
-        extractedText = '';
-      }
-      
-      // Save to Firestore under Users/{uid}/documents, including parsedContent, description, and tags
-      try {
-        const parsedDocsRef = collection(db, 'Users', user.uid, 'documents');
-        await addDoc(parsedDocsRef, {
-          fileName: file.name,
-          parsedContent: extractedText, // Store parsed content as string
-          description: ocrData.summary || 'No description available',
-          tags: ocrData.suggestedTags || ['Document'],
-          uploadedAt: new Date(),
-        });
-      } catch (err) {
-        console.error('Failed to save document to Firestore:', err);
-      }
-      
-      // Add new document
-      const ocrData = await processOCR(file);
       const newDoc = {
         id: documents.length + i + 1,
         name: file.name,
-        description: ocrData.summary || 'No description available',
-        type: ocrData.documentType || 'Document',
+        description: 'Processing document...',
+        type: 'Document',
         status: 'Under Review',
-        tags: ocrData.suggestedTags || ['New'],
+        tags: ['New'],
         lastUpdated: 'Just now',
         version: 'v1.0',
         fileType: file.name.split('.').pop().toUpperCase(),
         size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-        ocrProcessed: true
+        ocrProcessed: false
       };
       
       setDocuments(prev => [newDoc, ...prev]);
-      setOcrResults(prev => ({ ...prev, [file.name]: ocrData }));
     }
     
     setIsUploading(false);
     setUploadProgress(100);
     setSelectedFiles([]);
-    setShowUploadModal(false);
     
-    // Reset progress after a delay
     setTimeout(() => setUploadProgress(0), 2000);
   };
 
-  // Process batch analysis
-  const processBatchAnalysis = async () => {
-    setBatchProcessing(true);
-    
-    try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      const prompt = `Analyze these documents for common patterns, risks, and opportunities: ${documents.map(d => d.name).join(', ')}. 
-      Provide insights on recurring clauses, potential risks, and recommendations.`;
-      
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
-          }
-        }),
-      });
-      
-      const data = await res.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No analysis available';
-      alert(`Batch Analysis Results:\n\n${responseText}`);
-    } catch (error) {
-      console.error('Batch analysis error:', error);
-      alert('Error processing batch analysis');
-    }
-    
-    setBatchProcessing(false);
-  };
-
-  // Categorize documents
-  const categorizeDocuments = async () => {
-    try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      const prompt = `Categorize and tag these documents: ${documents.map(d => d.name).join(', ')}. 
-      Suggest appropriate categories and tags for each. Respond with JSON format.`;
-      
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.3,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
-          }
-        }),
-      });
-      
-      const data = await res.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-      
-      try {
-        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          setCategorizationResults(JSON.parse(jsonMatch[0]));
-          alert('Documents categorized successfully! Check the results in the console.');
-          console.log('Categorization results:', JSON.parse(jsonMatch[0]));
-        }
-      } catch (e) {
-        console.error('Error parsing categorization results:', e);
-      }
-    } catch (error) {
-      console.error('Categorization error:', error);
-    }
-  };
-
-  // Document Card Component
   const DocumentCard = ({ document }) => {
-    const [showVersions, setShowVersions] = useState(false);
-    
     const getStatusColor = (status) => {
       switch (status) {
-        case 'Active': return 'bg-green-500/20 text-green-400';
-        case 'Draft': return 'bg-yellow-500/20 text-yellow-400';
-        case 'Under Review': return 'bg-blue-500/20 text-blue-400';
-        case 'Expiring Soon': return 'bg-orange-500/20 text-orange-400';
-        case 'Expired': return 'bg-red-500/20 text-red-400';
-        case 'Archived': return 'bg-gray-500/20 text-gray-400';
-        default: return 'bg-gray-500/20 text-gray-400';
-      }
-    };
-    
-    const getFileIcon = (fileType) => {
-      switch (fileType) {
-        case 'PDF': return '📄';
-        case 'DOC': case 'DOCX': return '📝';
-        case 'TXT': return '📃';
-        default: return '📁';
+        case 'Active': return 'bg-green-500/20 text-green-400 border-green-500/30';
+        case 'Draft': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+        case 'Under Review': return 'bg-blue-500/20 text-blue-400 border-[#00ff9d]/30';
+        case 'Expiring Soon': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+        case 'Expired': return 'bg-red-500/20 text-red-400 border-red-500/30';
+        default: return 'bg-black/20 text-gray-400 border-gray-500/30';
       }
     };
 
     return (
-      <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 ring-1 ring-white/5 shadow-lg hover:ring-[#f3cf1a]/20 transition-all duration-300">
+      <motion.div
+        className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 border-white/20 hover:border-white/30 transition-all duration-300 group"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -5 }}
+      >
         <div className="flex justify-between items-start mb-4">
-          <div className="flex items-start space-x-3">
-            <div className="text-2xl mt-1">{getFileIcon(document.fileType)}</div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-white text-lg mb-1">{document.name}</h3>
-              <p className="text-[#a0a0a0] text-sm mb-2">{document.description}</p>
+          <div className="flex items-start space-x-3 flex-1">
+            <div className="w-10 h-10 rounded-xl bg-dark-primary/20 flex items-center justify-center flex-shrink-0">
+              <FileText className="w-5 h-5 text-dark-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-medium text-dark-foreground text-base mb-1 truncate">{document.name}</h3>
+              <p className="text-sm text-dark-muted-foreground font-light line-clamp-2">{document.description}</p>
             </div>
           </div>
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(document.status)}`}>
+          <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(document.status)} flex-shrink-0 ml-3`}>
             {document.status}
           </span>
         </div>
         
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="bg-[#232323] text-[#f3cf1a] px-2 py-1 rounded-lg text-xs">
+          <span className="bg-[#0E0E0E] text-dark-foreground px-2 py-1 rounded-lg text-xs border border-white/10">
             {document.type}
           </span>
-          <span className="bg-[#232323] text-[#a0a0a0] px-2 py-1 rounded-lg text-xs">
+          <span className="bg-[#0E0E0E] text-dark-muted-foreground px-2 py-1 rounded-lg text-xs border border-white/10">
             {document.fileType} • {document.size}
           </span>
           {document.ocrProcessed && (
-            <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded-lg text-xs">
+            <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded-lg text-xs border border-green-500/30">
               OCR Processed
             </span>
           )}
-          <span className="bg-[#232323] text-[#a0a0a0] px-2 py-1 rounded-lg text-xs">
-            {document.version}
-          </span>
         </div>
         
         <div className="flex flex-wrap gap-1 mb-4">
           {document.tags && document.tags.map((tag, index) => (
-            <span key={index} className="bg-[#f3cf1a]/10 text-[#f3cf1a] px-2 py-1 rounded-md text-xs">
+            <span key={index} className="bg-dark-primary/10 text-dark-primary px-2 py-1 rounded-md text-xs border border-dark-primary/20">
               {tag}
             </span>
           ))}
         </div>
-        {document.description && (
-          <div className="mb-2 text-[#e0e0e0] text-xs">
-            <span className="font-semibold text-[#f3cf1a]">Description: </span>{document.description}
-          </div>
-        )}
         
-        <div className="flex justify-between items-center">
-          <span className="text-[#a0a0a0] text-sm">{document.lastUpdated}</span>
+        <div className="flex justify-between items-center pt-4 border-t border-white/10">
+          <div className="flex items-center text-dark-muted-foreground text-xs font-light">
+            <Clock className="w-4 h-4 mr-1" />
+            {document.lastUpdated}
+          </div>
           <div className="flex space-x-2">
-            <button 
-              className="text-[#a0a0a0] hover:text-[#f3cf1a] transition-colors"
-              onClick={() => setShowVersions(!showVersions)}
-              title="Version History"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+            <button className="p-2 hover:bg-[#0E0E0E] rounded-lg transition-colors text-dark-muted-foreground hover:text-dark-primary" title="Download">
+              <Download className="w-4 h-4" />
             </button>
-            <button className="text-[#a0a0a0] hover:text-[#f3cf1a] transition-colors" title="Download">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-            </button>
-            <button className="text-[#a0a0a0] hover:text-[#f3cf1a] transition-colors" title="Share">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
+            <button className="p-2 hover:bg-[#0E0E0E] rounded-lg transition-colors text-dark-muted-foreground hover:text-dark-primary" title="Share">
+              <Share2 className="w-4 h-4" />
             </button>
           </div>
         </div>
-        
-        {showVersions && (
-          <div className="mt-4 p-3 bg-[#232323] rounded-lg ring-1 ring-white/5">
-            <h4 className="font-medium text-white mb-2">Version History</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-[#a0a0a0]">v3.2 - Current</span>
-                <span className="text-[#a0a0a0]">2 days ago</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-[#a0a0a0]">v3.1</span>
-                <span className="text-[#a0a0a0]">1 week ago</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-[#a0a0a0]">v3.0</span>
-                <span className="text-[#a0a0a0]">2 weeks ago</span>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Display parsed content (extracted text) if available */}
-        {document.parsedContent && (
-          <div className="mt-4 p-3 bg-[#232323] rounded-lg ring-1 ring-white/5">
-            <h4 className="font-medium text-white mb-2">Parsed Content</h4>
-            <pre className="whitespace-pre-wrap text-xs text-[#e0e0e0]">
-              {document.parsedContent.length > 1000 ? `${document.parsedContent.slice(0, 1000)}...` : document.parsedContent}
-            </pre>
-          </div>
-        )}
-      </div>
+      </motion.div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white p-4 sm:p-6">
+    <div className="min-h-screen bg-dark-background text-dark-foreground p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="mb-8 sm:mb-12 relative">
-          <div className="absolute -top-4 -left-4 w-24 h-24 bg-[#f3cf1a]/10 rounded-full blur-xl"></div>
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white relative">
-                Document Management
-                <span className="block w-16 h-1 bg-[#f3cf1a] mt-2 rounded-full"></span>
-              </h1>
-              <p className="text-[#e0e0e0] mt-3 text-base">Upload, organize, and manage all your legal documents.</p>
-            </div>
-            <div className="flex gap-3">
-              <button 
-                className="px-4 py-3 bg-[#232323] hover:bg-[#343535] text-white font-medium rounded-xl transition-all duration-300 ring-1 ring-white/5 flex items-center"
-                onClick={processBatchAnalysis}
-                disabled={batchProcessing}
-              >
-                {batchProcessing ? 'Processing...' : 'Batch Analysis'}
-              </button>
-              <button 
-                className="px-4 py-3 bg-[#232323] hover:bg-[#343535] text-white font-medium rounded-xl transition-all duration-300 ring-1 ring-white/5 flex items-center"
-                onClick={categorizeDocuments}
-              >
-                Auto-Categorize
-              </button>
-            </div>
-          </div>
-        </div>
+        {/* Header */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-4xl font-light tracking-tighter mb-2">Document Management</h1>
+          <p className="text-dark-muted-foreground font-light">Upload, organize, and manage all your legal documents</p>
+        </motion.div>
         
-        {/* Search and Filter Section */}
-        <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 sm:p-6 ring-1 ring-white/5 shadow-lg mb-6 sm:mb-8">
+        {/* Search and Filter */}
+        <div className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 mb-6">
           <div className="flex flex-col gap-4">
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-5 h-5 text-[#a0a0a0]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+              <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                <Search className="w-5 h-5 text-dark-muted-foreground" />
               </div>
               <input 
                 type="text" 
-                className="bg-[#232323] ring-1 ring-white/5 text-white text-sm rounded-xl focus:ring-2 focus:ring-[#f3cf1a] focus:border-transparent block w-full pl-10 p-3 placeholder-[#a0a0a0] transition-all duration-300" 
-                placeholder="Search documents, tags, or content..."
+                className="w-full pl-12 pr-4 py-3 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground placeholder-dark-muted-foreground focus:ring-2 focus:ring-dark-primary/40 focus:border-transparent transition-all duration-300 font-light" 
+                placeholder="Search documents..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -558,33 +236,31 @@ const Documents = () => {
             
             <div className="flex flex-col sm:flex-row gap-3">
               <select 
-                className="bg-[#232323] ring-1 ring-white/5 text-white text-sm rounded-xl focus:ring-2 focus:ring-[#f3cf1a] focus:border-transparent p-3 flex-1 sm:flex-none transition-all duration-300"
+                className="px-4 py-3 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground focus:ring-2 focus:ring-dark-primary/40 focus:border-transparent transition-all duration-300 font-light"
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
               >
                 {documentTypes.map((type) => (
-                  <option key={type} value={type} className="bg-[#232323] text-white">{type}</option>
+                  <option key={type} value={type}>{type}</option>
                 ))}
               </select>
               
               <select 
-                className="bg-[#232323] ring-1 ring-white/5 text-white text-sm rounded-xl focus:ring-2 focus:ring-[#f3cf1a] focus:border-transparent p-3 flex-1 sm:flex-none transition-all duration-300"
+                className="px-4 py-3 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground focus:ring-2 focus:ring-dark-primary/40 focus:border-transparent transition-all duration-300 font-light"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
                 {statusOptions.map((status) => (
-                  <option key={status} value={status} className="bg-[#232323] text-white">{status}</option>
+                  <option key={status} value={status}>{status}</option>
                 ))}
               </select>
               
               <button 
-                className="px-4 py-3 bg-[#f3cf1a] hover:bg-[#f3cf1a]/90 text-[#1a1a1a] font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#f3cf1a]/20 flex items-center"
+                className="px-6 py-3 rounded-2xl bg-dark-primary text-dark-background font-medium hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
-                <span className="text-sm sm:text-base">Upload Document</span>
+                <Upload className="w-5 h-5" />
+                Upload Document
               </button>
 
               <input
@@ -601,23 +277,23 @@ const Documents = () => {
 
         {/* Drag and Drop Area */}
         <div 
-          className={`bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-8 border-2 border-dashed mb-8 transition-all duration-300 ${
-            isDragging ? 'border-[#f3cf1a] bg-[#f3cf1a]/10' : 'ring-white/10 hover:ring-[#f3cf1a]/30'
+          className={`p-8 rounded-3xl border-2 border-dashed mb-8 transition-all duration-300 ${
+            isDragging 
+              ? 'border-dark-primary bg-dark-primary/10 backdrop-blur-xl' 
+              : 'border-white/20 bg-[#0E0E0E] backdrop-blur-xl hover:border-white/30'
           }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
           <div className="text-center">
-            <div className="w-16 h-16 bg-[#232323] rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-[#a0a0a0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-              </svg>
+            <div className="w-16 h-16 rounded-2xl bg-dark-primary/20 flex items-center justify-center mx-auto mb-4">
+              <Upload className="w-8 h-8 text-dark-primary" />
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">Drag & Drop Files Here</h3>
-            <p className="text-[#a0a0a0] mb-4">Supported formats: PDF, DOC, DOCX, TXT</p>
+            <h3 className="text-lg font-medium text-dark-foreground mb-2">Drag & Drop Files Here</h3>
+            <p className="text-dark-muted-foreground mb-4 font-light">Supported formats: PDF, DOC, DOCX, TXT</p>
             <button 
-              className="px-4 py-2 bg-[#232323] hover:bg-[#343535] text-white font-medium rounded-lg transition-all duration-300 ring-1 ring-white/5"
+              className="px-6 py-3 rounded-2xl bg-[#0E0E0E] hover:bg-white/15 text-white font-medium transition-all duration-300"
               onClick={() => fileInputRef.current?.click()}
             >
               Select Files
@@ -626,105 +302,50 @@ const Documents = () => {
         </div>
         
         {/* Documents Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
+        {isUploading && (
+          <div className="mb-6 p-4 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-light text-dark-foreground">Uploading documents...</span>
+              <span className="text-sm font-medium text-dark-primary">{Math.round(uploadProgress)}%</span>
+            </div>
+            <div className="w-full bg-[#0E0E0E] rounded-full h-2">
+              <div 
+                className="bg-dark-primary h-2 rounded-full transition-all duration-300" 
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {filteredDocuments.length > 0 ? (
             filteredDocuments.map((document) => (
               <DocumentCard key={document.id} document={document} />
             ))
           ) : (
-            <div className="xl:col-span-2 bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-8 ring-1 ring-white/5 shadow-lg flex flex-col items-center justify-center text-center">
-              <div className="w-20 h-20 bg-[#232323] rounded-full flex items-center justify-center mb-6">
-                <svg className="w-10 h-10 text-[#a0a0a0]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
+            <div className="xl:col-span-2 p-12 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-center">
+              <div className="w-20 h-20 rounded-2xl bg-dark-primary/20 flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-10 h-10 text-dark-primary" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">No documents found</h3>
-              <p className="text-[#a0a0a0] max-w-md mb-6 px-4">We couldn't find any documents matching your search criteria. Try adjusting your filters or upload a new document.</p>
+              <h3 className="text-xl font-medium text-dark-foreground mb-3">No documents found</h3>
+              <p className="text-dark-muted-foreground max-w-md mx-auto mb-6 font-light">
+                We couldn't find any documents matching your search. Try adjusting your filters or upload a new document.
+              </p>
               <button 
-                className="px-4 py-3 bg-[#f3cf1a] hover:bg-[#f3cf1a]/90 text-[#1a1a1a] font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#f3cf1a]/20 flex items-center justify-center"
+                className="px-6 py-3 rounded-2xl bg-dark-primary text-dark-background font-medium hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
+                <Upload className="w-5 h-5" />
                 Upload Document
               </button>
             </div>
           )}
         </div>
-
-        {/* Parsed Content Preview Section */}
-        {filteredDocuments.length > 0 && (
-          <div className="mb-8">
-            <h4 className="text-lg font-semibold text-white mb-2">Parsed Content Preview</h4>
-            <div className="space-y-4">
-              {filteredDocuments.map((document, idx) => (
-                document.parsedContent && (
-                  <div key={idx} className="bg-[#232323] rounded-lg p-4 text-[#e0e0e0] max-h-40 overflow-y-auto">
-                    <div className="font-bold text-[#f3cf1a] mb-2">{document.name}</div>
-                    <pre className="whitespace-pre-wrap text-xs">{document.parsedContent.slice(0, 1000)}{document.parsedContent.length > 1000 ? '…' : ''}</pre>
-                  </div>
-                )
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-
-      {/* Upload Modal */}
-      {showUploadModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-6 ring-1 ring-white/5 shadow-lg max-w-md w-full">
-            <h3 className="text-xl font-semibold text-white mb-4">Upload Documents</h3>
-            
-            <div className="mb-4">
-              <h4 className="font-medium text-white mb-2">Selected Files:</h4>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {selectedFiles.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-[#232323] rounded-lg">
-                    <span className="text-sm text-white truncate flex-1 mr-2">{file.name}</span>
-                    <span className="text-xs text-[#a0a0a0]">{(file.size / (1024 * 1024)).toFixed(1)}MB</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {isUploading && (
-              <div className="mb-4">
-                <div className="w-full bg-[#232323] rounded-full h-2.5">
-                  <div 
-                    className="bg-[#f3cf1a] h-2.5 rounded-full transition-all duration-300" 
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
-                </div>
-                <p className="text-sm text-[#a0a0a0] mt-2">Processing... {Math.round(uploadProgress)}%</p>
-              </div>
-            )}
-            
-            <div className="flex justify-end space-x-3">
-              <button 
-                className="px-4 py-2 bg-[#232323] hover:bg-[#343535] text-white font-medium rounded-lg transition-all duration-300 ring-1 ring-white/5"
-                onClick={() => {
-                  setShowUploadModal(false);
-                  setSelectedFiles([]);
-                }}
-                disabled={isUploading}
-              >
-                Cancel
-              </button>
-              <button 
-                className="px-4 py-2 bg-[#f3cf1a] hover:bg-[#f3cf1a]/90 text-[#1a1a1a] font-medium rounded-lg transition-all duration-300"
-                onClick={handleUpload}
-                disabled={isUploading}
-              >
-                {isUploading ? 'Processing...' : 'Upload & Process'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
 export default Documents;
+
+

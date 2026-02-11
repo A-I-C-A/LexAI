@@ -21,7 +21,7 @@ import "./index.css";
 
 function App() {
   return (
-    <UserAuthContextProvider>
+      <UserAuthContextProvider>
       <Router>
         <Routes>
           {/* Public routes (no Layout - clean login/signup pages) */}

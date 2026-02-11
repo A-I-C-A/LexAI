@@ -47,12 +47,12 @@ const Signup = () => {
               <img src="/logolegal.png" alt="LegalAxis Logo" className="h-16 w-auto object-contain select-none" draggable="false" />
             </div>
           </div>
-          <h2 className="text-3xl font-bold text-[#f3cf1a]">Join LegalAxis</h2>
-          <p className="mt-2 text-[#e0e0e0]">Create your account to get started</p>
+          <h2 className="text-3xl font-bold text-dark-primary">Join LegalAxis</h2>
+          <p className="mt-2 text-dark-foreground">Create your account to get started</p>
         </div>
 
         {/* Signup Form */}
-  <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-lg shadow-lg p-8 ring-1 ring-white/5">
+  <div className="bg-[#0E0E0E] rounded-lg shadow-lg p-8 ring-1 ring-white/5">
           {error && (
             <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
               <p className="text-red-400 text-sm">{error}</p>
@@ -70,7 +70,7 @@ const Signup = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-[#232323] ring-1 ring-white/5 rounded-lg text-[#FFFFFF] placeholder-[#a0a0a0] focus:outline-none focus:ring-2 focus:ring-[#f3cf1a] focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-[#0E0E0E] ring-1 ring-white/5 rounded-lg text-[#FFFFFF] placeholder-[#a0a0a0] focus:outline-none focus:ring-2 focus:ring-dark-primary focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email"
               />
             </div>
@@ -85,7 +85,7 @@ const Signup = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-[#232323] ring-1 ring-white/5 rounded-lg text-[#FFFFFF] placeholder-[#a0a0a0] focus:outline-none focus:ring-2 focus:ring-[#f3cf1a] focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-[#0E0E0E] ring-1 ring-white/5 rounded-lg text-[#FFFFFF] placeholder-[#a0a0a0] focus:outline-none focus:ring-2 focus:ring-dark-primary focus:border-transparent transition-all duration-200"
                 placeholder="Create a password (min. 6 characters)"
               />
             </div>
@@ -100,19 +100,19 @@ const Signup = () => {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-[#232323] ring-1 ring-white/5 rounded-lg text-[#FFFFFF] placeholder-[#a0a0a0] focus:outline-none focus:ring-2 focus:ring-[#f3cf1a] focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-[#0E0E0E] ring-1 ring-white/5 rounded-lg text-[#FFFFFF] placeholder-[#a0a0a0] focus:outline-none focus:ring-2 focus:ring-dark-primary focus:border-transparent transition-all duration-200"
                 placeholder="Confirm your password"
               />
             </div>
 
             {/* Password requirements */}
-            <div className="text-xs text-[#a0a0a0] space-y-1">
+            <div className="text-xs text-dark-muted-foreground space-y-1">
               <p className="flex items-center">
-                <span className={`w-2 h-2 rounded-full mr-2 ${password.length >= 6 ? 'bg-green-500' : 'bg-[#343535]'}`}></span>
+                <span className={`w-2 h-2 rounded-full mr-2 ${password.length >= 6 ? 'bg-green-500' : 'bg-[#0E0E0E]'}`}></span>
                 At least 6 characters
               </p>
               <p className="flex items-center">
-                <span className={`w-2 h-2 rounded-full mr-2 ${password === confirmPassword && password.length > 0 ? 'bg-green-500' : 'bg-[#343535]'}`}></span>
+                <span className={`w-2 h-2 rounded-full mr-2 ${password === confirmPassword && password.length > 0 ? 'bg-green-500' : 'bg-[#0E0E0E]'}`}></span>
                 Passwords match
               </p>
             </div>
@@ -120,7 +120,7 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#f3cf1a] hover:bg-[#f3cf1a]/90 text-[#010101] font-semibold py-3 px-4 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#f3cf1a] focus:ring-offset-2 focus:ring-offset-[#343535] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] font-semibold py-3 px-4 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-dark-primary focus:ring-offset-2 focus:ring-offset-[#343535] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -138,13 +138,13 @@ const Signup = () => {
 
           {/* Terms and conditions */}
           <div className="mt-6 text-center">
-            <p className="text-xs text-[#a0a0a0]">
+            <p className="text-xs text-dark-muted-foreground">
               By creating an account, you agree to our{' '}
-              <a href="#" className="text-[#f3cf1a] hover:text-[#f3cf1a]/80 transition-all duration-200">
+              <a href="#" className="text-dark-primary hover:text-dark-primary/80 transition-all duration-200">
                 Terms of Service
               </a>{' '}
               and{' '}
-              <a href="#" className="text-[#f3cf1a] hover:text-[#f3cf1a]/80 transition-all duration-200">
+              <a href="#" className="text-dark-primary hover:text-dark-primary/80 transition-all duration-200">
                 Privacy Policy
               </a>
             </p>
@@ -153,11 +153,11 @@ const Signup = () => {
 
         {/* Login Link */}
         <div className="text-center">
-          <p className="text-[#a0a0a0]">
+          <p className="text-dark-muted-foreground">
             Already have an account?{' '}
             <Link 
               to="/" 
-              className="text-[#f3cf1a] hover:text-[#f3cf1a]/80 font-medium transition-all duration-200"
+              className="text-dark-primary hover:text-dark-primary/80 font-medium transition-all duration-200"
             >
               Sign in here
             </Link>
@@ -169,3 +169,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+

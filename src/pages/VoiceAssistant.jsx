@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import { useUserAuth } from "../context/UserAuthContext";
+import { motion } from 'framer-motion';
+import { useState, useRef } from "react";
+import { Mic, MicOff, Volume2, Sparkles } from 'lucide-react';
 
 const VoiceAssistant = () => {
-  const { currentUser } = useUserAuth();
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hi! I'm your LegalAxis Voice Assistant. Tap the mic and ask me anything!" },
   ]);
@@ -11,7 +11,6 @@ const VoiceAssistant = () => {
   const [input, setInput] = useState("");
   const recognitionRef = useRef(null);
 
-  // Function to call the Gemini API
   async function callGeminiApi(userInput) {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     
@@ -21,24 +20,14 @@ const VoiceAssistant = () => {
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     
-    const requestBody = {
-      contents: [
-        {
-          parts: [
-            {
-              text: userInput
-            }
-          ]
-        }
-      ]
-    };
-
     const response = await fetch(apiUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: userInput }]
+        }]
+      })
     });
 
     if (!response.ok) {
@@ -46,12 +35,9 @@ const VoiceAssistant = () => {
     }
 
     const data = await response.json();
-    
-    // Extract the response text from the API response
     return data.candidates[0].content.parts[0].text;
   }
 
-  // Text-to-Speech function
   function speak(text) {
     if (window.speechSynthesis) {
       const utter = new window.SpeechSynthesisUtterance(text);
@@ -81,7 +67,6 @@ const VoiceAssistant = () => {
       setRecording(false);
       setLoading(true);
       try {
-        // Call the Gemini API
         const botReply = await callGeminiApi(transcript);
         setMessages((msgs) => [...msgs, { sender: "bot", text: botReply }]);
         speak(botReply);
@@ -99,42 +84,127 @@ const VoiceAssistant = () => {
   };
 
   return (
-    <div className="flex flex-col h-full max-h-[80vh] w-full max-w-2xl mx-auto bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-xl shadow-lg ring-1 ring-white/5 p-4 mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-[#f3cf1a]">Voice Assistant</h2>
-      <div className="flex-1 overflow-y-auto mb-4 space-y-2 bg-[#000000] rounded-lg p-3">
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`px-4 py-2 rounded-2xl max-w-[70%] text-sm shadow-md ${
-                msg.sender === "user"
-                  ? "bg-[#343535] text-[#ffffff]"
-                  : "bg-gradient-to-b from-[#1f1f1f] to-[#151515] text-[#f3cf1a] ring-1 ring-white/10"
-              }`}
-            >
-              {msg.text}
+    <div className="min-h-screen bg-dark-background text-dark-foreground p-4 sm:p-6">
+      <div className="max-w-5xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
+        {/* Header */}
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-dark-primary/20 flex items-center justify-center">
+              <Volume2 className="w-6 h-6 text-dark-primary" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-light tracking-tighter">Voice Assistant</h1>
+              <p className="text-sm text-dark-muted-foreground font-light">Hands-Free Legal Intelligence</p>
             </div>
           </div>
-        ))}
-      </div>
-      <div className="flex items-center gap-4">
-        <button
-          onClick={handleMicClick}
-          className={`rounded-full p-4 bg-[#f3cf1a] text-[#000000] shadow-lg hover:bg-[#ffdf50] transition focus:outline-none ${recording ? "animate-pulse" : ""}`}
-          aria-label="Start voice input"
-          disabled={loading}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75v2.25m0 0h3m-3 0H9m6-2.25a6 6 0 10-12 0v.75a6 6 0 0012 0v-.75z" />
-            <circle cx="12" cy="10" r="4" fill="#222222" />
-          </svg>
-        </button>
-        <span className="text-[#f3cf1a] font-medium">{recording ? "Listening..." : loading ? "Thinking..." : "Tap mic to speak"}</span>
+        </motion.div>
+
+        {/* Chat Container */}
+        <div className="flex-1 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 overflow-hidden flex flex-col">
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {messages.map((msg, idx) => (
+              <motion.div
+                key={idx}
+                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+              >
+                <div className={`max-w-[80%] ${msg.sender === "user" ? "order-1" : "order-2"}`}>
+                  <div className={`rounded-2xl p-4 ${
+                    msg.sender === "user"
+                      ? "bg-dark-primary text-dark-background ml-4"
+                      : "bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground mr-4"
+                  }`}>
+                    <p className="text-sm font-light leading-relaxed">{msg.text}</p>
+                  </div>
+                </div>
+                
+                <div className={`flex items-end ${msg.sender === "user" ? "order-2 ml-3" : "order-1 mr-3"}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    msg.sender === "user" 
+                      ? "bg-dark-primary/20"
+                      : "bg-dark-primary/20"
+                  }`}>
+                    {msg.sender === "user" ? (
+                      <span className="text-xs font-medium text-dark-primary">U</span>
+                    ) : (
+                      <Sparkles className="w-4 h-4 text-dark-primary" />
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            {loading && (
+              <motion.div
+                className="flex justify-start"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <div className="bg-[#0E0E0E] backdrop-blur-xl border border-white/10 rounded-2xl p-4 mr-4">
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 rounded-full bg-dark-primary animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-dark-primary animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-dark-primary animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+          
+          {/* Voice Control Area */}
+          <div className="p-8 border-t border-white/10 flex flex-col items-center justify-center space-y-6">
+            {recording && (
+              <motion.div
+                className="text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <p className="text-sm text-dark-primary font-light mb-2">Listening...</p>
+                <div className="flex justify-center space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-1 h-8 bg-dark-primary rounded-full animate-pulse"
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                    ></div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            <button
+              onClick={handleMicClick}
+              className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 ${
+                recording
+                  ? 'bg-red-500 hover:bg-red-600 scale-110'
+                  : 'bg-dark-primary hover:bg-dark-primary/90 hover:scale-110'
+              }`}
+            >
+              {recording ? (
+                <MicOff className="w-10 h-10 text-dark-background" />
+              ) : (
+                <Mic className="w-10 h-10 text-dark-background" />
+              )}
+            </button>
+
+            <p className="text-sm text-dark-muted-foreground font-light">
+              {recording ? 'Tap to stop recording' : 'Tap to start speaking'}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default VoiceAssistant;
+
+

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const COURTLISTENER_ENDPOINTS = {
@@ -211,18 +212,18 @@ const Research = () => {
   return (
     <div className="min-h-screen bg-[#000000] p-4 sm:p-6 text-white">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-white mb-4">Legal Research Agent</h1>
+        <h1 className="text-3xl font-bold text-dark-foreground mb-4">Legal Research Agent</h1>
         
-        <div className="bg-[#242424] p-6 rounded-lg mb-6">
+        <div className="bg-[#0E0E0E] p-6 rounded-lg mb-6">
           <div className="mb-4 flex flex-col sm:flex-row gap-3">
             <textarea
-              className="flex-1 h-24 p-3 rounded-lg bg-[#2c2c2c] text-white border border-[#f3cf1a] focus:outline-none focus:border-[#ffe066]"
+              className="flex-1 h-24 p-3 rounded-lg bg-[#0E0E0E] text-dark-foreground border border-[#ffffff] focus:outline-none focus:border-[#ffe066]"
               placeholder="Enter case name, party name, or legal query..."
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
             <select
-              className="bg-[#2c2c2c] text-white border border-[#f3cf1a] rounded-lg p-2 focus:outline-none"
+              className="bg-[#0E0E0E] text-dark-foreground border border-[#ffffff] rounded-lg p-2 focus:outline-none"
               value={apiType}
               onChange={e => setApiType(e.target.value)}
             >
@@ -233,7 +234,7 @@ const Research = () => {
           </div>
           
           <button
-            className="px-6 py-2 bg-[#f3cf1a] text-[#1a1a1a] font-medium rounded-lg hover:bg-[#ffe066] transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-[#ffffff] text-[#1a1a1a] font-medium rounded-lg hover:bg-[#ffe066] transition disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleResearch}
             disabled={loading || !query.trim()}
           >
@@ -251,8 +252,8 @@ const Research = () => {
           <div className="space-y-4">
             <p className="text-gray-400 text-sm">Found {results.length} result(s)</p>
             {results.map((item, idx) => (
-              <div key={idx} className="bg-[#242424] p-5 rounded-lg border border-white/10 hover:border-[#f3cf1a]/30 transition">
-                <h3 className="font-bold text-lg text-[#f3cf1a] mb-3 line-clamp-2">
+              <div key={idx} className="bg-[#0E0E0E] p-5 rounded-lg border border-white/10 hover:border-[#ffffff]/30 transition">
+                <h3 className="font-bold text-lg text-dark-primary mb-3 line-clamp-2">
                   {item.title}
                 </h3>
                 
@@ -266,7 +267,7 @@ const Research = () => {
                   <p className="text-gray-200 mb-4 text-sm leading-relaxed">{item.summary}</p>
                 ) : (
                   <button
-                    className="text-xs px-4 py-2 bg-[#f3cf1a] text-black rounded hover:bg-[#ffe066] mb-4 font-medium disabled:opacity-50"
+                    className="text-xs px-4 py-2 bg-[#ffffff] text-black rounded hover:bg-[#ffe066] mb-4 font-medium disabled:opacity-50"
                     onClick={() => handleSummarize(idx)}
                     disabled={item.summarizing}
                   >
@@ -277,7 +278,7 @@ const Research = () => {
                 {item.url && (
                   <a
                     href={item.url}
-                    className="text-xs text-[#f3cf1a] hover:text-[#ffe066] px-3 underline"
+                    className="text-xs text-dark-primary hover:text-[#ffe066] px-3 underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -300,3 +301,4 @@ const Research = () => {
 };
 
 export default Research;
+

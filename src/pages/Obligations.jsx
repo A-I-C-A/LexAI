@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Obligations = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
@@ -206,24 +207,24 @@ Return ONLY the JSON array, no other text.`
     <div className="min-h-screen bg-[#000000] text-white p-4 sm:p-6">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-80 h-80 bg-[#f3cf1a] rounded-full mix-blend-overlay filter blur-3xl opacity-10 animate-pulse"></div>
-        <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[#f3cf1a] rounded-full mix-blend-overlay filter blur-3xl opacity-10 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute -top-20 -left-20 w-80 h-80 bg-[#ffffff] rounded-full mix-blend-overlay filter blur-3xl opacity-10 animate-pulse"></div>
+        <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[#ffffff] rounded-full mix-blend-overlay filter blur-3xl opacity-10 animate-pulse" style={{animationDelay: '2s'}}></div>
       </div>
 
       {/* Header Section */}
       <div className="mb-8 sm:mb-12 relative">
-        <div className="absolute -top-4 -left-4 w-24 h-24 bg-[#f3cf1a]/10 rounded-full blur-xl"></div>
+        <div className="absolute -top-4 -left-4 w-24 h-24 bg-[#ffffff]/10 rounded-full blur-xl"></div>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white relative">
+            <h1 className="text-3xl sm:text-4xl font-bold text-dark-foreground relative">
               Obligation & Deadline Tracker
-              <span className="block w-16 h-1 bg-[#f3cf1a] mt-2 rounded-full"></span>
+              <span className="block w-16 h-1 bg-[#ffffff] mt-2 rounded-full"></span>
             </h1>
             <p className="text-[#A9CEF4] mt-3 text-base">AI-powered deadline management with smart calendar integration</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <button 
-              className="px-6 py-3 bg-[#f3cf1a] hover:bg-[#f3cf1a]/90 text-[#1a1a1a] font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#f3cf1a]/20 flex items-center justify-center"
+              className="px-6 py-3 bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#1a1a1a] font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 flex items-center justify-center"
               onClick={() => setShowInputModal(true)}
               disabled={isScanning}
             >
@@ -245,7 +246,7 @@ Return ONLY the JSON array, no other text.`
               )}
             </button>
             <button 
-              className="px-6 py-3 bg-transparent border border-[#f3cf1a] text-[#f3cf1a] font-medium rounded-lg transition-all duration-300 hover:bg-[#f3cf1a] hover:text-[#ffffff] flex items-center justify-center"
+              className="px-6 py-3 bg-transparent border border-[#ffffff] text-dark-primary font-medium rounded-lg transition-all duration-300 hover:bg-[#ffffff] hover:text-[#ffffff] flex items-center justify-center"
               onClick={connectCalendar}
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -260,10 +261,10 @@ Return ONLY the JSON array, no other text.`
       {/* Text Input Modal */}
       {showInputModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#242424] rounded-2xl p-6 max-w-2xl w-full border border-[#f3cf1a]/30">
+          <div className="bg-[#0E0E0E] rounded-2xl p-6 max-w-2xl w-full border border-[#ffffff]/30">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-white">Extract Obligations from Text</h3>
-              <button onClick={() => setShowInputModal(false)} className="text-gray-400 hover:text-white">
+              <h3 className="text-xl font-medium text-dark-foreground">Extract Obligations from Text</h3>
+              <button onClick={() => setShowInputModal(false)} className="text-gray-400 hover:text-dark-foreground">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -274,7 +275,7 @@ Return ONLY the JSON array, no other text.`
                 Paste contract text, email, or any content with obligations:
               </label>
               <textarea
-                className="w-full h-48 bg-[#1a1a1a] text-white p-3 rounded-lg border border-[#343535] focus:border-[#f3cf1a] focus:outline-none"
+                className="w-full h-48 bg-[#0E0E0E] backdrop-blur-xl text-dark-foreground p-3 rounded-lg border border-white/10 focus:border-[#ffffff] focus:outline-none"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="Paste text here to extract obligations, deadlines, and important dates..."
@@ -283,14 +284,14 @@ Return ONLY the JSON array, no other text.`
             <div className="flex justify-end gap-3">
               <button 
                 onClick={() => setShowInputModal(false)} 
-                className="px-4 py-2 text-gray-400 hover:text-white"
+                className="px-4 py-2 text-gray-400 hover:text-dark-foreground"
               >
                 Cancel
               </button>
               <button 
                 onClick={handleExtractObligations}
                 disabled={!inputText.trim() || isScanning}
-                className="px-4 py-2 bg-[#f3cf1a] text-[#1a1a1a] rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-[#ffffff] text-[#1a1a1a] rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isScanning ? 'Extracting...' : 'Extract Obligations'}
               </button>
@@ -302,10 +303,10 @@ Return ONLY the JSON array, no other text.`
       {/* Scan Results Modal */}
       {scanResults && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#242424] rounded-2xl p-6 max-w-2xl w-full border border-[#f3cf1a]/30 max-h-[80vh] overflow-y-auto">
+          <div className="bg-[#0E0E0E] rounded-2xl p-6 max-w-2xl w-full border border-[#ffffff]/30 max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-white">Extracted Obligations</h3>
-              <button onClick={() => setScanResults(null)} className="text-gray-400 hover:text-white">
+              <h3 className="text-xl font-medium text-dark-foreground">Extracted Obligations</h3>
+              <button onClick={() => setScanResults(null)} className="text-gray-400 hover:text-dark-foreground">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -313,12 +314,12 @@ Return ONLY the JSON array, no other text.`
             </div>
             <div className="space-y-3">
               {scanResults.deadlines.map((deadline, index) => (
-                <div key={index} className="bg-[#1a1a1a] p-4 rounded-lg border border-[#343535]">
-                  <h4 className="font-semibold text-white">{deadline.title}</h4>
+                <div key={index} className="bg-[#0E0E0E] backdrop-blur-xl p-4 rounded-lg border border-white/10">
+                  <h4 className="font-medium text-dark-foreground">{deadline.title}</h4>
                   <p className="text-sm text-[#A9CEF4]">{deadline.description}</p>
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-xs text-gray-400">Deadline: {deadline.deadline} • {deadline.priority} priority</span>
-                    <button className="text-xs bg-[#f3cf1a] text-[#1a1a1a] px-3 py-1 rounded">
+                    <button className="text-xs bg-[#ffffff] text-[#1a1a1a] px-3 py-1 rounded">
                       Add to Tracker
                     </button>
                   </div>
@@ -326,7 +327,7 @@ Return ONLY the JSON array, no other text.`
               ))}
             </div>
             <div className="flex justify-end gap-3 mt-6">
-              <button onClick={() => setScanResults(null)} className="px-4 py-2 text-gray-400 hover:text-white">
+              <button onClick={() => setScanResults(null)} className="px-4 py-2 text-gray-400 hover:text-dark-foreground">
                 Close
               </button>
             </div>
@@ -336,50 +337,50 @@ Return ONLY the JSON array, no other text.`
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-[#343535] flex items-center group hover:border-[#f3cf1a]/30 transition-all duration-300">
-          <div className="bg-[#f3cf1a]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
-            <svg className="w-6 h-6 text-[#f3cf1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="bg-[#0E0E0E] p-4 sm:p-6 rounded-xl border border-white/10 flex items-center group hover:border-[#ffffff]/30 transition-all duration-300">
+          <div className="bg-[#ffffff]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">24</h3>
+            <h3 className="text-lg font-medium text-dark-foreground">24</h3>
             <p className="text-sm text-gray-400">Total Obligations</p>
           </div>
         </div>
         
-        <div className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-[#343535] flex items-center group hover:border-[#f3cf1a]/30 transition-all duration-300">
-          <div className="bg-[#f3cf1a]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
-            <svg className="w-6 h-6 text-[#f3cf1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="bg-[#0E0E0E] p-4 sm:p-6 rounded-xl border border-white/10 flex items-center group hover:border-[#ffffff]/30 transition-all duration-300">
+          <div className="bg-[#ffffff]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 01118 0z"></path>
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">3</h3>
+            <h3 className="text-lg font-medium text-dark-foreground">3</h3>
             <p className="text-sm text-gray-400">Due This Week</p>
           </div>
         </div>
         
-        <div className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-[#343535] flex items-center group hover:border-[#f3cf1a]/30 transition-all duration-300">
-          <div className="bg-[#f3cf1a]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
-            <svg className="w-6 h-6 text-[#f3cf1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="bg-[#0E0E0E] p-4 sm:p-6 rounded-xl border border-white/10 flex items-center group hover:border-[#ffffff]/30 transition-all duration-300">
+          <div className="bg-[#ffffff]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 01118 0z"></path>
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">92%</h3>
+            <h3 className="text-lg font-medium text-dark-foreground">92%</h3>
             <p className="text-sm text-gray-400">Compliance Rate</p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-[#343535] flex items-center group hover:border-[#f3cf1a]/30 transition-all duration-300">
-          <div className="bg-[#f3cf1a]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
-            <svg className="w-6 h-6 text-[#f3cf1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="bg-[#0E0E0E] p-4 sm:p-6 rounded-xl border border-white/10 flex items-center group hover:border-[#ffffff]/30 transition-all duration-300">
+          <div className="bg-[#ffffff]/20 p-3 rounded-full mr-4 group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">12</h3>
+            <h3 className="text-lg font-medium text-dark-foreground">12</h3>
             <p className="text-sm text-gray-400">Active Alerts</p>
           </div>
         </div>
@@ -388,21 +389,21 @@ Return ONLY the JSON array, no other text.`
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2">
           {/* Tab Navigation */}
-          <div className="flex border-b border-[#343535] mb-6">
+          <div className="flex border-b border-white/10 mb-6">
             <button 
-              className={`px-4 py-2 font-medium text-sm ${activeTab === 'upcoming' ? 'text-[#f3cf1a] border-b-2 border-[#f3cf1a]' : 'text-gray-400'}`}
+              className={`px-4 py-2 font-medium text-sm ${activeTab === 'upcoming' ? 'text-dark-primary border-b-2 border-[#ffffff]' : 'text-gray-400'}`}
               onClick={() => setActiveTab('upcoming')}
             >
               Upcoming
             </button>
             <button 
-              className={`px-4 py-2 font-medium text-sm ${activeTab === 'overdue' ? 'text-[#f3cf1a] border-b-2 border-[#f3cf1a]' : 'text-gray-400'}`}
+              className={`px-4 py-2 font-medium text-sm ${activeTab === 'overdue' ? 'text-dark-primary border-b-2 border-[#ffffff]' : 'text-gray-400'}`}
               onClick={() => setActiveTab('overdue')}
             >
               Overdue
             </button>
             <button 
-              className={`px-4 py-2 font-medium text-sm ${activeTab === 'completed' ? 'text-[#f3cf1a] border-b-2 border-[#f3cf1a]' : 'text-gray-400'}`}
+              className={`px-4 py-2 font-medium text-sm ${activeTab === 'completed' ? 'text-dark-primary border-b-2 border-[#ffffff]' : 'text-gray-400'}`}
               onClick={() => setActiveTab('completed')}
             >
               Completed
@@ -412,24 +413,24 @@ Return ONLY the JSON array, no other text.`
           {/* Obligations List */}
           <div className="space-y-4">
             {obligationsData[activeTab].map((item) => (
-              <div key={item.id} className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-4 sm:p-6 rounded-xl border border-[#343535] hover:border-[#f3cf1a]/30 transition-all duration-300 group">
+              <div key={item.id} className="bg-[#0E0E0E] p-4 sm:p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/30 transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mb-3">
                   <div className="flex items-start gap-3">
                     <div className={`p-2 rounded-full ${
-                      item.priority === 'high' ? 'bg-red-500/20' : 'bg-[#f3cf1a]/20'
+                      item.priority === 'high' ? 'bg-red-500/20' : 'bg-[#ffffff]/20'
                     }`}>
-                      <svg className={`w-4 h-4 ${item.priority === 'high' ? 'text-red-400' : 'text-[#f3cf1a]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <svg className={`w-4 h-4 ${item.priority === 'high' ? 'text-red-400' : 'text-dark-primary'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 01118 0z"></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg text-white">{item.title}</h3>
+                      <h3 className="font-medium text-lg text-dark-foreground">{item.title}</h3>
                       {item.amount && (
-                        <p className="text-[#f3cf1a] font-medium text-sm">{item.amount}</p>
+                        <p className="text-dark-primary font-medium text-sm">{item.amount}</p>
                       )}
                     </div>
                   </div>
-                  <span className={`text-xs px-3 py-1 rounded-full self-start ${activeTab === 'overdue' ? 'bg-red-500/20 text-red-400' : activeTab === 'completed' ? 'bg-green-500/20 text-green-400' : 'bg-[#f3cf1a]/20 text-[#f3cf1a]'}`}>
+                  <span className={`text-xs px-3 py-1 rounded-full self-start ${activeTab === 'overdue' ? 'bg-red-500/20 text-red-400' : activeTab === 'completed' ? 'bg-green-500/20 text-green-400' : 'bg-[#ffffff]/20 text-dark-primary'}`}>
                     {item.deadlineDisplay}
                   </span>
                 </div>
@@ -437,13 +438,13 @@ Return ONLY the JSON array, no other text.`
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                   <span className="text-xs text-gray-500">From: {item.source}</span>
                   <div className="flex space-x-2">
-                    <button className="text-xs px-3 py-2 rounded-lg bg-[#343535] text-gray-300 hover:bg-[#f3cf1a] hover:text-[#1a1a1a] transition-all flex items-center">
+                    <button className="text-xs px-3 py-2 rounded-lg bg-[#0E0E0E] text-gray-300 hover:bg-[#ffffff] hover:text-[#1a1a1a] transition-all flex items-center">
                       <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                       Add to Calendar
                     </button>
-                    <button className="text-xs px-3 py-2 rounded-lg bg-[#343535] text-gray-300 hover:bg-[#f3cf1a] hover:text-[#1a1a1a] transition-all flex items-center">
+                    <button className="text-xs px-3 py-2 rounded-lg bg-[#0E0E0E] text-gray-300 hover:bg-[#ffffff] hover:text-[#1a1a1a] transition-all flex items-center">
                       <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                       </svg>
@@ -461,9 +462,9 @@ Return ONLY the JSON array, no other text.`
 
         <div className="space-y-6">
           {/* Notification Settings */}
-          <div className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-6 rounded-xl border border-[#343535]">
-            <h2 className="text-xl font-semibold mb-6 text-white flex items-center">
-              <svg className="w-5 h-5 mr-2 text-[#f3cf1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="bg-[#0E0E0E] p-6 rounded-xl border border-white/10">
+            <h2 className="text-xl font-medium mb-6 text-dark-foreground flex items-center">
+              <svg className="w-5 h-5 mr-2 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
               </svg>
               Notification Settings
@@ -471,10 +472,10 @@ Return ONLY the JSON array, no other text.`
             
             <div className="space-y-4">
               {[
-                { key: 'email', label: 'Email Notifications', icon: '✉️' },
-                { key: 'sms', label: 'SMS Alerts', icon: '📱' },
-                { key: 'slack', label: 'Slack Messages', icon: '💬' },
-                { key: 'escalation', label: 'Escalation Alerts', icon: '⚠️' }
+                { key: 'email', label: 'Email Notifications', icon: '' },
+                { key: 'sms', label: 'SMS Alerts', icon: '' },
+                { key: 'slack', label: 'Slack Messages', icon: '' },
+                { key: 'escalation', label: 'Escalation Alerts', icon: '' }
               ].map((setting) => (
                 <div key={setting.key} className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -488,15 +489,15 @@ Return ONLY the JSON array, no other text.`
                       checked={notificationSettings[setting.key]}
                       onChange={() => handleNotificationChange(setting.key)}
                     />
-                    <div className={`w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer ${notificationSettings[setting.key] ? 'peer-checked:bg-[#f3cf1a]' : ''} peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+                    <div className={`w-11 h-6 bg-[#0E0E0E] peer-focus:outline-none rounded-full peer ${notificationSettings[setting.key] ? 'peer-checked:bg-[#ffffff]' : ''} peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-black after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
                   </label>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 p-3 bg-[#1a1a1a] rounded-lg">
-              <h4 className="text-sm font-medium text-white mb-2">Alert Timing</h4>
-              <select className="w-full bg-[#343535] text-white text-sm rounded-lg p-2 border border-[#4b5563]">
+            <div className="mt-6 p-3 bg-[#0E0E0E] backdrop-blur-xl rounded-lg">
+              <h4 className="text-sm font-medium text-dark-foreground mb-2">Alert Timing</h4>
+              <select className="w-full bg-[#0E0E0E] text-dark-foreground text-sm rounded-lg p-2 border border-[#4b5563]">
                 <option>7 days before</option>
                 <option>3 days before</option>
                 <option>1 day before</option>
@@ -506,36 +507,36 @@ Return ONLY the JSON array, no other text.`
           </div>
 
           {/* Compliance Score Card */}
-          <div className="bg-gradient-to-br from-[#222222] to-[#1a1a1a] p-6 rounded-xl border border-[#343535]">
-            <h2 className="text-xl font-semibold mb-6 text-white flex items-center">
-              <svg className="w-5 h-5 mr-2 text-[#f3cf1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="bg-[#0E0E0E] p-6 rounded-xl border border-white/10">
+            <h2 className="text-xl font-medium mb-6 text-dark-foreground flex items-center">
+              <svg className="w-5 h-5 mr-2 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 极 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
               </svg>
               Compliance Score
             </h2>
             
             <div className="relative mb-6">
-              <div className="w-full h-3 bg-[#343535] rounded-full">
-                <div className="h-3 bg-gradient-to-r from-[#f3cf1a] to-[#e5b800] rounded-full" style={{ width: '85%' }}></div>
+              <div className="w-full h-3 bg-[#0E0E0E] rounded-full">
+                <div className="h-3 bg-gradient-to-r from-[#ffffff] to-[#e5b800] rounded-full" style={{ width: '85%' }}></div>
               </div>
-              <div className="absolute top-0 right-0 text-sm font-semibold text-[#f3cf1a]">85%</div>
+              <div className="absolute top-0 right-0 text-sm font-medium text-dark-primary">85%</div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                <div className="text-2xl font-bold text-white">24</div>
+              <div className="bg-[#0E0E0E] backdrop-blur-xl p-3 rounded-lg">
+                <div className="text-2xl font-bold text-dark-foreground">24</div>
                 <div className="text-xs text-gray-400">Total Tracked</div>
               </div>
-              <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                <div className="text-2xl font-bold text-white">22</div>
+              <div className="bg-[#0E0E0E] backdrop-blur-xl p-3 rounded-lg">
+                <div className="text-2xl font-bold text-dark-foreground">22</div>
                 <div className="text-xs text-gray-400">Completed</div>
               </div>
-              <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                <div className="text-2xl font-bold text-white">1</div>
+              <div className="bg-[#0E0E0E] backdrop-blur-xl p-3 rounded-lg">
+                <div className="text-2xl font-bold text-dark-foreground">1</div>
                 <div className="text-xs text-gray-400">Overdue</div>
               </div>
-              <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                <div className="text-2xl font-bold text-white">3</div>
+              <div className="bg-[#0E0E0E] backdrop-blur-xl p-3 rounded-lg">
+                <div className="text-2xl font-bold text-dark-foreground">3</div>
                 <div className="text-xs text-gray-400">Upcoming</div>
               </div>
             </div>
@@ -547,3 +548,5 @@ Return ONLY the JSON array, no other text.`
 };
 
 export default Obligations;
+
+
