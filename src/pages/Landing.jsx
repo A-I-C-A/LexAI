@@ -57,7 +57,7 @@ const Landing = () => {
               <div className="w-12 h-12 rounded-full bg-[#0E0E0E] backdrop-blur-xl border border-white/10 flex items-center justify-center mr-3">
                 <Scale className="w-6 h-6 text-dark-primary" />
               </div>
-              <span className="text-2xl font-light tracking-tighter text-dark-primary">LegalAxis</span>
+              <span className="text-2xl font-light tracking-tighter text-dark-primary" style={{ fontFamily: '"Inter", sans-serif' }}>LegalAxis</span>
             </motion.div>
             
             <motion.div 
@@ -65,10 +65,11 @@ const Landing = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              style={{ fontFamily: '"Inter", sans-serif' }}
             >
-              <a href="#features" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light">Features</a>
-              <a href="#pricing" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light">Pricing</a>
-              <a href="#contact" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light">Contact</a>
+              <a href="#features" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light no-underline text-white">Features</a>
+              <a href="#pricing" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light no-underline text-white">Pricing</a>
+              <a href="#contact" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light no-underline text-white">Contact</a>
             </motion.div>
             
             <motion.div 
@@ -77,10 +78,11 @@ const Landing = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Link to="/login" className="text-dark-foreground hover:text-[#ffffff] transition-colors duration-300 font-light">Login</Link>
+              <Link to="/login" className="text-dark-foreground hover:text-[#ffffff] transition-colors duration-300 font-light no-underline text-white" style={{ fontFamily: '"Inter", sans-serif' }}>Login</Link>
               <Link 
                 to="/signup" 
-                className="rounded-full px-6 py-3 bg-black text-black font-medium hover:scale-105 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+                className="rounded-full px-9 py-3.5 bg-white text-[#111111] font-semibold border border-black/5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:scale-[1.04] hover:shadow-[0_10px_36px_rgba(0,0,0,0.45)] active:scale-[0.98] active:shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-300 ease-out text-lg no-underline"
+                style={{ fontFamily: '"Inter", sans-serif' }}
               >
                 Sign Up
               </Link>
@@ -88,56 +90,81 @@ const Landing = () => {
           </div>
         </nav>
 
-        {/* Hero Section */}
         <motion.section 
-          className="flex flex-col items-center justify-center min-h-screen text-center px-6"
-          style={{ y: heroY, opacity: heroOpacity }}
-        >
-          {/* Logo */}
-          <motion.div
-            className="w-24 h-24 rounded-full bg-[#0E0E0E] backdrop-blur-xl border border-[#ffffff]/50 flex items-center justify-center mb-12 shadow-[0_0_30px_rgba(255,255,255,0.4)]"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, type: "spring" }}
-          >
-            <Scale className="w-12 h-12 text-[#ffffff]" />
-          </motion.div>
-          
-          {/* Title */}
-          <motion.h1 
-            className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter mb-8 max-w-5xl"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            Your AI-Powered Legal Intelligence Platform
-          </motion.h1>
-          
-          {/* Subheading */}
-          <motion.div
-            className="px-8 py-4 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 mb-12"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <p className="text-xl md:text-2xl font-light tracking-wide text-dark-muted-foreground max-w-3xl">
-              Transform legal workflows with <span className="text-dark-primary">glassmorphic precision</span> and <span className="text-dark-primary">agentic intelligence</span>
-            </p>
-          </motion.div>
-          
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-          >
-            <Link 
-              to="/signup"
-              className="rounded-full px-12 py-6 text-xl font-bold bg-black text-black hover:scale-105 active:scale-95 transition-transform duration-300 shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] inline-block"
-            >
-              Start Free Trial
-            </Link>
-          </motion.div>
+  className="flex flex-col items-center justify-start min-h-screen text-center px-6 pt-28"
+  style={{ y: heroY, opacity: heroOpacity }}
+>
+
+  {/* Logo */}
+  <motion.div
+    className="w-24 h-24 rounded-full bg-[#0E0E0E] backdrop-blur-xl border border-white/40 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+    initial={{ scale: 0, rotate: -180 }}
+    animate={{ scale: 1, rotate: 0 }}
+    transition={{ duration: 0.8, type: "spring" }}
+  >
+    <Scale className="w-12 h-12 text-white" />
+  </motion.div>
+
+  {/* Title */}
+  <motion.h1 
+    className="mb-6 max-w-4xl mx-auto text-[#f5f5f5]"
+    style={{ 
+      fontFamily: '"Inter", sans-serif',
+      fontSize: '64px',
+      fontWeight: '300',
+      lineHeight: '1.1',
+      letterSpacing: '-0.02em'
+    }}
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, delay: 0.3 }}
+  >
+    Your AI-Powered Legal Intelligence Platform
+  </motion.h1>
+
+  {/* Subtitle */}
+  <motion.div
+    className="mt-6 px-8 py-4 rounded-2xl bg-[#0E0E0E]/40 backdrop-blur-xlborder-[0.5px] border border-white/10 mb-12"
+
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 0.3, y: 0 }}
+    transition={{ duration: 0.8, delay: 0.5 }}
+  >
+    <p 
+      className="text-[20px] text-white/75 max-w-3xl mx-auto"
+      style={{ 
+        fontFamily: '"Inter", sans-serif',
+        fontWeight: '400',
+        
+      }}
+    >
+      Transparent. Accessible. Unbiased.
+    </p>
+  </motion.div>
+
+  {/* CTA Button */}
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, delay: 0.7 }}
+  >
+    <Link 
+      to="/signup"
+      className="rounded-full bg-white text-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:scale-[1.04] hover:shadow-[0_10px_36px_rgba(0,0,0,0.45)] active:scale-[0.98] active:shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-300 ease-out inline-block no-underline"
+      style={{ 
+        fontFamily: '"Inter", sans-serif',
+        fontWeight: '600',
+        padding: '14px 36px'
+      }}
+    >
+      Start Free Trial
+    </Link>
+  </motion.div>
+
+
+
+
+
           
           {/* Scroll Indicator */}
           <motion.div

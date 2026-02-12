@@ -37,7 +37,7 @@ const Navbar = ({ toggleSidebar }) => {
               <img 
               src="/logolegal.png" 
               alt="LegalAxis Logo" 
-              className="h-9 sm:h-12 w-auto object-contain select-none mr-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" 
+              className="h-9 sm:h-12 w-auto no-underline object-contain select-none mr-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" 
               draggable="false"
             />
               LegalAxis
@@ -50,11 +50,12 @@ const Navbar = ({ toggleSidebar }) => {
           <div className="relative hidden md:block">
             <input 
               type="text" 
-              className="bg-white/5 backdrop-blur-xl border border-white/10 text-white text-sm rounded-full focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent block w-48 lg:w-64 pl-10 p-2.5 placeholder-gray-500 transition-all duration-300 font-light" 
+              className="bg-white/5 backdrop-blur-xl border border-black text-white text-sm rounded-full focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent block w-48 lg:w-64 pl-10 p-2.5 placeholder-white transition-all duration-300 font-light"
+
               placeholder="Search..."
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-5 h-5 text-white" />
+              <Search className="w-8 h-10 text-white" />
             </div>
           </div>
 
@@ -177,4 +178,5 @@ const Navbar = ({ toggleSidebar }) => {
   );
 };
 
-export default Navbar;
+export default Navbar;
+
