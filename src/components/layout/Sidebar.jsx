@@ -14,9 +14,11 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { useUserAuth } from '../../context/UserAuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { user } = useUserAuth();
+  const { theme } = useTheme();
 
   const menuItems = [
     { name: 'Dashboard', Icon: Home, path: '/dashboard' },
@@ -38,35 +40,33 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-background/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-50 h-screen flex flex-col transition-all duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
+        } lg:translate-x-0 bg-card border-r border-border`}
         style={{
           width: '260px',
-          backgroundColor: '#0B0B0B',
-          borderRight: '1px solid rgba(255,255,255,0.08)',
           fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
         }}
       >
         {/* ===== LOGO SECTION (RESTORED) ===== */}
         <div
+          className="border-b border-border"
           style={{
-            padding: '20px 20px 16px 20px',
-            borderBottom: '1px solid rgba(255,255,255,0.05)'
+            padding: '20px 20px 16px 20px'
           }}
         >
           <div
+            className="text-foreground"
             style={{
               fontSize: '20px',
               fontWeight: '600',
-              color: '#FFFFFF',
               letterSpacing: '0.3px'
             }}
           >
@@ -98,16 +98,20 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
                       backgroundColor: isActive
-                        ? 'rgba(255,255,255,0.08)'
+                        ? (theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)')
                         : 'transparent',
-                      color: isActive ? '#FFFFFF' : '#B3B3B3'
+                      color: isActive 
+                        ? (theme === 'dark' ? '#FFFFFF' : '#000000')
+                        : (theme === 'dark' ? '#B3B3B3' : '#6B7280')
                     }}
                   >
                     <item.Icon
                       size={20}
                       style={{
                         flexShrink: 0,
-                        color: isActive ? '#FFFFFF' : '#9CA3AF',
+                        color: isActive 
+                          ? (theme === 'dark' ? '#FFFFFF' : '#000000')
+                          : (theme === 'dark' ? '#9CA3AF' : '#6B7280'),
                         transition: 'color 0.2s ease'
                       }}
                     />
@@ -130,8 +134,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
         {/* ===== USER SECTION ===== */}
         <div
+          className="border-t border-border"
           style={{
-            borderTop: '1px solid rgba(255,255,255,0.08)',
             padding: '16px'
           }}
         >
@@ -157,8 +161,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               }}
             >
               <span
+                className="text-white"
                 style={{
-                  color: '#FFFFFF',
                   fontSize: '15px',
                   fontWeight: '600'
                 }}
@@ -169,8 +173,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
             <div style={{ flex: 1, minWidth: 0 }}>
               <p
+                className="text-foreground"
                 style={{
-                  color: '#FFFFFF',
                   fontSize: '15px',
                   fontWeight: '600',
                   margin: 0,
@@ -182,8 +186,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 {user?.displayName || 'User'}
               </p>
               <p
+                className="text-muted-foreground"
                 style={{
-                  color: '#B3B3B3',
                   fontSize: '13px',
                   margin: 0,
                   overflow: 'hidden',
@@ -197,15 +201,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           <button
-            className="support-button"
+            className="support-button text-foreground border-border hover:bg-accent"
             style={{
               width: '100%',
               padding: '8px 12px',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#FFFFFF',
               backgroundColor: 'transparent',
-              border: '1px solid rgba(255,255,255,0.15)',
+              border: '1px solid',
               borderRadius: '8px',
               cursor: 'pointer',
               transition: 'background-color 0.2s ease'
@@ -220,7 +223,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       <style>{`
         .sidebar-scroll {
           scrollbar-width: thin;
-          scrollbar-color: rgba(255,255,255,0.2) transparent;
+          scrollbar-color: ${theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'} transparent;
         }
 
         .sidebar-scroll::-webkit-scrollbar {
@@ -228,25 +231,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         }
 
         .sidebar-scroll::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.2);
+          background: ${theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'};
           border-radius: 2px;
         }
 
         .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(255,255,255,0.3);
+          background: ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'};
         }
 
         .menu-item:hover {
-          background-color: rgba(255,255,255,0.05) !important;
-          color: #FFFFFF !important;
+          background-color: ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} !important;
+          color: ${theme === 'dark' ? '#FFFFFF' : '#000000'} !important;
         }
 
         .menu-item:hover svg {
-          color: #FFFFFF !important;
-        }
-
-        .support-button:hover {
-          background-color: rgba(255,255,255,0.08);
+          color: ${theme === 'dark' ? '#FFFFFF' : '#000000'} !important;
         }
       `}</style>
     </>

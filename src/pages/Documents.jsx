@@ -135,7 +135,7 @@ const Documents = () => {
       switch (status) {
         case 'Active': return 'bg-green-500/20 text-green-400 border-green-500/30';
         case 'Draft': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-        case 'Under Review': return 'bg-blue-500/20 text-blue-400 border-[#00ff9d]/30';
+        case 'Under Review': return 'bg-blue-500/20 text-blue-400 border-accent/30';
         case 'Expiring Soon': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
         case 'Expired': return 'bg-red-500/20 text-red-400 border-red-500/30';
         default: return 'bg-black/20 text-gray-400 border-gray-500/30';
@@ -144,19 +144,19 @@ const Documents = () => {
 
     return (
       <motion.div
-        className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 border-white/20 hover:border-white/30 transition-all duration-300 group"
+        className="p-6 rounded-3xl bg-card backdrop-blur-xl border border-border hover:border-border/80 transition-all duration-300 group"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -5 }}
       >
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-start space-x-3 flex-1">
-            <div className="w-10 h-10 rounded-xl bg-dark-primary/20 flex items-center justify-center flex-shrink-0">
-              <FileText className="w-5 h-5 text-dark-primary" />
+            <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0">
+              <FileText className="w-5 h-5 text-emerald-500" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-medium text-dark-foreground text-base mb-1 truncate">{document.name}</h3>
-              <p className="text-sm text-dark-muted-foreground font-light line-clamp-2">{document.description}</p>
+              <h3 className="font-medium text-foreground text-base mb-1 truncate">{document.name}</h3>
+              <p className="text-sm text-muted-foreground font-light line-clamp-2">{document.description}</p>
             </div>
           </div>
           <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(document.status)} flex-shrink-0 ml-3`}>
@@ -165,10 +165,10 @@ const Documents = () => {
         </div>
         
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="bg-[#0E0E0E] text-dark-foreground px-2 py-1 rounded-lg text-xs border border-white/10">
+          <span className="bg-muted text-foreground px-2 py-1 rounded-lg text-xs border border-border">
             {document.type}
           </span>
-          <span className="bg-[#0E0E0E] text-dark-muted-foreground px-2 py-1 rounded-lg text-xs border border-white/10">
+          <span className="bg-muted text-muted-foreground px-2 py-1 rounded-lg text-xs border border-border">
             {document.fileType} • {document.size}
           </span>
           {document.ocrProcessed && (
@@ -180,22 +180,22 @@ const Documents = () => {
         
         <div className="flex flex-wrap gap-1 mb-4">
           {document.tags && document.tags.map((tag, index) => (
-            <span key={index} className="bg-dark-primary/10 text-dark-primary px-2 py-1 rounded-md text-xs border border-dark-primary/20">
+            <span key={index} className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-md text-xs border border-emerald-500/30">
               {tag}
             </span>
           ))}
         </div>
         
-        <div className="flex justify-between items-center pt-4 border-t border-white/10">
-          <div className="flex items-center text-dark-muted-foreground text-xs font-light">
+        <div className="flex justify-between items-center pt-4 border-t border-border">
+          <div className="flex items-center text-muted-foreground text-xs font-light">
             <Clock className="w-4 h-4 mr-1" />
             {document.lastUpdated}
           </div>
           <div className="flex space-x-2">
-            <button className="p-2 hover:bg-[#0E0E0E] rounded-lg transition-colors text-dark-muted-foreground hover:text-dark-primary" title="Download">
+            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-emerald-500" title="Download">
               <Download className="w-4 h-4" />
             </button>
-            <button className="p-2 hover:bg-[#0E0E0E] rounded-lg transition-colors text-dark-muted-foreground hover:text-dark-primary" title="Share">
+            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-emerald-500" title="Share">
               <Share2 className="w-4 h-4" />
             </button>
           </div>
@@ -205,7 +205,7 @@ const Documents = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-background text-dark-foreground p-4 sm:p-6">
+    <div className="min-h-screen bg-background text-foreground p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div 
@@ -215,19 +215,19 @@ const Documents = () => {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl font-light tracking-tighter mb-2">Document Management</h1>
-          <p className="text-dark-muted-foreground font-light">Upload, organize, and manage all your legal documents</p>
+          <p className="text-muted-foreground font-light">Upload, organize, and manage all your legal documents</p>
         </motion.div>
         
         {/* Search and Filter */}
-        <div className="p-6 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 mb-6">
+        <div className="p-6 rounded-3xl bg-card backdrop-blur-xl border border-border mb-6">
           <div className="flex flex-col gap-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                <Search className="w-5 h-5 text-dark-muted-foreground" />
+                <Search className="w-5 h-5 text-muted-foreground" />
               </div>
               <input 
                 type="text" 
-                className="w-full pl-12 pr-4 py-3 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground placeholder-dark-muted-foreground focus:ring-2 focus:ring-dark-primary/40 focus:border-transparent transition-all duration-300 font-light" 
+                className="w-full pl-12 pr-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light" 
                 placeholder="Search documents..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -236,7 +236,7 @@ const Documents = () => {
             
             <div className="flex flex-col sm:flex-row gap-3">
               <select 
-                className="px-4 py-3 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground focus:ring-2 focus:ring-dark-primary/40 focus:border-transparent transition-all duration-300 font-light"
+                className="px-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light"
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
               >
@@ -246,7 +246,7 @@ const Documents = () => {
               </select>
               
               <select 
-                className="px-4 py-3 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground focus:ring-2 focus:ring-dark-primary/40 focus:border-transparent transition-all duration-300 font-light"
+                className="px-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -256,7 +256,7 @@ const Documents = () => {
               </select>
               
               <button 
-                className="px-6 py-3 rounded-2xl bg-dark-primary text-dark-background font-medium hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2"
+                className="px-6 py-3 rounded-2xl bg-emerald-600 text-white font-medium hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-5 h-5" />
@@ -279,21 +279,21 @@ const Documents = () => {
         <div 
           className={`p-8 rounded-3xl border-2 border-dashed mb-8 transition-all duration-300 ${
             isDragging 
-              ? 'border-dark-primary bg-dark-primary/10 backdrop-blur-xl' 
-              : 'border-white/20 bg-[#0E0E0E] backdrop-blur-xl hover:border-white/30'
+              ? 'border-emerald-500 bg-emerald-500/10 backdrop-blur-xl' 
+              : 'border-border bg-card backdrop-blur-xl hover:border-border/80'
           }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
           <div className="text-center">
-            <div className="w-16 h-16 rounded-2xl bg-dark-primary/20 flex items-center justify-center mx-auto mb-4">
-              <Upload className="w-8 h-8 text-dark-primary" />
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+              <Upload className="w-8 h-8 text-emerald-500" />
             </div>
-            <h3 className="text-lg font-medium text-dark-foreground mb-2">Drag & Drop Files Here</h3>
-            <p className="text-dark-muted-foreground mb-4 font-light">Supported formats: PDF, DOC, DOCX, TXT</p>
+            <h3 className="text-lg font-medium text-foreground mb-2">Drag & Drop Files Here</h3>
+            <p className="text-muted-foreground mb-4 font-light">Supported formats: PDF, DOC, DOCX, TXT</p>
             <button 
-              className="px-6 py-3 rounded-2xl bg-[#0E0E0E] hover:bg-white/15 text-white font-medium transition-all duration-300"
+              className="px-6 py-3 rounded-2xl bg-muted hover:bg-muted/80 text-foreground font-medium transition-all duration-300"
               onClick={() => fileInputRef.current?.click()}
             >
               Select Files
@@ -303,14 +303,14 @@ const Documents = () => {
         
         {/* Documents Grid */}
         {isUploading && (
-          <div className="mb-6 p-4 rounded-2xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10">
+          <div className="mb-6 p-4 rounded-2xl bg-card backdrop-blur-xl border border-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-light text-dark-foreground">Uploading documents...</span>
-              <span className="text-sm font-medium text-dark-primary">{Math.round(uploadProgress)}%</span>
+              <span className="text-sm font-light text-foreground">Uploading documents...</span>
+              <span className="text-sm font-medium text-emerald-500">{Math.round(uploadProgress)}%</span>
             </div>
-            <div className="w-full bg-[#0E0E0E] rounded-full h-2">
+            <div className="w-full bg-muted rounded-full h-2">
               <div 
-                className="bg-dark-primary h-2 rounded-full transition-all duration-300" 
+                className="bg-emerald-500 h-2 rounded-full transition-all duration-300" 
                 style={{ width: `${uploadProgress}%` }}
               ></div>
             </div>
@@ -323,16 +323,16 @@ const Documents = () => {
               <DocumentCard key={document.id} document={document} />
             ))
           ) : (
-            <div className="xl:col-span-2 p-12 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-center">
-              <div className="w-20 h-20 rounded-2xl bg-dark-primary/20 flex items-center justify-center mx-auto mb-6">
-                <FileText className="w-10 h-10 text-dark-primary" />
+            <div className="xl:col-span-2 p-12 rounded-3xl bg-card backdrop-blur-xl border border-border text-center">
+              <div className="w-20 h-20 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-10 h-10 text-emerald-500" />
               </div>
-              <h3 className="text-xl font-medium text-dark-foreground mb-3">No documents found</h3>
-              <p className="text-dark-muted-foreground max-w-md mx-auto mb-6 font-light">
+              <h3 className="text-xl font-medium text-foreground mb-3">No documents found</h3>
+              <p className="text-muted-foreground max-w-md mx-auto mb-6 font-light">
                 We couldn't find any documents matching your search. Try adjusting your filters or upload a new document.
               </p>
               <button 
-                className="px-6 py-3 rounded-2xl bg-dark-primary text-dark-background font-medium hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2"
+                className="px-6 py-3 rounded-2xl bg-emerald-600 text-white font-medium hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-5 h-5" />

@@ -16,11 +16,13 @@ import Signup from "./pages/Signup";
 import Chatbot from "./pages/Chatbot";
 import VoiceAssistant from "./pages/VoiceAssistant";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./index.css";
 
 function App() {
   return (
+    <ThemeProvider>
       <UserAuthContextProvider>
       <Router>
         <Routes>
@@ -162,6 +164,7 @@ function App() {
         </Routes>
       </Router>
     </UserAuthContextProvider>
+    </ThemeProvider>
   );
 }
 

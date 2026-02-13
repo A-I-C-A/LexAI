@@ -286,7 +286,7 @@ ${text.substring(0, 5000)}`
   const progressOffset = circumference * (1 - score / 100);
 
   return (
-    <div className="min-h-screen bg-dark-background text-dark-foreground ml-[260px]">
+    <div className="min-h-screen bg-background text-foreground ml-[260px]">
       <div className="w-full px-8 py-8">
 
         {/* Header */}
@@ -307,7 +307,7 @@ ${text.substring(0, 5000)}`
         <div className="flex justify-end mb-6">
           <button
             onClick={() => setModalOpen(true)}
-            className="px-6 py-3 bg-white text-black rounded-full hover:scale-105 transition"
+            className="px-6 py-3 bg-emerald-600 text-white rounded-full hover:scale-105 transition"
           >
             Scan New Contract
           </button>
@@ -317,7 +317,7 @@ ${text.substring(0, 5000)}`
         <div className="grid md:grid-cols-2 gap-6">
 
           {/* Alerts */}
-          <div className="p-6 rounded-3xl bg-[#0E0E0E] border border-white/10">
+          <div className="p-6 rounded-3xl bg-card border border-border">
             <h2 className="text-xl mb-4">Compliance Alerts</h2>
 
             {!analysis ? (
@@ -333,7 +333,7 @@ ${text.substring(0, 5000)}`
                 {analysis.alerts.map((alert, i) => (
                   <div
                     key={i}
-                    className="p-4 rounded-xl border border-white/10 bg-white/5"
+                    className="p-4 rounded-xl border border-border bg-muted/50"
                   >
                     <p className="font-medium">
                       {alert.priority} Priority
@@ -349,7 +349,7 @@ ${text.substring(0, 5000)}`
           </div>
 
           {/* Score */}
-          <div className="p-6 rounded-3xl bg-[#0E0E0E] border border-white/10 flex flex-col items-center">
+          <div className="p-6 rounded-3xl bg-card border border-border flex flex-col items-center">
             <h2 className="text-xl mb-6">Compliance Score</h2>
 
             <div className="relative w-48 h-48">
@@ -361,7 +361,7 @@ ${text.substring(0, 5000)}`
                   cx="96"
                   cy="96"
                   r={RADIUS}
-                  stroke="rgba(255,255,255,0.1)"
+                  stroke="hsl(var(--muted))"
                   strokeWidth="16"
                   fill="none"
                 />
@@ -387,21 +387,21 @@ ${text.substring(0, 5000)}`
         {/* Upload Modal */}
         {modalOpen && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-[#0E0E0E] p-8 rounded-3xl border border-white/10 max-w-md w-full mx-4">
+            <div className="bg-card p-8 rounded-3xl border border-border max-w-md w-full mx-4">
               <h2 className="text-2xl font-bold mb-4">Upload Contract</h2>
-              <p className="text-gray-400 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Upload a PDF, DOCX, or TXT file for compliance analysis
               </p>
               <input
                 type="file"
                 accept=".pdf,.docx,.txt"
                 onChange={handleFileUpload}
-                className="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-white/90 cursor-pointer"
+                className="w-full p-4 rounded-xl bg-muted border border-border text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer"
               />
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-6 py-2 rounded-full bg-white/10 hover:bg-white/20 transition"
+                  className="px-6 py-2 rounded-full bg-muted hover:bg-muted/80 transition"
                 >
                   Cancel
                 </button>
@@ -413,11 +413,11 @@ ${text.substring(0, 5000)}`
         {/* Loading Overlay */}
         {loading && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-            <div className="bg-[#0E0E0E] p-8 rounded-3xl border border-white/10">
+            <div className="bg-card p-8 rounded-3xl border border-border">
               <div className="flex flex-col items-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mb-4"></div>
                 <p className="text-lg">Analyzing document...</p>
-                <p className="text-sm text-gray-400 mt-2">This may take 10-30 seconds</p>
+                <p className="text-sm text-muted-foreground mt-2">This may take 10-30 seconds</p>
               </div>
             </div>
           </div>

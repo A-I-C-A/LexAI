@@ -1,12 +1,14 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Zap, Scale, ChevronDown } from 'lucide-react';
+import { Shield, Zap, Scale, ChevronDown, Sun, Moon } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
+import { useTheme } from '../context/ThemeContext';
 
 const Landing = () => {
   const [loaded, setLoaded] = useState(false);
   const { scrollY } = useScroll();
+  const { theme, toggleTheme } = useTheme();
   const heroY = useTransform(scrollY, [0, 500], [0, 150]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
@@ -15,7 +17,7 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-dark-background text-dark-foreground font-light overflow-hidden relative">
+    <div className="min-h-screen bg-background text-foreground font-light overflow-hidden relative">
       {/* Animated SVG Background */}
       <AnimatedBackground />
       
@@ -25,7 +27,7 @@ const Landing = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Shield className="w-full h-full text-dark-primary" />
+        <Shield className="w-full h-full text-emerald-500" />
       </motion.div>
       
       <motion.div
@@ -33,7 +35,7 @@ const Landing = () => {
         animate={{ y: [0, -20, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       >
-        <Zap className="w-full h-full text-dark-primary" />
+        <Zap className="w-full h-full text-emerald-500" />
       </motion.div>
       
       <motion.div
@@ -41,7 +43,7 @@ const Landing = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       >
-        <Scale className="w-full h-full text-dark-primary" />
+        <Scale className="w-full h-full text-emerald-500" />
       </motion.div>
 
       <div className="relative z-10">
@@ -54,10 +56,10 @@ const Landing = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="w-12 h-12 rounded-full bg-[#0E0E0E] backdrop-blur-xl border border-white/10 flex items-center justify-center mr-3">
-                <Scale className="w-6 h-6 text-dark-primary" />
+              <div className="w-12 h-12 rounded-full bg-card backdrop-blur-xl border border-border flex items-center justify-center mr-3">
+                <Scale className="w-6 h-6 text-emerald-500" />
               </div>
-              <span className="text-2xl font-light tracking-tighter text-dark-primary" style={{ fontFamily: '"Inter", sans-serif' }}>LegalAxis</span>
+              <span className="text-2xl font-light tracking-tighter text-emerald-500" style={{ fontFamily: '"Inter", sans-serif' }}>LegalAxis</span>
             </motion.div>
             
             <motion.div 
@@ -67,9 +69,9 @@ const Landing = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               style={{ fontFamily: '"Inter", sans-serif' }}
             >
-              <a href="#features" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light no-underline text-white">Features</a>
-              <a href="#pricing" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light no-underline text-white">Pricing</a>
-              <a href="#contact" className="text-dark-muted-foreground hover:text-dark-primary transition-colors duration-300 font-light no-underline text-white">Contact</a>
+              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-light no-underline">Features</a>
+              <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-light no-underline">Pricing</a>
+              <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-light no-underline">Contact</a>
             </motion.div>
             
             <motion.div 
@@ -78,10 +80,21 @@ const Landing = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Link to="/login" className="text-dark-foreground hover:text-[#ffffff] transition-colors duration-300 font-light no-underline text-white" style={{ fontFamily: '"Inter", sans-serif' }}>Login</Link>
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-secondary transition-colors duration-300"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-foreground" />
+                ) : (
+                  <Moon className="w-5 h-5 text-foreground" />
+                )}
+              </button>
+              <Link to="/login" className="text-foreground hover:text-emerald-500 transition-colors duration-300 font-light no-underline" style={{ fontFamily: '"Inter", sans-serif' }}>Login</Link>
               <Link 
                 to="/signup" 
-                className="rounded-full px-9 py-3.5 bg-white text-[#111111] font-semibold border border-black/5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:scale-[1.04] hover:shadow-[0_10px_36px_rgba(0,0,0,0.45)] active:scale-[0.98] active:shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-300 ease-out text-lg no-underline"
+                className="rounded-full px-9 py-3.5 bg-emerald-500 text-white font-semibold border border-emerald-500 shadow-lg hover:shadow-emerald-500/50 hover:scale-[1.04] active:scale-[0.98] transition-all duration-300 ease-out text-lg no-underline"
                 style={{ fontFamily: '"Inter", sans-serif' }}
               >
                 Sign Up
@@ -97,17 +110,17 @@ const Landing = () => {
 
   {/* Logo */}
   <motion.div
-    className="w-24 h-24 rounded-full bg-[#0E0E0E] backdrop-blur-xl border border-white/40 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+    className="w-24 h-24 rounded-full bg-card backdrop-blur-xl border border-border flex items-center justify-center mb-8 shadow-lg"
     initial={{ scale: 0, rotate: -180 }}
     animate={{ scale: 1, rotate: 0 }}
     transition={{ duration: 0.8, type: "spring" }}
   >
-    <Scale className="w-12 h-12 text-white" />
+    <Scale className="w-12 h-12 text-emerald-500" />
   </motion.div>
 
   {/* Title */}
   <motion.h1 
-    className="mb-6 max-w-4xl mx-auto text-[#f5f5f5]"
+    className="mb-6 max-w-4xl mx-auto text-foreground"
     style={{ 
       fontFamily: '"Inter", sans-serif',
       fontSize: '64px',
@@ -124,14 +137,14 @@ const Landing = () => {
 
   {/* Subtitle */}
   <motion.div
-    className="mt-6 px-8 py-4 rounded-2xl bg-[#0E0E0E]/40 backdrop-blur-xlborder-[0.5px] border border-white/10 mb-12"
+    className="mt-6 px-8 py-4 rounded-2xl bg-secondary/50 backdrop-blur-xl border border-border mb-12"
 
     initial={{ opacity: 0, y: 50 }}
     animate={{ opacity: 0.3, y: 0 }}
     transition={{ duration: 0.8, delay: 0.5 }}
   >
     <p 
-      className="text-[20px] text-white/75 max-w-3xl mx-auto"
+      className="text-[20px] text-foreground/75 max-w-3xl mx-auto"
       style={{ 
         fontFamily: '"Inter", sans-serif',
         fontWeight: '400',
@@ -150,7 +163,7 @@ const Landing = () => {
   >
     <Link 
       to="/signup"
-      className="rounded-full bg-white text-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:scale-[1.04] hover:shadow-[0_10px_36px_rgba(0,0,0,0.45)] active:scale-[0.98] active:shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-300 ease-out inline-block no-underline"
+      className="rounded-full bg-emerald-500 text-white shadow-lg hover:shadow-emerald-500/50 hover:scale-[1.04] active:scale-[0.98] transition-all duration-300 ease-out inline-block no-underline"
       style={{ 
         fontFamily: '"Inter", sans-serif',
         fontWeight: '600',
@@ -168,7 +181,7 @@ const Landing = () => {
           
           {/* Scroll Indicator */}
           <motion.div
-            className="absolute bottom-12 flex flex-col items-center text-dark-muted-foreground"
+            className="absolute bottom-12 flex flex-col items-center text-muted-foreground"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -180,7 +193,7 @@ const Landing = () => {
         {/* Feature Cards Section */}
         <section id="features" className="container mx-auto px-6 py-24">
           <motion.h2 
-            className="text-4xl md:text-5xl font-light tracking-tighter text-center mb-6"
+            className="text-4xl md:text-5xl font-light tracking-tighter text-center mb-6 text-foreground"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -190,7 +203,7 @@ const Landing = () => {
           </motion.h2>
           
           <motion.p
-            className="text-xl text-center text-dark-muted-foreground mb-16 max-w-3xl mx-auto font-light"
+            className="text-xl text-center text-muted-foreground mb-16 max-w-3xl mx-auto font-light"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -219,26 +232,26 @@ const Landing = () => {
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="p-8 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 border-white/20 hover:border-white/30 transition-all duration-300"
+                className="p-8 rounded-3xl bg-card backdrop-blur-xl border border-border hover:border-emerald-500/50 transition-all duration-300"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ y: -10, scale: 1.02 }}
               >
-                <div className="w-16 h-16 rounded-2xl bg-[#0E0E0E] flex items-center justify-center mb-6 text-dark-primary">
+                <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-6 text-emerald-500">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-medium tracking-tight mb-4">{feature.title}</h3>
-                <p className="text-base text-dark-muted-foreground font-light">{feature.description}</p>
+                <h3 className="text-xl font-medium tracking-tight mb-4 text-foreground">{feature.title}</h3>
+                <p className="text-base text-muted-foreground font-light">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="container mx-auto px-6 py-12 border-t border-white/10">
-          <div className="text-center text-dark-muted-foreground font-light">
+        <footer className="container mx-auto px-6 py-12 border-t border-border">
+          <div className="text-center text-muted-foreground font-light">
             <p>© 2026 LegalAxis. All rights reserved.</p>
           </div>
         </footer>

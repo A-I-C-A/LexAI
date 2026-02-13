@@ -20,9 +20,9 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
   const getStepStatusColor = (status) => {
     switch (status) {
       case 'completed': return 'bg-gradient-to-br from-green-500 to-green-600';
-      case 'in_progress': return 'bg-gradient-to-br from-[#ffffff] to-[#ffffff]';
+      case 'in_progress': return 'bg-gradient-to-br from-foreground to-foreground';
       case 'rejected': return 'bg-gradient-to-br from-red-500 to-red-600';
-      default: return 'bg-gradient-to-br from-[#343535] to-[#2a2a2a]';
+      default: return 'bg-gradient-to-br from-muted to-card';
     }
   };
 
@@ -38,15 +38,15 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
   const getStatusBadgeColor = (status) => {
     switch (status) {
       case 'completed': return 'bg-green-500/20 text-green-300';
-      case 'in_progress': return 'bg-[#ffffff]/20 text-dark-primary';
+      case 'in_progress': return 'bg-foreground/20 text-dark-primary';
       case 'rejected': return 'bg-red-500/20 text-red-300';
-      default: return 'bg-white/10 text-dark-muted-foreground';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 sm:p-6 ring-1 ring-white/5 shadow-lg">
-      <h3 className="text-xl sm:text-2xl font-semibold text-white mb-6 flex items-center">
+    <div className="bg-gradient-to-b from-card to-background rounded-2xl p-5 sm:p-6 ring-1 ring-border shadow-lg">
+      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-6 flex items-center">
         <svg className="w-5 h-5 mr-2 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
         </svg>
@@ -59,19 +59,19 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
             {workflowSteps.map((step, index) => (
               <div key={step.id} className="flex mb-8 last:mb-0 group">
                 <div className="flex flex-col items-center mr-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold shadow-lg transition-transform duration-300 group-hover:scale-110 ${getStepStatusColor(step.status)}`}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-foreground font-bold shadow-lg transition-transform duration-300 group-hover:scale-110 ${getStepStatusColor(step.status)}`}>
                     {index + 1}
                   </div>
                   {index < workflowSteps.length - 1 && (
-                    <div className="w-1 bg-gradient-to-b from-[#ffffff] to-[#ffffff] h-16 mt-2 rounded-full"></div>
+                    <div className="w-1 bg-gradient-to-b from-foreground to-foreground h-16 mt-2 rounded-full"></div>
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="bg-white/5 rounded-xl p-5 ring-1 ring-white/5 transition-all duration-300 hover:ring-[#ffffff]/20">
+                  <div className="bg-muted rounded-xl p-5 ring-1 ring-border transition-colors duration-300 hover:ring-foreground/20">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h4 className="font-semibold text-white text-lg">{step.title}</h4>
-                        <p className="text-sm text-dark-muted-foreground mt-1">
+                        <h4 className="font-semibold text-foreground text-lg">{step.title}</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
                           {getStatusText(step.status)}
                         </p>
                       </div>
@@ -82,19 +82,19 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
                     
                     {step.approvers && step.approvers.length > 0 && (
                       <div className="mt-4">
-                        <p className="text-xs text-dark-muted-foreground mb-2">Approvers:</p>
+                        <p className="text-xs text-muted-foreground mb-2">Approvers:</p>
                         <div className="flex flex-wrap gap-2">
                           {step.approvers.map((approver) => (
-                            <div key={approver.id} className="flex items-center bg-white/10 rounded-full px-3 py-1.5">
-                              <div className="w-6 h-6 rounded-full bg-[#ffffff] flex items-center justify-center text-[#1a1a1a] text-xs font-bold mr-2">
+                            <div key={approver.id} className="flex items-center bg-muted rounded-full px-3 py-1.5">
+                              <div className="w-6 h-6 rounded-full bg-foreground flex items-center justify-center text-background text-xs font-bold mr-2">
                                 {approver.initials}
                               </div>
-                              <span className="text-xs text-white">{approver.name}</span>
+                              <span className="text-xs text-foreground">{approver.name}</span>
                               <span className={`ml-2 w-2 h-2 rounded-full ${
                                 approver.status === 'approved' ? 'bg-green-400' :
-                                approver.status === 'pending' ? 'bg-[#ffffff]' :
+                                approver.status === 'pending' ? 'bg-foreground' :
                                 approver.status === 'rejected' ? 'bg-red-400' :
-                                'bg-[#a0a0a0]'
+                                'bg-muted-foreground'
                               }`}></span>
                             </div>
                           ))}
@@ -107,47 +107,47 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white/5 rounded-xl ring-1 ring-dashed ring-white/10">
-            <div className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-dark-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="text-center py-12 bg-muted rounded-xl ring-1 ring-dashed ring-border">
+            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
               </svg>
             </div>
-            <p className="text-dark-muted-foreground mb-4">No approval workflow has been set up for this document.</p>
+            <p className="text-muted-foreground mb-4">No approval workflow has been set up for this document.</p>
           </div>
         )}
 
         {!showAddStep ? (
           <button 
-            className="flex items-center text-dark-primary hover:text-[#ffffff] text-sm font-medium transition-colors duration-300 group"
+            className="flex items-center text-dark-primary hover:text-foreground text-sm font-medium transition-colors duration-300 group"
             onClick={() => setShowAddStep(true)}
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-[#ffffff] to-[#ffffff] rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-5 h-5 text-[#1a1a1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div className="w-10 h-10 bg-gradient-to-br from-foreground to-foreground rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
               </svg>
             </div>
             Add approval step
           </button>
         ) : (
-          <div className="bg-white/5 rounded-xl p-5 ring-1 ring-white/5">
-            <h4 className="font-semibold text-white text-lg mb-4">Add New Approval Step</h4>
+          <div className="bg-muted rounded-xl p-5 ring-1 ring-border">
+            <h4 className="font-semibold text-foreground text-lg mb-4">Add New Approval Step</h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-dark-muted-foreground mb-2">Step Title</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Step Title</label>
                 <input 
                   type="text" 
-                  className="w-full p-3 text-sm bg-white/10 ring-1 ring-white/5 rounded-xl focus:ring-2 focus:ring-[#ffffff] focus:border-transparent text-white placeholder-[#a0a0a0] transition-all duration-300"
+                  className="w-full p-3 text-sm bg-muted ring-1 ring-border rounded-xl focus:ring-2 focus:ring-foreground focus:border-transparent text-foreground placeholder-muted-foreground transition-colors duration-300"
                   placeholder="e.g., Legal Review"
                   value={newStepTitle}
                   onChange={(e) => setNewStepTitle(e.target.value)}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-dark-muted-foreground mb-2">Approvers (comma separated emails)</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Approvers (comma separated emails)</label>
                 <input 
                   type="text" 
-                  className="w-full p-3 text-sm bg-white/10 ring-1 ring-white/5 rounded-xl focus:ring-2 focus:ring-[#ffffff] focus:border-transparent text-white placeholder-[#a0a0a0] transition-all duration-300"
+                  className="w-full p-3 text-sm bg-muted ring-1 ring-border rounded-xl focus:ring-2 focus:ring-foreground focus:border-transparent text-foreground placeholder-muted-foreground transition-colors duration-300"
                   placeholder="e.g., john@example.com, jane@example.com"
                   value={newStepApprovers}
                   onChange={(e) => setNewStepApprovers(e.target.value)}
@@ -155,7 +155,7 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
               </div>
               <div className="flex justify-end space-x-3 pt-3">
                 <button 
-                  className="px-4 py-2 text-sm text-dark-muted-foreground hover:text-white bg-white/10 rounded-lg transition-all duration-300"
+                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground bg-muted rounded-lg transition-colors duration-300"
                   onClick={() => {
                     setShowAddStep(false);
                     setNewStepTitle('');
@@ -165,7 +165,7 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
                   Cancel
                 </button>
                 <button 
-                  className="px-4 py-2 bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#1a1a1a] font-medium rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleAddStep}
                   disabled={newStepTitle.trim() === '' || newStepApprovers.trim() === ''}
                 >

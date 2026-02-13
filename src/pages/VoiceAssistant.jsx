@@ -84,7 +84,7 @@ const VoiceAssistant = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-background text-dark-foreground p-4 sm:p-6">
+    <div className="min-h-screen bg-background text-foreground p-4 sm:p-6">
       <div className="max-w-5xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
         {/* Header */}
         <motion.div 
@@ -94,18 +94,18 @@ const VoiceAssistant = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-dark-primary/20 flex items-center justify-center">
-              <Volume2 className="w-6 h-6 text-dark-primary" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
+              <Volume2 className="w-6 h-6 text-emerald-500" />
             </div>
             <div>
               <h1 className="text-3xl font-light tracking-tighter">Voice Assistant</h1>
-              <p className="text-sm text-dark-muted-foreground font-light">Hands-Free Legal Intelligence</p>
+              <p className="text-sm text-muted-foreground font-light">Hands-Free Legal Intelligence</p>
             </div>
           </div>
         </motion.div>
 
         {/* Chat Container */}
-        <div className="flex-1 rounded-3xl bg-[#0E0E0E] backdrop-blur-xl border border-white/10 overflow-hidden flex flex-col">
+        <div className="flex-1 rounded-3xl bg-card backdrop-blur-xl border border-border overflow-hidden flex flex-col">
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {messages.map((msg, idx) => (
@@ -119,8 +119,8 @@ const VoiceAssistant = () => {
                 <div className={`max-w-[80%] ${msg.sender === "user" ? "order-1" : "order-2"}`}>
                   <div className={`rounded-2xl p-4 ${
                     msg.sender === "user"
-                      ? "bg-dark-primary text-dark-background ml-4"
-                      : "bg-[#0E0E0E] backdrop-blur-xl border border-white/10 text-dark-foreground mr-4"
+                      ? "bg-emerald-600 text-background ml-4"
+                      : "bg-card backdrop-blur-xl border border-border text-foreground mr-4"
                   }`}>
                     <p className="text-sm font-light leading-relaxed">{msg.text}</p>
                   </div>
@@ -129,13 +129,13 @@ const VoiceAssistant = () => {
                 <div className={`flex items-end ${msg.sender === "user" ? "order-2 ml-3" : "order-1 mr-3"}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     msg.sender === "user" 
-                      ? "bg-dark-primary/20"
-                      : "bg-dark-primary/20"
+                      ? "bg-emerald-500/20"
+                      : "bg-emerald-500/20"
                   }`}>
                     {msg.sender === "user" ? (
-                      <span className="text-xs font-medium text-dark-primary">U</span>
+                      <span className="text-xs font-medium text-emerald-500">U</span>
                     ) : (
-                      <Sparkles className="w-4 h-4 text-dark-primary" />
+                      <Sparkles className="w-4 h-4 text-emerald-500" />
                     )}
                   </div>
                 </div>
@@ -148,11 +148,11 @@ const VoiceAssistant = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="bg-[#0E0E0E] backdrop-blur-xl border border-white/10 rounded-2xl p-4 mr-4">
+                <div className="bg-card backdrop-blur-xl border border-border rounded-2xl p-4 mr-4">
                   <div className="flex space-x-2">
-                    <div className="w-2 h-2 rounded-full bg-dark-primary animate-bounce"></div>
-                    <div className="w-2 h-2 rounded-full bg-dark-primary animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-2 h-2 rounded-full bg-dark-primary animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-emerald-600 animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-emerald-600 animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-emerald-600 animate-bounce" style={{animationDelay: '0.4s'}}></div>
                   </div>
                 </div>
               </motion.div>
@@ -160,19 +160,19 @@ const VoiceAssistant = () => {
           </div>
           
           {/* Voice Control Area */}
-          <div className="p-8 border-t border-white/10 flex flex-col items-center justify-center space-y-6">
+          <div className="p-8 border-t border-border flex flex-col items-center justify-center space-y-6">
             {recording && (
               <motion.div
                 className="text-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <p className="text-sm text-dark-primary font-light mb-2">Listening...</p>
+                <p className="text-sm text-emerald-500 font-light mb-2">Listening...</p>
                 <div className="flex justify-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-1 h-8 bg-dark-primary rounded-full animate-pulse"
+                      className="w-1 h-8 bg-emerald-600 rounded-full animate-pulse"
                       style={{ animationDelay: `${i * 0.1}s` }}
                     ></div>
                   ))}
@@ -185,17 +185,17 @@ const VoiceAssistant = () => {
               className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 ${
                 recording
                   ? 'bg-red-500 hover:bg-red-600 scale-110'
-                  : 'bg-dark-primary hover:bg-dark-primary/90 hover:scale-110'
+                  : 'bg-emerald-600 hover:bg-emerald-700 hover:scale-110'
               }`}
             >
               {recording ? (
-                <MicOff className="w-10 h-10 text-dark-background" />
+                <MicOff className="w-10 h-10 text-background" />
               ) : (
-                <Mic className="w-10 h-10 text-dark-background" />
+                <Mic className="w-10 h-10 text-background" />
               )}
             </button>
 
-            <p className="text-sm text-dark-muted-foreground font-light">
+            <p className="text-sm text-muted-foreground font-light">
               {recording ? 'Tap to stop recording' : 'Tap to start speaking'}
             </p>
           </div>

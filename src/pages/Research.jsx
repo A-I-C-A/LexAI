@@ -210,20 +210,20 @@ const Research = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] p-4 sm:p-6 text-white">
+    <div className="min-h-screen bg-background p-4 sm:p-6 text-white">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-dark-foreground mb-4">Legal Research Agent</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-4">Legal Research Agent</h1>
         
-        <div className="bg-[#0E0E0E] p-6 rounded-lg mb-6">
+        <div className="bg-card p-6 rounded-lg mb-6">
           <div className="mb-4 flex flex-col sm:flex-row gap-3">
             <textarea
-              className="flex-1 h-24 p-3 rounded-lg bg-[#0E0E0E] text-dark-foreground border border-[#ffffff] focus:outline-none focus:border-[#ffe066]"
+              className="flex-1 h-24 p-3 rounded-lg bg-card text-foreground border border-border focus:outline-none focus:border-accent transition-colors duration-300"
               placeholder="Enter case name, party name, or legal query..."
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
             <select
-              className="bg-[#0E0E0E] text-dark-foreground border border-[#ffffff] rounded-lg p-2 focus:outline-none"
+              className="bg-card text-foreground border border-border rounded-lg p-2 focus:outline-none transition-colors duration-300"
               value={apiType}
               onChange={e => setApiType(e.target.value)}
             >
@@ -234,7 +234,7 @@ const Research = () => {
           </div>
           
           <button
-            className="px-6 py-2 bg-[#ffffff] text-[#1a1a1a] font-medium rounded-lg hover:bg-[#ffe066] transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-foreground text-background font-medium rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleResearch}
             disabled={loading || !query.trim()}
           >
@@ -252,8 +252,8 @@ const Research = () => {
           <div className="space-y-4">
             <p className="text-gray-400 text-sm">Found {results.length} result(s)</p>
             {results.map((item, idx) => (
-              <div key={idx} className="bg-[#0E0E0E] p-5 rounded-lg border border-white/10 hover:border-[#ffffff]/30 transition">
-                <h3 className="font-bold text-lg text-dark-primary mb-3 line-clamp-2">
+              <div key={idx} className="bg-card p-5 rounded-lg border border-border hover:border-border/30 transition">
+                <h3 className="font-bold text-lg text-emerald-500 mb-3 line-clamp-2">
                   {item.title}
                 </h3>
                 
@@ -267,7 +267,7 @@ const Research = () => {
                   <p className="text-gray-200 mb-4 text-sm leading-relaxed">{item.summary}</p>
                 ) : (
                   <button
-                    className="text-xs px-4 py-2 bg-[#ffffff] text-black rounded hover:bg-[#ffe066] mb-4 font-medium disabled:opacity-50"
+                    className="text-xs px-4 py-2 bg-foreground text-black rounded hover:bg-emerald-700 mb-4 font-medium disabled:opacity-50"
                     onClick={() => handleSummarize(idx)}
                     disabled={item.summarizing}
                   >
@@ -278,7 +278,7 @@ const Research = () => {
                 {item.url && (
                   <a
                     href={item.url}
-                    className="text-xs text-dark-primary hover:text-[#ffe066] px-3 underline"
+                    className="text-xs text-emerald-500 hover:text-emerald-400 px-3 underline transition-colors duration-300"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

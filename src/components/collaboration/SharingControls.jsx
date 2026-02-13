@@ -37,8 +37,8 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 sm:p-6 ring-1 ring-white/5 shadow-lg hover:ring-[#ffffff]/20 transition-all duration-300">
-      <h3 className="text-xl sm:text-2xl font-semibold text-white mb-5 sm:mb-6 flex items-center">
+    <div className="bg-gradient-to-b from-card to-background rounded-2xl p-5 sm:p-6 ring-1 ring-border shadow-lg hover:ring-foreground/20 transition-colors duration-300">
+      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-5 sm:mb-6 flex items-center">
         <svg className="w-5 h-5 mr-2 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
         </svg>
@@ -48,14 +48,14 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
       {/* Link Sharing Section */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center space-x-4 mb-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#ffffff] flex items-center justify-center shadow-lg flex-shrink-0">
-            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#1a1a1a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-foreground flex items-center justify-center shadow-lg flex-shrink-0">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-white">Anyone with the link</p>
-            <p className="text-xs text-dark-muted-foreground break-words">Share this document using a direct link</p>
+            <p className="text-sm font-semibold text-foreground">Anyone with the link</p>
+            <p className="text-xs text-muted-foreground break-words">Share this document using a direct link</p>
           </div>
         </div>
         
@@ -64,13 +64,13 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
             type="text" 
             value={`https://legalaxis.com/documents/${documentId}`} 
             readOnly 
-            className="flex-1 p-3 text-sm bg-white/5 ring-1 ring-white/5 rounded-xl sm:rounded-l-xl sm:rounded-r-none focus:ring-2 focus:ring-[#ffffff] focus:border-transparent text-white/80 min-w-0 transition-all duration-300"
+            className="flex-1 p-3 text-sm bg-muted ring-1 ring-border rounded-xl sm:rounded-l-xl sm:rounded-r-none focus:ring-2 focus:ring-foreground focus:border-transparent text-foreground/80 min-w-0 transition-colors duration-300"
           />
           <button 
-            className={`py-3 px-4 rounded-xl sm:rounded-r-xl sm:rounded-l-none font-medium text-sm whitespace-nowrap transition-all duration-300 flex items-center justify-center ${
+            className={`py-3 px-4 rounded-xl sm:rounded-r-xl sm:rounded-l-none font-medium text-sm whitespace-nowrap transition-colors duration-300 flex items-center justify-center ${
               copied 
-                ? 'bg-green-500 text-white' 
-                : 'bg-[#ffffff] text-[#1a1a1a] hover:bg-[#ffffff]/90'
+                ? 'bg-green-500 text-foreground' 
+                : 'bg-foreground text-background hover:bg-foreground/90'
             }`}
             onClick={handleCopyLink}
           >
@@ -95,19 +95,19 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
 
       {/* Add People Section */}
       <div className="mb-6 sm:mb-8">
-        <h4 className="text-sm font-semibold text-white mb-3">Add people</h4>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Add people</h4>
         <div className="space-y-3">
           <div className="flex flex-col sm:flex-row gap-3">
             <input 
               type="email" 
               placeholder="Email address" 
-              className="flex-1 p-3 text-sm bg-white/5 ring-1 ring-white/5 rounded-xl focus:ring-2 focus:ring-[#ffffff] focus:border-transparent text-white placeholder-[#a0a0a0] min-w-0 transition-all duration-300"
+              className="flex-1 p-3 text-sm bg-muted ring-1 ring-border rounded-xl focus:ring-2 focus:ring-foreground focus:border-transparent text-foreground placeholder-muted-foreground min-w-0 transition-colors duration-300"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <div className="flex gap-3">
               <select 
-                className="flex-1 sm:flex-none p-3 text-sm bg-white/5 ring-1 ring-white/5 rounded-xl focus:ring-2 focus:ring-[#ffffff] focus:border-transparent text-white min-w-0 sm:min-w-[140px] transition-all duration-300"
+                className="flex-1 sm:flex-none p-3 text-sm bg-muted ring-1 ring-border rounded-xl focus:ring-2 focus:ring-foreground focus:border-transparent text-foreground min-w-0 sm:min-w-[140px] transition-colors duration-300"
                 value={permission}
                 onChange={(e) => setPermission(e.target.value)}
               >
@@ -117,7 +117,7 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
                 <option value="admin">Admin</option>
               </select>
               <button 
-                className="bg-[#ffffff] text-[#1a1a1a] px-4 py-3 rounded-xl hover:bg-[#ffffff]/90 active:scale-95 transition-all duration-300 font-medium text-sm whitespace-nowrap flex items-center justify-center min-w-[60px] sm:min-w-auto disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                className="bg-foreground text-background px-4 py-3 rounded-xl hover:bg-foreground/90 active:scale-95 transition-colors duration-300 font-medium text-sm whitespace-nowrap flex items-center justify-center min-w-[60px] sm:min-w-auto disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                 onClick={handleAddUser}
                 disabled={email.trim() === ''}
               >
@@ -134,9 +134,9 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
       {/* People with Access Section */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h4 className="text-sm font-semibold text-white">People with access</h4>
+          <h4 className="text-sm font-semibold text-foreground">People with access</h4>
           <button 
-            className="text-sm text-dark-primary hover:text-dark-primary/80 transition-all duration-300 flex items-center hover:bg-[#ffffff]/10 px-3 py-1.5 rounded-lg"
+            className="text-sm text-dark-primary hover:text-dark-primary/80 transition-colors duration-300 flex items-center hover:bg-foreground/10 px-3 py-1.5 rounded-lg"
             onClick={() => setShowPermissionsList(!showPermissionsList)}
           >
             {showPermissionsList ? (
@@ -159,33 +159,33 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
         
         {showPermissionsList && (
           <div className="space-y-4 animate-fadeIn">
-            <div className="flex items-center justify-between py-3 border-b border-white/5">
+            <div className="flex items-center justify-between py-3 border-b border-border">
               <div className="flex items-center space-x-4 min-w-0 flex-1">
-                <div className="w-10 h-10 rounded-full bg-[#ffffff] flex items-center justify-center text-[#1a1a1a] font-bold text-sm flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center text-background font-bold text-sm flex-shrink-0">
                   JD
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-white truncate">John Doe (You)</p>
-                  <p className="text-xs text-dark-muted-foreground truncate">john.doe@example.com</p>
+                  <p className="text-sm font-semibold text-foreground truncate">John Doe (You)</p>
+                  <p className="text-xs text-muted-foreground truncate">john.doe@example.com</p>
                 </div>
               </div>
-              <div className="text-sm font-semibold text-dark-primary bg-[#ffffff]/20 px-3 py-1.5 rounded-full whitespace-nowrap">Owner</div>
+              <div className="text-sm font-semibold text-dark-primary bg-foreground/20 px-3 py-1.5 rounded-full whitespace-nowrap">Owner</div>
             </div>
 
             {currentPermissions.map((user) => (
-              <div key={user.id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0 group">
+              <div key={user.id} className="flex items-center justify-between py-3 border-b border-border last:border-0 group">
                 <div className="flex items-center space-x-4 min-w-0 flex-1">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground font-bold text-sm flex-shrink-0">
                     {user.initials}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-white truncate">{user.name}</p>
-                    <p className="text-xs text-dark-muted-foreground truncate">{user.email}</p>
+                    <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
                   <select 
-                    className="p-2 text-xs bg-white/5 ring-1 ring-white/5 rounded-lg focus:ring-1 focus:ring-[#ffffff] focus:border-transparent text-white min-w-0 transition-all duration-300"
+                    className="p-2 text-xs bg-muted ring-1 ring-border rounded-lg focus:ring-1 focus:ring-foreground focus:border-transparent text-foreground min-w-0 transition-colors duration-300"
                     value={user.permission}
                     onChange={(e) => handleChangePermission(user.id, e.target.value)}
                   >
@@ -195,7 +195,7 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
                     <option value="admin">Admin</option>
                   </select>
                   <button 
-                    className="text-dark-muted-foreground hover:text-red-400 hover:bg-red-400/10 transition-all duration-300 p-2 rounded-lg active:scale-95"
+                    className="text-muted-foreground hover:text-red-400 hover:bg-red-400/10 transition-colors duration-300 p-2 rounded-lg active:scale-95"
                     onClick={() => handleRemovePermission(user.id)}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -203,7 +203,7 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
                     </svg>
                   </button>
                 </div>
-                <div className="text-xs font-medium text-dark-primary bg-[#ffffff]/20 px-2 py-1 rounded-full opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                <div className="text-xs font-medium text-dark-primary bg-foreground/20 px-2 py-1 rounded-full opacity-100 group-hover:opacity-0 transition-opacity duration-300">
                   {getPermissionLabel(user.permission)}
                 </div>
               </div>

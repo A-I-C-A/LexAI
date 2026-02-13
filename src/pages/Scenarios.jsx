@@ -226,9 +226,9 @@ const Scenarios = () => {
     switch (activeTab) {
       case 'whatif':
         return (
-          <div className="bg-[#0E0E0E] rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-white/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
+          <div className="bg-card rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-border shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
             <div className="flex items-center mb-6">
-              <div className="w-3 h-8 bg-[#ffffff] rounded-full mr-4"></div>
+              <div className="w-3 h-8 bg-foreground rounded-full mr-4"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-foreground flex items-center gap-3">
                   <span className="text-2xl"></span> 
@@ -240,7 +240,7 @@ const Scenarios = () => {
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Elements Panel */}
-              <div className="bg-[#0E0E0E] backdrop-blur-xl rounded-xl p-5 border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl rounded-xl p-5 border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -253,7 +253,7 @@ const Scenarios = () => {
                       key={item}
                       draggable
                       onDragStart={(e) => handleDragStart(e, item)}
-                      className="p-4 bg-[#0E0E0E] border border-white/10 shadow-lg rounded-lg cursor-move hover:border-[#ffffff]/40 hover:shadow-lg hover:shadow-[#ffffff]/10 transition-all duration-300 group"
+                      className="p-4 bg-card border border-border shadow-lg rounded-lg cursor-move hover:border-foreground/40 hover:shadow-lg hover:shadow-foreground/10 transition-all duration-300 group"
                     >
                       <div className="flex items-center">
                         <span className="text-lg mr-3 group-hover:scale-110 transition-transform duration-300"></span>
@@ -267,7 +267,7 @@ const Scenarios = () => {
               {/* Canvas Area */}
               <div className="lg:col-span-2">
                 <div 
-                  className="bg-[#0E0E0E] backdrop-blur-xl rounded-xl p-6 ring-2 ring-white/10 ring-dashed min-h-[300px] mb-6 hover:ring-dark-primary/20 transition-all duration-300"
+                  className="bg-card backdrop-blur-xl rounded-xl p-6 ring-2 ring-border ring-dashed min-h-[300px] mb-6 hover:ring-dark-primary/20 transition-all duration-300"
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
                 >
@@ -288,7 +288,7 @@ const Scenarios = () => {
                   ) : (
                     <div className="space-y-3">
                       {scenarioElements.map((element, index) => (
-                        <div key={index} className="p-4 bg-[#ffffff]/10 border border-[#ffffff]/30 rounded-lg hover:bg-[#ffffff]/15 transition-all duration-300">
+                        <div key={index} className="p-4 bg-muted border border-foreground/30 rounded-lg hover:bg-foreground/15 transition-all duration-300">
                           <div className="flex justify-between items-center">
                             <span className="text-dark-foreground font-medium">{element.content}</span>
                             <button 
@@ -309,7 +309,7 @@ const Scenarios = () => {
                 
                 <div className="flex flex-col sm:flex-row gap-3 justify-between">
                   <button 
-                    className="bg-[#0E0E0E] hover:bg-[#404040] text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                    className="bg-card hover:bg-muted text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
                     onClick={() => setScenarioElements([])}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -318,7 +318,7 @@ const Scenarios = () => {
                     Clear Canvas
                   </button>
                   <button 
-                    className="bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-8 py-3 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="bg-foreground hover:bg-foreground/90 text-background px-8 py-3 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     disabled={scenarioElements.length === 0 || loading}
                     onClick={() => {
                       const scenarioText = scenarioElements.map(e => e.content).join(', ');
@@ -347,7 +347,7 @@ const Scenarios = () => {
             </div>
             
             {aiResponse && (
-              <div className="mt-8 p-6 bg-[#0E0E0E] backdrop-blur-xl border border-[#ffffff]/30 rounded-2xl">
+              <div className="mt-8 p-6 bg-card backdrop-blur-xl border border-foreground/20 rounded-2xl">
                 <h3 className="font-bold text-dark-primary mb-4 flex items-center text-lg">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -363,9 +363,9 @@ const Scenarios = () => {
         );
       case 'financial':
         return (
-          <div className="bg-[#0E0E0E] rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-white/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
+          <div className="bg-card rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-border shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
             <div className="flex items-center mb-6">
-              <div className="w-3 h-8 bg-[#ffffff] rounded-full mr-4"></div>
+              <div className="w-3 h-8 bg-foreground rounded-full mr-4"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-foreground flex items-center gap-3">
                   <span className="text-2xl"></span> 
@@ -376,7 +376,7 @@ const Scenarios = () => {
             </div>
             
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-6 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
@@ -390,7 +390,7 @@ const Scenarios = () => {
                     <input
                       id="initialCost"
                       type="number"
-                      className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300"
+                      className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300"
                       value={financialInputs.initialCost}
                       onChange={e => setFinancialInputs({...financialInputs, initialCost: e.target.value})}
                       placeholder="Enter initial cost"
@@ -402,7 +402,7 @@ const Scenarios = () => {
                     <input
                       id="monthlyCost"
                       type="number"
-                      className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300"
+                      className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300"
                       value={financialInputs.monthlyCost}
                       onChange={e => setFinancialInputs({...financialInputs, monthlyCost: e.target.value})}
                       placeholder="Enter monthly cost"
@@ -414,7 +414,7 @@ const Scenarios = () => {
                     <input
                       id="duration"
                       type="number"
-                      className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300"
+                      className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300"
                       value={financialInputs.duration}
                       onChange={e => setFinancialInputs({...financialInputs, duration: e.target.value})}
                       placeholder="12"
@@ -426,7 +426,7 @@ const Scenarios = () => {
                     <input
                       id="riskFactor"
                       type="number"
-                      className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300"
+                      className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300"
                       value={financialInputs.riskFactor}
                       onChange={e => setFinancialInputs({...financialInputs, riskFactor: e.target.value})}
                       placeholder="10"
@@ -436,7 +436,7 @@ const Scenarios = () => {
                   </div>
                   
                   <button
-                    className="w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-foreground hover:bg-foreground/90 text-background px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     onClick={calculateFinancialImpact}
                     disabled={!financialInputs.initialCost || !financialInputs.monthlyCost || !financialInputs.duration}
                   >
@@ -448,7 +448,7 @@ const Scenarios = () => {
                 </div>
               </div>
               
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-6 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -459,7 +459,7 @@ const Scenarios = () => {
                 {financialResult ? (
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-[#0E0E0E] p-5 rounded-xl border border-white/10">
+                      <div className="bg-card p-5 rounded-xl border border-border">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-400 text-sm font-medium">Base Cost</span>
                           <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -469,7 +469,7 @@ const Scenarios = () => {
                         <p className="text-2xl font-bold text-dark-foreground">${parseFloat(financialResult.totalCost).toLocaleString()}</p>
                       </div>
                       
-                      <div className="bg-[#0E0E0E] p-5 rounded-xl border border-white/10">
+                      <div className="bg-card p-5 rounded-xl border border-border">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-400 text-sm font-medium">Risk Adjusted</span>
                           <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -480,12 +480,12 @@ const Scenarios = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-[#0E0E0E] p-5 rounded-xl border border-white/10">
+                    <div className="bg-card p-5 rounded-xl border border-border">
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-gray-400 font-medium">Risk Impact</span>
                         <span className="text-dark-primary text-2xl font-medium">{financialResult.riskPercentage}%</span>
                       </div>
-                      <div className="w-full bg-[#0E0E0E] rounded-full h-3">
+                      <div className="w-full bg-card rounded-full h-3">
                         <div 
                           className="bg-gradient-to-r from-[#ffffff] to-yellow-500 h-3 rounded-full transition-all duration-500" 
                           style={{width: `${Math.min(100, parseFloat(financialResult.riskPercentage))}%`}}
@@ -497,7 +497,7 @@ const Scenarios = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-[#0E0E0E] p-5 rounded-xl border border-white/10">
+                    <div className="bg-card p-5 rounded-xl border border-border">
                       <h4 className="font-medium text-dark-foreground mb-3 flex items-center">
                         <svg className="w-4 h-4 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -527,9 +527,9 @@ const Scenarios = () => {
         );
       case 'roleplay':
         return (
-          <div className="bg-[#0E0E0E] rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-white/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
+          <div className="bg-card rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-border shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
             <div className="flex items-center mb-6">
-              <div className="w-3 h-8 bg-[#ffffff] rounded-full mr-4"></div>
+              <div className="w-3 h-8 bg-foreground rounded-full mr-4"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-foreground flex items-center gap-3">
                   <span className="text-2xl"></span> 
@@ -540,7 +540,7 @@ const Scenarios = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -553,13 +553,13 @@ const Scenarios = () => {
                       key={role}
                       className={`w-full p-4 rounded-xl text-left transition-all duration-300 font-medium ${
                         selectedRole === role 
-                          ? 'bg-[#ffffff] text-[#010101] shadow-lg' 
-                          : 'bg-[#0E0E0E] text-gray-300 hover:bg-[#ffffff]/10 hover:text-dark-primary border border-white/10 hover:ring-dark-primary/20'
+                          ? 'bg-foreground text-background shadow-lg' 
+                          : 'bg-card text-gray-300 hover:bg-muted hover:text-dark-primary border border-border hover:ring-dark-primary/20'
                       }`}
                       onClick={() => setSelectedRole(role)}
                     >
                       <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-3 ${selectedRole === role ? 'bg-[#010101]' : 'bg-[#ffffff]'}`}></div>
+                        <div className={`w-3 h-3 rounded-full mr-3 ${selectedRole === role ? 'bg-background' : 'bg-foreground'}`}></div>
                         {role}
                       </div>
                     </button>
@@ -567,7 +567,7 @@ const Scenarios = () => {
                 </div>
               </div>
               
-              <div className="lg:col-span-2 bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="lg:col-span-2 bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -576,7 +576,7 @@ const Scenarios = () => {
                 </h3>
                 
                 <textarea
-                  className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300 resize-none"
+                  className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300 resize-none"
                   rows={4}
                   placeholder={`Describe the scenario from ${selectedRole}'s perspective...`}
                   value={inputScenario}
@@ -584,7 +584,7 @@ const Scenarios = () => {
                 />
                 
                 <button
-                  className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="mt-4 w-full bg-foreground hover:bg-foreground/90 text-background px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   onClick={() => analyzeScenarioWithRAG(inputScenario, selectedRole)}
                   disabled={!inputScenario || loading}
                 >
@@ -607,7 +607,7 @@ const Scenarios = () => {
                 </button>
                 
                 {aiResponse && (
-                  <div className="mt-6 p-5 bg-[#ffffff]/10 border border-[#ffffff]/30 rounded-2xl">
+                  <div className="mt-6 p-5 bg-muted border border-foreground/20 rounded-2xl">
                     <h4 className="font-bold text-dark-primary mb-3 flex items-center">
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -620,7 +620,7 @@ const Scenarios = () => {
               </div>
             </div>
             
-            <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+            <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
               <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                 <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -629,7 +629,7 @@ const Scenarios = () => {
               </h3>
               <p className="text-gray-400 mb-4">Compare perspectives across all stakeholders</p>
               <button
-                className="bg-[#0E0E0E] hover:bg-[#404040] text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-card hover:bg-muted text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 onClick={() => callGemini(`Compare stakeholder perspectives for this scenario: ${inputScenario}. Analyze conflicts and alignment between Legal, Vendor, Finance, and Executive roles.`)}
                 disabled={!inputScenario || loading}
               >
@@ -643,9 +643,9 @@ const Scenarios = () => {
         );
       case 'dispute':
         return (
-          <div className="bg-[#0E0E0E] rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-white/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
+          <div className="bg-card rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-border shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
             <div className="flex items-center mb-6">
-              <div className="w-3 h-8 bg-[#ffffff] rounded-full mr-4"></div>
+              <div className="w-3 h-8 bg-foreground rounded-full mr-4"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-foreground flex items-center gap-3">
                   <span className="text-2xl"></span> 
@@ -659,8 +659,8 @@ const Scenarios = () => {
               <button 
                 className={`p-6 rounded-xl border-2 transition-all duration-300 text-center ${
                   disputeType === 'contractual' 
-                    ? 'bg-[#ffffff] text-[#010101] border-[#ffffff] shadow-lg shadow-[#ffffff]/20' 
-                    : 'bg-[#0E0E0E] backdrop-blur-xl text-gray-300 border-transparent ring-1 ring-white/10 hover:ring-dark-primary/20 hover:bg-[#ffffff]/5'
+                    ? 'bg-foreground text-background border-foreground shadow-lg shadow-foreground/20' 
+                    : 'bg-card backdrop-blur-xl text-gray-300 border-transparent ring-1 ring-border hover:ring-dark-primary/20 hover:bg-muted'
                 }`}
                 onClick={() => setDisputeType('contractual')}
               >
@@ -676,8 +676,8 @@ const Scenarios = () => {
               <button 
                 className={`p-6 rounded-xl border-2 transition-all duration-300 text-center ${
                   disputeType === 'payment' 
-                    ? 'bg-[#ffffff] text-[#010101] border-[#ffffff] shadow-lg shadow-[#ffffff]/20' 
-                    : 'bg-[#0E0E0E] backdrop-blur-xl text-gray-300 border-transparent ring-1 ring-white/10 hover:ring-dark-primary/20 hover:bg-[#ffffff]/5'
+                    ? 'bg-foreground text-background border-foreground shadow-lg shadow-foreground/20' 
+                    : 'bg-card backdrop-blur-xl text-gray-300 border-transparent ring-1 ring-border hover:ring-dark-primary/20 hover:bg-muted'
                 }`}
                 onClick={() => setDisputeType('payment')}
               >
@@ -693,8 +693,8 @@ const Scenarios = () => {
               <button 
                 className={`p-6 rounded-xl border-2 transition-all duration-300 text-center ${
                   disputeType === 'performance' 
-                    ? 'bg-[#ffffff] text-[#010101] border-[#ffffff] shadow-lg shadow-[#ffffff]/20' 
-                    : 'bg-[#0E0E0E] backdrop-blur-xl text-gray-300 border-transparent ring-1 ring-white/10 hover:ring-dark-primary/20 hover:bg-[#ffffff]/5'
+                    ? 'bg-foreground text-background border-foreground shadow-lg shadow-foreground/20' 
+                    : 'bg-card backdrop-blur-xl text-gray-300 border-transparent ring-1 ring-border hover:ring-dark-primary/20 hover:bg-muted'
                 }`}
                 onClick={() => setDisputeType('performance')}
               >
@@ -708,7 +708,7 @@ const Scenarios = () => {
               </button>
             </div>
             
-            <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300 mb-6">
+            <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300 mb-6">
               <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                 <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
@@ -716,7 +716,7 @@ const Scenarios = () => {
                 Dispute Scenario
               </h3>
               <textarea
-                className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300 resize-none"
+                className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300 resize-none"
                 rows={4}
                 placeholder="Describe the dispute scenario..."
                 value={inputScenario}
@@ -724,7 +724,7 @@ const Scenarios = () => {
               />
               
               <button
-                className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="mt-4 w-full bg-foreground hover:bg-foreground/90 text-background px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 onClick={() => analyzeScenarioWithRAG(inputScenario, disputeType)}
                 disabled={!inputScenario || loading}
               >
@@ -748,7 +748,7 @@ const Scenarios = () => {
             </div>
             
             {aiResponse && (
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-[#ffffff]/30">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-foreground/20">
                 <h3 className="font-bold text-dark-primary mb-4 flex items-center text-lg">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
@@ -764,9 +764,9 @@ const Scenarios = () => {
         );
       case 'timeline':
         return (
-          <div className="bg-[#0E0E0E] rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-white/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
+          <div className="bg-card rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-border shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
             <div className="flex items-center mb-6">
-              <div className="w-3 h-8 bg-[#ffffff] rounded-full mr-4"></div>
+              <div className="w-3 h-8 bg-foreground rounded-full mr-4"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-foreground flex items-center gap-3">
                   <span className="text-2xl"></span> 
@@ -777,7 +777,7 @@ const Scenarios = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -785,7 +785,7 @@ const Scenarios = () => {
                   Scenario Input
                 </h3>
                 <textarea
-                  className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300 resize-none"
+                  className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300 resize-none"
                   rows={6}
                   placeholder="Describe the scenario for timeline visualization..."
                   value={inputScenario}
@@ -793,7 +793,7 @@ const Scenarios = () => {
                 />
                 
                 <button
-                  className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="mt-4 w-full bg-foreground hover:bg-foreground/90 text-background px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   onClick={generateTimeline}
                   disabled={!inputScenario || loading}
                 >
@@ -816,7 +816,7 @@ const Scenarios = () => {
                 </button>
               </div>
               
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -827,7 +827,7 @@ const Scenarios = () => {
                 {timelineData.length > 0 ? (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-[#0E0E0E] p-4 rounded-xl border border-white/10">
+                      <div className="bg-card p-4 rounded-xl border border-border">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-400 text-sm font-medium">Total Events</span>
                           <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -837,7 +837,7 @@ const Scenarios = () => {
                         <p className="text-2xl font-bold text-dark-foreground">{timelineData.length}</p>
                       </div>
                       
-                      <div className="bg-[#0E0E0E] p-4 rounded-xl border border-white/10">
+                      <div className="bg-card p-4 rounded-xl border border-border">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-400 text-sm font-medium">Duration</span>
                           <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -848,7 +848,7 @@ const Scenarios = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-[#0E0E0E] p-4 rounded-xl border border-white/10">
+                    <div className="bg-card p-4 rounded-xl border border-border">
                       <h4 className="font-medium text-dark-foreground mb-3 flex items-center">
                         <svg className="w-4 h-4 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -874,7 +874,7 @@ const Scenarios = () => {
             </div>
             
             {timelineData.length > 0 ? (
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-6 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -882,13 +882,13 @@ const Scenarios = () => {
                   Interactive Timeline Visualization
                 </h3>
                 <div className="relative">
-                  <div className="border-l-2 border-[#ffffff]/30 pl-8 ml-4 py-4 space-y-6">
+                  <div className="border-l-2 border-foreground/20 pl-8 ml-4 py-4 space-y-6">
                     {timelineData.map((item, index) => (
                       <div key={index} className="relative group">
-                        <div className="absolute -left-12 w-8 h-8 bg-[#ffffff] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-[#010101] text-sm font-medium">{item.day}</span>
+                        <div className="absolute -left-12 w-8 h-8 bg-foreground rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-background text-sm font-medium">{item.day}</span>
                         </div>
-                        <div className="bg-[#0E0E0E] p-5 rounded-xl border border-white/10 shadow-sm hover:ring-dark-primary/20 hover:shadow-lg hover:shadow-[#ffffff]/10 transition-all duration-300">
+                        <div className="bg-card p-5 rounded-xl border border-border shadow-sm hover:ring-dark-primary/20 hover:shadow-lg hover:shadow-foreground/10 transition-all duration-300">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                             <h4 className="font-medium text-dark-primary text-lg">Day {item.day}</h4>
                             <div className="flex items-center gap-2 text-xs text-gray-400 mt-1 sm:mt-0">
@@ -911,7 +911,7 @@ const Scenarios = () => {
                 </div>
               </div>
             ) : (
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-8 rounded-xl ring-1 ring-white/10 ring-dashed text-center">
+              <div className="bg-card backdrop-blur-xl p-8 rounded-xl ring-1 ring-border ring-dashed text-center">
                 <svg className="w-16 h-16 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
@@ -921,7 +921,7 @@ const Scenarios = () => {
             )}
             
             {aiResponse && !timelineData.length && (
-              <div className="mt-6 bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-[#ffffff]/30">
+              <div className="mt-6 bg-card backdrop-blur-xl p-6 rounded-xl border border-foreground/20">
                 <h3 className="font-bold text-dark-primary mb-4 flex items-center text-lg">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -937,9 +937,9 @@ const Scenarios = () => {
         );
       case 'probability':
         return (
-          <div className="bg-[#0E0E0E] rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-white/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
+          <div className="bg-card rounded-2xl p-6 sm:p-8 backdrop-blur-xl border border-border shadow-lg hover:shadow-xl transition-all duration-500 hover:ring-dark-primary/20 group">
             <div className="flex items-center mb-6">
-              <div className="w-3 h-8 bg-[#ffffff] rounded-full mr-4"></div>
+              <div className="w-3 h-8 bg-foreground rounded-full mr-4"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-dark-foreground flex items-center gap-3">
                   <span className="text-2xl"></span> 
@@ -950,7 +950,7 @@ const Scenarios = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
@@ -958,7 +958,7 @@ const Scenarios = () => {
                   Scenario Input
                 </h3>
                 <textarea
-                  className="w-full p-4 rounded-xl bg-[#0E0E0E] border border-white/10 shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-[#ffffff]/50 transition-all duration-300 resize-none"
+                  className="w-full p-4 rounded-xl bg-card border border-border shadow-lg text-dark-foreground placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-dark-primary/50 focus:border-foreground/50 transition-all duration-300 resize-none"
                   rows={6}
                   placeholder="Describe the scenario for probability analysis..."
                   value={inputScenario}
@@ -966,7 +966,7 @@ const Scenarios = () => {
                 />
                 
                 <button
-                  className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="mt-4 w-full bg-foreground hover:bg-foreground/90 text-background px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   onClick={() => analyzeScenarioWithRAG(inputScenario, 'probability')}
                   disabled={!inputScenario || loading}
                 >
@@ -989,7 +989,7 @@ const Scenarios = () => {
                 </button>
               </div>
               
-              <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+              <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
                 <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                   <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
@@ -999,13 +999,13 @@ const Scenarios = () => {
                 
                 {aiResponse ? (
                   <div className="space-y-4">
-                    <div className="bg-[#0E0E0E] p-4 rounded-xl border border-white/10">
+                    <div className="bg-card p-4 rounded-xl border border-border">
                       <div className="prose prose-invert max-w-none">
                         <div className="whitespace-pre-line text-gray-300 leading-relaxed text-sm">{aiResponse}</div>
                       </div>
                     </div>
                     
-                    <div className="bg-gradient-to-r from-[#ffffff]/10 to-[#ffffff]/5 p-4 rounded-xl border border-[#ffffff]/20">
+                    <div className="bg-gradient-to-r from-muted to-[#ffffff]/5 p-4 rounded-xl border border-foreground/20">
                       <h4 className="font-medium text-dark-primary mb-3 flex items-center">
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
@@ -1013,7 +1013,7 @@ const Scenarios = () => {
                         Risk Assessment
                       </h4>
                       <button
-                        className="bg-[#ffffff]/20 hover:bg-[#ffffff]/30 text-dark-primary px-4 py-2 rounded-xl font-medium transition-all duration-300 text-sm hover:shadow-lg hover:shadow-[#ffffff]/10"
+                        className="bg-muted hover:bg-muted/80 text-dark-primary px-4 py-2 rounded-xl font-medium transition-all duration-300 text-sm hover:shadow-lg hover:shadow-foreground/10"
                         onClick={() => callGemini(`Based on this probability analysis: ${aiResponse}. What risk mitigation strategies would you recommend?`)}
                       >
                         Suggest Risk Mitigation
@@ -1032,7 +1032,7 @@ const Scenarios = () => {
               </div>
             </div>
             
-            <div className="bg-[#0E0E0E] backdrop-blur-xl p-6 rounded-xl border border-white/10 hover:border-[#ffffff]/20 transition-all duration-300">
+            <div className="bg-card backdrop-blur-xl p-6 rounded-xl border border-border hover:border-foreground/20 transition-all duration-300">
               <h3 className="font-medium text-dark-foreground mb-4 flex items-center">
                 <svg className="w-5 h-5 text-dark-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -1043,7 +1043,7 @@ const Scenarios = () => {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  className="flex-1 bg-gradient-to-r from-[#ffffff]/20 to-[#ffffff]/10 hover:from-[#ffffff]/30 hover:to-[#ffffff]/20 text-dark-primary px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 bg-gradient-to-r from-muted to-foreground/10 hover:from-muted/90 hover:to-foreground/20 text-dark-primary px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   onClick={() => callGemini(`Create a Monte Carlo simulation plan for this scenario: ${inputScenario}. Outline the variables, distributions, and number of iterations.`)}
                   disabled={!inputScenario || loading}
                 >
@@ -1054,7 +1054,7 @@ const Scenarios = () => {
                 </button>
                 
                 <button
-                  className="flex-1 bg-[#0E0E0E] hover:bg-[#0E0E0E] text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 border border-white/10 hover:ring-dark-primary/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 bg-card hover:bg-card/90 text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 border border-border hover:ring-dark-primary/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   onClick={() => callGemini(`Perform statistical validation for this probability analysis: ${aiResponse}. Include confidence intervals and sensitivity analysis.`)}
                   disabled={!aiResponse || loading}
                 >
@@ -1073,17 +1073,17 @@ const Scenarios = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#010101] text-dark-foreground">
+    <div className="min-h-screen bg-background text-dark-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header Section */}
         <div className="mb-8 sm:mb-12 relative">
-          <div className="absolute -top-4 -left-4 w-24 h-24 bg-[#ffffff]/10 rounded-full blur-xl"></div>
-          <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-[#ffffff]/5 rounded-full blur-lg"></div>
+          <div className="absolute -top-4 -left-4 w-24 h-24 bg-muted rounded-full blur-xl"></div>
+          <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-foreground/5 rounded-full blur-lg"></div>
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 relative">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-dark-foreground relative leading-tight">
                 Scenario Simulation Agent
-                <div className="w-20 h-1 bg-[#ffffff] mt-3 rounded-full"></div>
+                <div className="w-20 h-1 bg-foreground mt-3 rounded-full"></div>
               </h1>
               <p className="text-gray-400 mt-3 text-base sm:text-lg">AI-powered scenario modeling for contract analysis</p>
             </div>
@@ -1092,7 +1092,7 @@ const Scenarios = () => {
                 <p className="text-sm text-gray-400">Active Scenarios</p>
                 <p className="text-2xl font-bold text-dark-primary">{scenarios.length}</p>
               </div>
-              <button className="bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 flex items-center gap-2">
+              <button className="bg-foreground hover:bg-foreground/90 text-background px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-foreground/20 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
@@ -1104,7 +1104,7 @@ const Scenarios = () => {
         
         {/* Enhanced Tabs with Animation */}
         {/* This container scrolls on mobile and wraps on larger screens to prevent breaking the layout */}
-        <div className="flex overflow-x-auto sm:flex-wrap gap-3 mb-8 p-2 bg-[#0E0E0E] backdrop-blur-xl rounded-2xl border border-white/10 shadow-xl">
+        <div className="flex overflow-x-auto sm:flex-wrap gap-3 mb-8 p-2 bg-card backdrop-blur-xl rounded-2xl border border-border shadow-xl">
           {TABS.map(tab => (
             <button
               key={tab.key}
@@ -1112,8 +1112,8 @@ const Scenarios = () => {
                 px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-medium transition-all duration-500 ease-out
                 flex items-center gap-3 flex-shrink-0 justify-center group relative overflow-hidden
                 ${activeTab === tab.key 
-                  ? 'bg-[#ffffff] text-[#010101] shadow-lg shadow-[#ffffff]/25' 
-                  : 'bg-transparent text-gray-400 hover:text-dark-foreground hover:bg-[#0E0E0E] hover:border-[#ffffff]/20'
+                  ? 'bg-foreground text-background shadow-lg shadow-foreground/25' 
+                  : 'bg-transparent text-gray-400 hover:text-dark-foreground hover:bg-card hover:border-foreground/20'
                 }
               `}
               onClick={() => { 
@@ -1125,7 +1125,7 @@ const Scenarios = () => {
             >
               {/* Background gradient animation */}
               <div className={`
-                absolute inset-0 bg-gradient-to-r from-[#ffffff]/10 to-transparent 
+                absolute inset-0 bg-gradient-to-r from-foreground/10 to-transparent 
                 transform transition-transform duration-500 ease-out
                 ${activeTab === tab.key ? 'translate-x-0' : '-translate-x-full group-hover:translate-x-0'}
               `}></div>
@@ -1154,13 +1154,13 @@ const Scenarios = () => {
               
               {/* Active indicator with animation */}
               {activeTab === tab.key && (
-                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-[#010101] rounded-full animate-pulse"></div>
+                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-background rounded-full animate-pulse"></div>
               )}
               
               {/* Ripple effect on hover */}
               <div className={`
                 absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300
-                bg-gradient-to-r from-[#ffffff]/5 to-[#ffffff]/10
+                bg-gradient-to-r from-foreground/5 to-foreground/10
                 ${activeTab !== tab.key ? 'group-hover:opacity-100' : ''}
               `}></div>
             </button>

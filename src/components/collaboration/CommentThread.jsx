@@ -59,31 +59,31 @@ const CommentThread = ({ comments, documentId, onPostComment, onPostReply }) => 
       {comments.map((comment, index) => (
         <div 
           key={comment.id} 
-          className="border-b border-white/10 pb-6 last:border-0 group animate-fadeIn"
+          className="border-b border-border pb-6 last:border-0 group animate-fadeIn"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
           <div className="flex items-start space-x-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#597081] to-[#36494E] flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#597081] to-[#36494E] flex items-center justify-center text-foreground font-bold text-lg shadow-lg">
               {comment.author.initials}
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-center mb-3">
                 <div>
-                  <span className="font-semibold text-white text-lg">{comment.author.name}</span>
-                  <span className="text-sm text-gray-400 ml-3">{comment.timestamp}</span>
+                  <span className="font-semibold text-foreground text-lg">{comment.author.name}</span>
+                  <span className="text-sm text-muted-foreground ml-3">{comment.timestamp}</span>
                 </div>
-                <button className="text-gray-400 hover:text-white transition-colors duration-300 opacity-0 group-hover:opacity-100">
+                <button className="text-muted-foreground hover:text-foreground transition-colors duration-300 opacity-0 group-hover:opacity-100">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                   </svg>
                 </button>
               </div>
-              <div className="text-gray-200 mb-4 bg-white/5 rounded-xl p-4 border border-white/5">
+              <div className="text-foreground mb-4 bg-muted rounded-xl p-4 border border-border">
                 {comment.text}
               </div>
               <div className="flex items-center space-x-4 text-sm">
                 <button 
-                  className="text-gray-400 hover:text-[#A9CEF4] flex items-center transition-colors duration-300"
+                  className="text-muted-foreground hover:text-accent flex items-center transition-colors duration-300"
                   onClick={() => toggleReplies(comment.id)}
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -94,21 +94,21 @@ const CommentThread = ({ comments, documentId, onPostComment, onPostReply }) => 
               </div>
 
               {showReplies[comment.id] && (
-                <div className="mt-6 pl-6 border-l-2 border-[#A9CEF4]/30">
+                <div className="mt-6 pl-6 border-l-2 border-accent/30">
                   {comment.replies.map((reply) => (
                     <div key={reply.id} className="mb-4 last:mb-0">
                       <div className="flex items-start space-x-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#597081] to-[#36494E] flex items-center justify-center text-white text-xs font-bold">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#597081] to-[#36494E] flex items-center justify-center text-foreground text-xs font-bold">
                           {reply.author.initials}
                         </div>
                         <div className="flex-1">
                           <div className="flex justify-between items-center mb-2">
                             <div>
-                              <span className="font-medium text-white text-sm">{reply.author.name}</span>
-                              <span className="text-xs text-gray-400 ml-2">{reply.timestamp}</span>
+                              <span className="font-medium text-foreground text-sm">{reply.author.name}</span>
+                              <span className="text-xs text-muted-foreground ml-2">{reply.timestamp}</span>
                             </div>
                           </div>
-                          <div className="text-gray-300 text-sm bg-white/5 rounded-lg p-3">
+                          <div className="text-foreground text-sm bg-muted rounded-lg p-3">
                             {reply.text}
                           </div>
                         </div>
@@ -118,12 +118,12 @@ const CommentThread = ({ comments, documentId, onPostComment, onPostReply }) => 
 
                   <div className="mt-4">
                     <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#A9CEF4] to-[#7EA0B7] flex items-center justify-center text-white text-xs font-bold">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#A9CEF4] to-[#7EA0B7] flex items-center justify-center text-foreground text-xs font-bold">
                         JD
                       </div>
                       <div className="flex-1">
                         <textarea
-                          className="w-full p-3 text-sm bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#A9CEF4] focus:border-transparent text-white placeholder-gray-400 resize-none"
+                          className="w-full p-3 text-sm bg-muted border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-foreground placeholder-muted-foreground resize-none transition-colors duration-300"
                           placeholder="Add a reply..."
                           rows="2"
                           value={replyText[comment.id] || ''}

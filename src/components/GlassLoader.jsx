@@ -10,7 +10,7 @@ const GlassLoader = ({ size = 'md', fullScreen = false }) => {
 
   const Container = fullScreen ? 'div' : motion.div;
   const containerClass = fullScreen 
-    ? 'fixed inset-0 bg-dark-background/90 backdrop-blur-xl flex items-center justify-center z-50'
+    ? 'fixed inset-0 bg-background/90 backdrop-blur-xl flex items-center justify-center z-50'
     : 'flex items-center justify-center';
 
   return (
@@ -22,11 +22,11 @@ const GlassLoader = ({ size = 'md', fullScreen = false }) => {
         exit={{ opacity: 0 }}
       >
         {/* Outer ring */}
-        <div className={`${sizeClasses[size]} rounded-full border-2 border-white/10`}></div>
+        <div className={`${sizeClasses[size]} rounded-full border-2 border-border`}></div>
         
         {/* Spinning ring */}
         <motion.div
-          className={`absolute inset-0 ${sizeClasses[size]} rounded-full border-2 border-dark-primary border-t-transparent`}
+          className={`absolute inset-0 ${sizeClasses[size]} rounded-full border-2 border-emerald-500 border-t-transparent`}
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
         ></motion.div>
@@ -34,7 +34,7 @@ const GlassLoader = ({ size = 'md', fullScreen = false }) => {
         {/* Center dot */}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            className="w-2 h-2 rounded-full bg-dark-primary"
+            className="w-2 h-2 rounded-full bg-emerald-500"
             animate={{ scale: [1, 1.5, 1] }}
             transition={{ duration: 1, repeat: Infinity }}
           ></motion.div>
@@ -43,7 +43,7 @@ const GlassLoader = ({ size = 'md', fullScreen = false }) => {
 
       {fullScreen && (
         <motion.p
-          className="absolute mt-32 text-dark-foreground font-light text-sm"
+          className="absolute mt-32 text-foreground font-light text-sm"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}

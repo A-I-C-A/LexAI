@@ -38,11 +38,11 @@ const Layout = ({ children }) => {
     <>
       <Navbar toggleSidebar={toggleSidebar} />
       
-      <div className="flex min-h-screen w-full bg-black text-white pt-16">
+      <div className="flex min-h-screen w-full bg-background text-foreground pt-16 transition-colors duration-300">
         {/* Overlay for mobile when sidebar is open */}
         {isMobile && sidebarOpen && (
           <div 
-            className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-30 bg-background/50 backdrop-blur-sm lg:hidden"
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
           />
@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
         
         <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
         
-        <main className="flex-1 bg-black">
+        <main className="flex-1 bg-background transition-colors duration-300">
           {children}
         </main>
       </div>

@@ -7,7 +7,7 @@ const ActivityFeed = ({ activities = [] }) => {
     switch (type) {
       case 'edit':
         return (
-          <div className={`${iconClasses} bg-[#ffffff] text-[#1a1a1a]`}>
+          <div className={`${iconClasses} bg-foreground text-background transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
             </svg>
@@ -15,7 +15,7 @@ const ActivityFeed = ({ activities = [] }) => {
         );
       case 'comment':
         return (
-          <div className={`${iconClasses} bg-[#ffffff] text-[#1a1a1a]`}>
+          <div className={`${iconClasses} bg-foreground text-background transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
             </svg>
@@ -23,7 +23,7 @@ const ActivityFeed = ({ activities = [] }) => {
         );
       case 'share':
         return (
-          <div className={`${iconClasses} bg-[#ffffff] text-[#1a1a1a]`}>
+          <div className={`${iconClasses} bg-foreground text-background transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
             </svg>
@@ -31,7 +31,7 @@ const ActivityFeed = ({ activities = [] }) => {
         );
       case 'approval':
         return (
-          <div className={`${iconClasses} bg-green-500 text-white`}>
+          <div className={`${iconClasses} bg-green-500 text-foreground transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -39,7 +39,7 @@ const ActivityFeed = ({ activities = [] }) => {
         );
       case 'rejection':
         return (
-          <div className={`${iconClasses} bg-red-500 text-white`}>
+          <div className={`${iconClasses} bg-red-500 text-foreground transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -47,7 +47,7 @@ const ActivityFeed = ({ activities = [] }) => {
         );
       case 'upload':
         return (
-          <div className={`${iconClasses} bg-[#ffffff] text-[#1a1a1a]`}>
+          <div className={`${iconClasses} bg-foreground text-background transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
             </svg>
@@ -55,7 +55,7 @@ const ActivityFeed = ({ activities = [] }) => {
         );
       default:
         return (
-          <div className={`${iconClasses} bg-white/10 text-dark-primary`}>
+          <div className={`${iconClasses} bg-muted text-dark-primary transition-colors duration-300`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -69,8 +69,8 @@ const ActivityFeed = ({ activities = [] }) => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#1f1f1f] to-[#151515] rounded-2xl p-5 sm:p-6 ring-1 ring-white/5 shadow-lg">
-      <h3 className="text-xl sm:text-2xl font-semibold text-white mb-5 sm:mb-6 flex items-center">
+    <div className="bg-gradient-to-b from-card to-background rounded-2xl p-5 sm:p-6 ring-1 ring-border shadow-lg">
+      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-5 sm:mb-6 flex items-center">
         <svg className="w-5 h-5 mr-2 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
         </svg>
@@ -82,7 +82,7 @@ const ActivityFeed = ({ activities = [] }) => {
           {activities.map((activity, index) => (
             <div 
               key={activity.id} 
-              className="flex items-start p-4 sm:p-5 rounded-xl bg-white/5 ring-1 ring-white/5 hover:ring-[#ffffff]/20 transition-all duration-300 group"
+              className="flex items-start p-4 sm:p-5 rounded-xl bg-muted ring-1 ring-border hover:ring-foreground/20 transition-colors duration-300 group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="mr-4 flex-shrink-0">
@@ -91,16 +91,16 @@ const ActivityFeed = ({ activities = [] }) => {
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <p className="text-sm sm:text-base text-white">
+                    <p className="text-sm sm:text-base text-foreground">
                       <span className="font-semibold text-dark-primary">{activity.user}</span> {activity.action}
                     </p>
                     {activity.details && (
-                      <p className="text-sm text-dark-foreground mt-3 bg-white/10 rounded-lg p-3 ring-1 ring-white/5 group-hover:ring-[#ffffff]/20 transition-all duration-300">
+                      <p className="text-sm text-dark-foreground mt-3 bg-muted rounded-lg p-3 ring-1 ring-border group-hover:ring-foreground/20 transition-colors duration-300">
                         {activity.details}
                       </p>
                     )}
                   </div>
-                  <span className="text-xs text-dark-muted-foreground bg-white/10 px-2.5 py-1.5 rounded-full flex-shrink-0">
+                  <span className="text-xs text-muted-foreground bg-muted px-2.5 py-1.5 rounded-full flex-shrink-0">
                     {formatTime(activity.timestamp)}
                   </span>
                 </div>
@@ -117,13 +117,13 @@ const ActivityFeed = ({ activities = [] }) => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-white/5 rounded-xl ring-1 ring-dashed ring-white/10">
-          <div className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-dark-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="text-center py-12 bg-muted rounded-xl ring-1 ring-dashed ring-border">
+          <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <p className="text-dark-muted-foreground">No recent activity to display.</p>
+          <p className="text-muted-foreground">No recent activity to display.</p>
         </div>
       )}
     </div>

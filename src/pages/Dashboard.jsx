@@ -129,7 +129,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="bg-black text-white min-h-screen ml-[260px]">
+    <div className="bg-background text-foreground min-h-screen ml-[260px]">
       {/* Full Width Container */}
       <div className="w-full px-12 py-16">
         
@@ -143,7 +143,7 @@ const Dashboard = () => {
           <h1 className="text-5xl font-light tracking-tight mb-3">
             Dashboard
           </h1>
-          <p className="text-white/50 text-lg">
+          <p className="text-muted-foreground text-lg">
             Welcome back, {user?.displayName || 'User'}
           </p>
         </motion.div>
@@ -153,7 +153,7 @@ const Dashboard = () => {
           {agents.map((agent, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group"
+              className="p-6 rounded-2xl bg-card backdrop-blur-xl border border-border hover:border-border/80 transition-all duration-300 cursor-pointer group"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.05 }}
@@ -161,7 +161,7 @@ const Dashboard = () => {
               onClick={agent.onAction}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/70 group-hover:scale-110 group-hover:text-white transition-all duration-300">
+                <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground group-hover:scale-110 group-hover:text-foreground transition-all duration-300">
                   {agent.icon}
                 </div>
               </div>
@@ -170,7 +170,7 @@ const Dashboard = () => {
                 {agent.title}
               </h3>
 
-              <p className="text-sm text-white/50 mb-4 line-clamp-2">
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                 {agent.description}
               </p>
 
@@ -178,19 +178,19 @@ const Dashboard = () => {
                 {agent.metrics.map((metric, idx) => (
                   <div
                     key={idx}
-                    className="p-2 rounded-xl bg-white/5 border border-white/10"
+                    className="p-2 rounded-xl bg-muted border border-border"
                   >
-                    <p className="text-xs text-white/50">
+                    <p className="text-xs text-muted-foreground">
                       {metric.label}
                     </p>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm font-medium text-foreground">
                       {metric.value}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <button className="w-full px-8 py-3 rounded-full bg-white text-black text-sm font-semibold hover:scale-[1.03] active:scale-[0.98] transition-all duration-300">
+              <button className="w-full px-8 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:scale-[1.03] active:scale-[0.98] transition-all duration-300">
                 {agent.actionText}
               </button>
             </motion.div>

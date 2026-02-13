@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 
 const AnimatedBackground = () => {
   const [paths, setPaths] = useState([]);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const generatedPaths = [];
@@ -20,17 +22,29 @@ const AnimatedBackground = () => {
     setPaths(generatedPaths);
   }, []);
 
+  const gradientColors = theme === 'dark' 
+    ? {
+        start: 'rgba(192,192,192,0)',
+        middle: 'rgba(220,220,220,0.9)',
+        end: 'rgba(192,192,192,0)'
+      }
+    : {
+        start: 'rgba(16,185,129,0)',
+        middle: 'rgba(16,185,129,0.3)',
+        end: 'rgba(16,185,129,0)'
+      };
+
   return (
     <svg
-      className="fixed inset-0 w-full h-full z-0 pointer-events-none"
+      className="fixed inset-0 w-full h-full z-0 pointer-events-none transition-opacity duration-300"
       viewBox="0 0 100 100"
       preserveAspectRatio="none"
     >
       <defs>
         <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgba(192,192,192,0)" />
-          <stop offset="50%" stopColor="rgba(220,220,220,0.9)" />
-          <stop offset="100%" stopColor="rgba(192,192,192,0)" />
+          <stop offset="0%" stopColor={gradientColors.start} />
+          <stop offset="50%" stopColor={gradientColors.middle} />
+          <stop offset="100%" stopColor={gradientColors.end} />
         </linearGradient>
         
         <filter id="glow">

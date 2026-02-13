@@ -5,8 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Dark Mode Only - RGB values for Tailwind */
+:root,
+.dark-mode {
+  /* Dark Mode - RGB values for Tailwind */
   --background: 0 0 0; /* Pure Black */
   --foreground: 255 255 255; /* White */
   --card: 14 14 14; /* #0E0E0E */
@@ -19,36 +20,82 @@
   --border: 38 38 38;
 }
 
+.light-mode {
+  /* Light Mode - RGB values for Tailwind */
+  --background: 255 255 255; /* Pure White */
+  --foreground: 0 0 0; /* Black */
+  --card: 249 250 251; /* #F9FAFB */
+  --card-foreground: 0 0 0;
+  --primary: 0 0 0; /* Black */
+  --secondary: 249 250 251;
+  --muted: 243 244 246;
+  --muted-foreground: 107 114 128; /* Gray-500 */
+  --accent: 229 231 235; /* Gray-200 */
+  --border: 229 231 235;
+}
+
 body {
   @apply bg-background transition-colors duration-300;
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 300;
   letter-spacing: -0.01em;
+}
+
+.dark-mode body {
   color: white !important;
+}
+
+.light-mode body {
+  color: black !important;
 }
 
 /* Enhanced card component */
 .card {
   @apply bg-card border border-emerald-500/20 rounded-2xl p-4 sm:p-6 transition-all duration-300;
+}
+
+.dark-mode .card {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.light-mode .card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover {
   transform: translateY(-4px) scale(1.02);
   @apply border-emerald-500/50;
+}
+
+.dark-mode .card:hover {
   box-shadow: 0 12px 40px rgba(16, 185, 129, 0.3);
 }
 
+.light-mode .card:hover {
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+
 /* Enhanced buttons */
-.btn-primary {
+.dark-mode .btn-primary {
   @apply bg-white text-black border-none rounded-xl px-6 py-3 font-semibold transition-all duration-300;
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
 }
 
-.btn-primary:hover {
+.light-mode .btn-primary {
+  @apply bg-black text-white border-none rounded-xl px-6 py-3 font-semibold transition-all duration-300;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.dark-mode .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
   @apply bg-gray-100;
+}
+
+.light-mode .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  @apply bg-gray-800;
 }
 
 .btn-primary:disabled {
@@ -58,7 +105,7 @@ body {
 }
 
 /* Glassmorphism Effect */
-.glass {
+.dark-mode .glass {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -66,14 +113,28 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+.light-mode .glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
 .glass-card {
   @apply glass rounded-3xl transition-all duration-300;
 }
 
-.glass-card:hover {
+.dark-mode .glass-card:hover {
   transform: translateY(-10px) scale(1.02);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.light-mode .glass-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
 }
 
 /* Custom scrollbar */
