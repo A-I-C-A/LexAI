@@ -80,7 +80,43 @@ const Scenarios = () => {
   const [disputeType, setDisputeType] = useState('contractual');
   const [timelineData, setTimelineData] = useState([]);
 
-  // Gemini API call helper
+  // RAG-enhanced scenario analysis
+  const analyzeScenarioWithRAG = async (scenarioDescription, scenarioType) => {
+    setLoading(true);
+    setAiResponse('');
+    try {
+      const ragBackendUrl = import.meta.env.VITE_RAG_BACKEND_URL || 'http://localhost:8000';
+      const apiUrl = import.meta.env.DEV 
+        ? '/api/v1/scenario/analyze'  // Use proxy in dev
+        : `${ragBackendUrl}/api/v1/scenario/analyze`;  // Direct call in production
+      
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenario_description: scenarioDescription,
+          scenario_type: scenarioType,
+          contract_context: null
+        }),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`RAG API error: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      setAiResponse(data.analysis);
+      return data.analysis;
+    } catch (e) {
+      console.error('RAG API call error:', e);
+      setAiResponse('Error connecting to RAG service: ' + e.message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Gemini API call helper (fallback)
   const callGemini = async (prompt, options = {}) => {
     setLoading(true);
     setAiResponse('');
@@ -287,7 +323,7 @@ const Scenarios = () => {
                     disabled={scenarioElements.length === 0 || loading}
                     onClick={() => {
                       const scenarioText = scenarioElements.map(e => e.content).join(', ');
-                      callGemini(`Analyze this scenario built from these elements: ${scenarioText}. Provide potential outcomes, risks, and strategic recommendations.`);
+                      analyzeScenarioWithRAG(scenarioText, 'whatif');
                     }}
                   >
                     {loading ? (
@@ -550,7 +586,7 @@ const Scenarios = () => {
                 
                 <button
                   className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  onClick={() => callGemini(`As a ${selectedRole}, analyze this scenario: ${inputScenario}. What are your concerns, priorities, and recommended actions?`)}
+                  onClick={() => analyzeScenarioWithRAG(inputScenario, selectedRole)}
                   disabled={!inputScenario || loading}
                 >
                   {loading ? (
@@ -690,7 +726,7 @@ const Scenarios = () => {
               
               <button
                 className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                onClick={() => callGemini(`Map legal remedies for this ${disputeType} dispute: ${inputScenario}. Include escalation pathways, potential resolutions, and estimated timelines.`)}
+                onClick={() => analyzeScenarioWithRAG(inputScenario, disputeType)}
                 disabled={!inputScenario || loading}
               >
                 {loading ? (
@@ -932,7 +968,7 @@ const Scenarios = () => {
                 
                 <button
                   className="mt-4 w-full bg-[#ffffff] hover:bg-[#ffffff]/90 text-[#010101] px-6 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-[#ffffff]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  onClick={() => callGemini(`Estimate probability-weighted outcomes for this scenario: ${inputScenario}. Provide a statistical analysis of likely outcomes with percentages.`)}
+                  onClick={() => analyzeScenarioWithRAG(inputScenario, 'probability')}
                   disabled={!inputScenario || loading}
                 >
                   {loading ? (
