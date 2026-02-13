@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { useState, useRef, useEffect } from "react";
 import { Send, Sparkles } from 'lucide-react';
+import { callGroqAPI } from '../utils/groqHelper';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hi! I'm your LegalAxis AI assistant. How can I help you today?" },
+    { sender: "bot", text: "Hi! I'm your LegalAxis AI assistant powered by Groq Llama. How can I help you today?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,44 +22,30 @@ const Chatbot = () => {
     
     const userMsg = { sender: "user", text: input };
     setMessages((msgs) => [...msgs, userMsg]);
+    const currentInput = input;
     setInput("");
     setLoading(true);
     setIsTyping(true);
     
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `You are LegalAxis AI, an advanced legal intelligence assistant. Provide helpful, accurate legal information while reminding users you are not a substitute for professional legal advice. Be concise but thorough in your responses.
-                
-                Current conversation context:
-                ${messages.map(msg => `${msg.sender}: ${msg.text}`).join('\n')}
-                
-                User's question: ${input}`
-              }]
-            }]
-          })
-        }
-      );
+      const prompt = `You are LegalAxis AI, an advanced legal intelligence assistant. Provide helpful, accurate legal information while reminding users you are not a substitute for professional legal advice. Be concise but thorough in your responses.
+      
+Current conversation context:
+${messages.map(msg => `${msg.sender}: ${msg.text}`).join('\n')}
 
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
+User's question: ${currentInput}`;
+
+      const aiResponse = await callGroqAPI(prompt, { maxTokens: 2048 });
+      
+      const botMsg = { sender: "bot", text: aiResponse };
+      setMessages((msgs) => [...msgs, botMsg]);
       }
 
-      const data = await response.json();
-      const botText = data.candidates[0].content.parts[0].text;
-      
-      setMessages((msgs) => [...msgs, { sender: "bot", text: botText }]);
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Groq API Error:", err);
       setMessages((msgs) => [...msgs, { 
         sender: "bot", 
-        text: "Sorry, I'm having trouble connecting to the legal database. Please try again later or contact support if the issue persists." 
+        text: "Sorry, I'm having trouble connecting to the AI service. Please try again later." 
       }]);
     }
     setLoading(false);

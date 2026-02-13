@@ -86,9 +86,8 @@ const Scenarios = () => {
     setAiResponse('');
     try {
       const ragBackendUrl = import.meta.env.VITE_RAG_BACKEND_URL || 'http://localhost:8000';
-      const apiUrl = import.meta.env.DEV 
-        ? '/api/v1/scenario/analyze'  // Use proxy in dev
-        : `${ragBackendUrl}/api/v1/scenario/analyze`;  // Direct call in production
+      // Always use direct URL (not proxy) since Railway is deployed
+      const apiUrl = `${ragBackendUrl}/api/v1/scenario/analyze`;
       
       const res = await fetch(apiUrl, {
         method: 'POST',
