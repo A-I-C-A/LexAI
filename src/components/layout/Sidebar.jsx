@@ -23,7 +23,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const menuItems = [
     { name: 'Dashboard', Icon: Home, path: '/dashboard' },
     { name: 'Compliance Guardian', Icon: Shield, path: '/compliance' },
-    { name: 'Obligation Tracker', Icon: Calendar, path: '/obligations' },
     { name: 'Risk Analyzer', Icon: BarChart3, path: '/risk' },
     { name: 'Negotiation Strategist', Icon: MessageSquare, path: '/negotiation' },
     { name: 'Scenario Simulation', Icon: Play, path: '/scenarios' },
@@ -31,6 +30,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: 'Voice Assistant', Icon: Mic, path: '/voice-assistant' },
     { name: 'Legal Research', Icon: Search, path: '/research' },
     { name: 'Documents', Icon: FileText, path: '/documents' },
+    { name: 'Obligation Tracker', Icon: Calendar, path: '/obligations' },
     { name: 'Collaboration', Icon: Users, path: '/collaboration' },
     { name: 'Settings', Icon: Settings, path: '/settings' }
   ];
