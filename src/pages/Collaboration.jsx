@@ -467,37 +467,57 @@ const Collaboration = () => {
                   onPostReply={postReply}
                 />
                 
-                {/* New Comment Input */}
-                <div className="mt-6 p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
-                  <h4 className="text-md font-medium text-foreground mb-3">Add a comment</h4>
-                  <textarea 
-                    className="w-full bg-card text-foreground p-3 rounded-md border border-border focus:border-dashboard-accent focus:ring-1 focus:ring-dashboard-accent resize-none"
-                    rows="3"
-                    placeholder={user ? "Type your comment here..." : "Sign in to comment"}
-                    value={inlineComment}
-                    onChange={(e) => setInlineComment(e.target.value)}
-                    disabled={!user}
-                  ></textarea>
-                  <div className="flex justify-between items-center mt-3">
-                    <div className="flex gap-2">
-                      <button className="p-2 rounded-md bg-card hover:bg-muted transition-colors">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
-                        </svg>
-                      </button>
-                      <button className="p-2 rounded-md bg-card hover:bg-muted transition-colors">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
-                        </svg>
-                      </button>
+                {/* Sample Comments */}
+                <div className="mt-6 space-y-4">
+                  <div className="p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-sm">
+                        JD
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-foreground">John Doe</span>
+                          <span className="text-xs text-muted-foreground">2 hours ago</span>
+                        </div>
+                        <p className="text-foreground text-sm">
+                          I've reviewed Section 3.2 and suggest we add more specific language about data retention periods. This will help us comply with GDPR requirements.
+                        </p>
+                      </div>
                     </div>
-                    <button 
-                      className="bg-foreground text-background px-4 py-2 rounded-md font-medium hover:bg-dashboard-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={!user || !inlineComment.trim()}
-                      onClick={async () => { await postComment(inlineComment); setInlineComment(''); }}
-                    >
-                      Post Comment
-                    </button>
+                  </div>
+
+                  <div className="p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-semibold text-sm">
+                        SM
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-foreground">Sarah Miller</span>
+                          <span className="text-xs text-muted-foreground">5 hours ago</span>
+                        </div>
+                        <p className="text-foreground text-sm">
+                          The liability clause looks good, but we should consider adding a force majeure provision to protect both parties in unforeseen circumstances.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold text-sm">
+                        RK
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-foreground">Robert Kumar</span>
+                          <span className="text-xs text-muted-foreground">1 day ago</span>
+                        </div>
+                        <p className="text-foreground text-sm">
+                          Payment terms in Section 5 need clarification. Can we specify the exact payment schedule and acceptable payment methods?
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
