@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useRef } from "react";
 import { Mic, MicOff, Volume2, Sparkles } from 'lucide-react';
+import { callGroqAPI } from '../utils/groqHelper';
 
 const VoiceAssistant = () => {
   const [messages, setMessages] = useState([
@@ -11,31 +12,8 @@ const VoiceAssistant = () => {
   const [input, setInput] = useState("");
   const recognitionRef = useRef(null);
 
-  async function callGeminiApi(userInput) {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    
-    if (!apiKey) {
-      throw new Error("API key not found");
-    }
-
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-    
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: userInput }]
-        }]
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.candidates[0].content.parts[0].text;
+  async function callGroqAI(userInput) {
+    return await callGroqAPI(userInput, { maxTokens: 512 });
   }
 
   function speak(text) {
@@ -67,11 +45,11 @@ const VoiceAssistant = () => {
       setRecording(false);
       setLoading(true);
       try {
-        const botReply = await callGeminiApi(transcript);
+        const botReply = await callGroqAI(transcript);
         setMessages((msgs) => [...msgs, { sender: "bot", text: botReply }]);
         speak(botReply);
       } catch (err) {
-        console.error("Error calling Gemini API:", err);
+        console.error("Error calling Groq API:", err);
         setMessages((msgs) => [...msgs, { sender: "bot", text: "Sorry, something went wrong. Please try again." }]);
       }
       setLoading(false);

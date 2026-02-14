@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   getFirestore,
   collection,
@@ -12,12 +11,11 @@ import {
   query,
 } from "firebase/firestore";
 import app from "../firebase/firebase";
+import { callGroqAPI } from "../utils/groqHelper";
 
 const db = getFirestore(app);
 
 export default function ComplianceGuardian() {
-  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-
   const [modalOpen, setModalOpen] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -245,7 +243,7 @@ ${text.substring(0, 5000)}`
       }
 
       console.log("✅ Text extracted, length:", text.length);
-      console.log("🤖 Analyzing compliance with Gemini...");
+      console.log("🤖 Analyzing compliance with Groq...");
       
       const result = await analyzeCompliance(text);
       

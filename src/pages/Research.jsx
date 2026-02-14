@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { callGroqAPI } from '../utils/groqHelper';
 
 const COURTLISTENER_ENDPOINTS = {
   search: "https://www.courtlistener.com/api/rest/v4/search/",
-  dockets: "https://www.courtlistener.com/api/rest/v4/dockets/",
   opinions: "https://www.courtlistener.com/api/rest/v4/opinions/",
+  dockets: "https://www.courtlistener.com/api/rest/v4/dockets/",
+  clusters: "https://www.courtlistener.com/api/rest/v4/clusters/",
   people: "https://www.courtlistener.com/api/rest/v4/people/",
   courts: "https://www.courtlistener.com/api/rest/v4/courts/",
-  clusters: "https://www.courtlistener.com/api/rest/v4/clusters/",
   audio: "https://www.courtlistener.com/api/rest/v4/audio/",
+};
+
+const API_TYPE_LABELS = {
+  search: "Search All (Recommended)",
+  opinions: "Opinions",
+  dockets: "Dockets",
+  clusters: "Opinion Clusters",
+  people: "People (Judges, Attorneys)",
+  courts: "Courts",
+  audio: "Oral Arguments Audio",
 };
 
 const Research = () => {
@@ -19,22 +29,8 @@ const Research = () => {
   const [error, setError] = useState(null);
   const [apiType, setApiType] = useState('search');
 
-  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-
   // Sleep helper for rate limiting
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  // Gemini AI with error handling
-  async function askGemini(prompt) {
-    try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-      const result = await model.generateContent(prompt);
-      return result.response?.text?.() || '';
-    } catch (err) {
-      console.error("Gemini error:", err.message);
-      return '';
-    }
-  }
 
   // Fetch from CourtListener API
   async function fetchCourtListenerApi(type, q) {
@@ -43,16 +39,31 @@ const Research = () => {
       if (!endpoint) throw new Error('Invalid API type');
       
       const url = new URL(endpoint);
+      
+      // All CourtListener v4 endpoints support 'q' for full-text search
       url.searchParams.append('q', q);
-      url.searchParams.append('limit', '5');
+      
+      // For the generic search endpoint, specify we want opinions
+      if (type === 'search') {
+        url.searchParams.append('type', 'o'); // 'o' for opinions
+      }
+      
+      url.searchParams.append('page_size', '5');
+      
+      const headers = {};
+      const token = import.meta.env.VITE_COURTLISTENER_TOKEN;
+      if (token) {
+        headers['Authorization'] = `Token ${token}`;
+      }
       
       const res = await fetch(url.toString(), {
-        headers: { 
-          'Authorization': `Token ${import.meta.env.VITE_COURTLISTENER_TOKEN}`
-        }
+        headers
       });
       
-      if (!res.ok) throw new Error(`CourtListener API error: ${res.status}`);
+      if (!res.ok) {
+        const errorText = await res.text().catch(() => '');
+        throw new Error(`CourtListener API error: ${res.status} - ${errorText || res.statusText}`);
+      }
       const data = await res.json();
       return data.results || [];
     } catch (err) {
@@ -102,7 +113,7 @@ const Research = () => {
     return null;
   }
 
-  // Format results without Gemini
+  // Format results without AI summarization
   async function formatResults(apiResults, type) {
     return apiResults.map(item => {
       let title = extractTitle(item, type);
@@ -175,7 +186,7 @@ const Research = () => {
         return;
       }
 
-      // Format results WITHOUT calling Gemini
+      // Format results WITHOUT calling AI
       const formatted = await formatResults(apiResults, apiType);
       setResults(formatted);
     } catch (err) {
@@ -197,7 +208,7 @@ const Research = () => {
       await sleep(500); // Rate limit: wait 500ms
       
       const prompt = `Summarize this legal information in 2-3 sentences:\n\nTitle: ${item.title}\n\nInfo: ${JSON.stringify(item._raw).slice(0, 1000)}`;
-      const summary = await askGemini(prompt);
+      const summary = await callGroqAPI(prompt, { maxTokens: 256 });
       
       setResults(prev => prev.map((r, i) => 
         i === idx ? { ...r, summary: summary || 'Could not generate summary', summarizing: false } : r
@@ -212,7 +223,18 @@ const Research = () => {
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 text-white">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-foreground mb-4">Legal Research Agent</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Legal Research Agent</h1>
+          <p className="text-sm text-muted-foreground">
+            Powered by CourtListener API - Search millions of legal opinions, dockets, and court records
+          </p>
+          {!import.meta.env.VITE_COURTLISTENER_TOKEN && (
+            <div className="mt-3 p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg text-yellow-200 text-xs">
+              <strong>Note:</strong> For best results, add a CourtListener API token to your .env file as VITE_COURTLISTENER_TOKEN. 
+              Get one free at <a href="https://www.courtlistener.com/api/" target="_blank" rel="noopener noreferrer" className="underline hover:text-yellow-100">courtlistener.com/api</a>
+            </div>
+          )}
+        </div>
         
         <div className="bg-card p-6 rounded-lg mb-6">
           <div className="mb-4 flex flex-col sm:flex-row gap-3">
@@ -228,7 +250,7 @@ const Research = () => {
               onChange={e => setApiType(e.target.value)}
             >
               {Object.keys(COURTLISTENER_ENDPOINTS).map(key => (
-                <option key={key} value={key}>{key}</option>
+                <option key={key} value={key}>{API_TYPE_LABELS[key] || key}</option>
               ))}
             </select>
           </div>

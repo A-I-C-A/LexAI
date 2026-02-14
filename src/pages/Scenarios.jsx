@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { callGroqAPI } from '../utils/groqHelper';
 
 const TABS = [
   { key: 'whatif', label: 'What-If Engine', icon: '' },
@@ -115,38 +116,17 @@ const Scenarios = () => {
     }
   };
 
-  // Gemini API call helper (fallback)
-  const callGemini = async (prompt, options = {}) => {
+  // Groq API call helper (fallback)
+  const callGroq = async (prompt, options = {}) => {
     setLoading(true);
     setAiResponse('');
     try {
-      // In a real app, manage your API key securely.
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
-      if (!apiKey) {
-        throw new Error('API key not found. Please add VITE_GEMINI_API_KEY to your .env file.');
-      }
-      
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: options.temperature || 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: options.maxTokens || 1024,
-          }
-        }),
+      const responseText = await callGroqAPI(prompt, {
+        temperature: options.temperature || 0.7,
+        maxTokens: options.maxTokens || 1024
       });
       
-      if (!res.ok) {
-        throw new Error(`API error: ${res.status}`);
-      }
-      
-      const data = await res.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
-      setAiResponse(responseText);
+      setAiResponse(responseText || 'No response generated.');
       return responseText;
     } catch (e) {
       console.error('API call error:', e);
@@ -204,7 +184,7 @@ const Scenarios = () => {
     Format as a JSON array of objects with day and event properties. 
     Example: [{"day": 0, "event": "Contract signed"}, {"day": 30, "event": "First payment due"}]`;
     
-    const response = await callGemini(prompt, { temperature: 0.3 });
+    const response = await callGroq(prompt, { temperature: 0.3 });
     if (response) {
       try {
         // Extract JSON from response
@@ -630,7 +610,7 @@ const Scenarios = () => {
               <p className="text-gray-400 mb-4">Compare perspectives across all stakeholders</p>
               <button
                 className="bg-card hover:bg-muted text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                onClick={() => callGemini(`Compare stakeholder perspectives for this scenario: ${inputScenario}. Analyze conflicts and alignment between Legal, Vendor, Finance, and Executive roles.`)}
+                onClick={() => callGroq(`Compare stakeholder perspectives for this scenario: ${inputScenario}. Analyze conflicts and alignment between Legal, Vendor, Finance, and Executive roles.`)}
                 disabled={!inputScenario || loading}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1014,7 +994,7 @@ const Scenarios = () => {
                       </h4>
                       <button
                         className="bg-muted hover:bg-muted/80 text-dark-primary px-4 py-2 rounded-xl font-medium transition-all duration-300 text-sm hover:shadow-lg hover:shadow-foreground/10"
-                        onClick={() => callGemini(`Based on this probability analysis: ${aiResponse}. What risk mitigation strategies would you recommend?`)}
+                        onClick={() => callGroq(`Based on this probability analysis: ${aiResponse}. What risk mitigation strategies would you recommend?`)}
                       >
                         Suggest Risk Mitigation
                       </button>
@@ -1044,7 +1024,7 @@ const Scenarios = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   className="flex-1 bg-gradient-to-r from-muted to-foreground/10 hover:from-muted/90 hover:to-foreground/20 text-dark-primary px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  onClick={() => callGemini(`Create a Monte Carlo simulation plan for this scenario: ${inputScenario}. Outline the variables, distributions, and number of iterations.`)}
+                  onClick={() => callGroq(`Create a Monte Carlo simulation plan for this scenario: ${inputScenario}. Outline the variables, distributions, and number of iterations.`)}
                   disabled={!inputScenario || loading}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1055,7 +1035,7 @@ const Scenarios = () => {
                 
                 <button
                   className="flex-1 bg-card hover:bg-card/90 text-dark-foreground px-6 py-3 rounded-xl font-medium transition-all duration-300 border border-border hover:ring-dark-primary/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  onClick={() => callGemini(`Perform statistical validation for this probability analysis: ${aiResponse}. Include confidence intervals and sensitivity analysis.`)}
+                  onClick={() => callGroq(`Perform statistical validation for this probability analysis: ${aiResponse}. Include confidence intervals and sensitivity analysis.`)}
                   disabled={!aiResponse || loading}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1184,7 +1164,7 @@ const Scenarios = () => {
               <svg className="w-5 h-5 text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
               </svg>
-              <span className="text-sm font-medium">AI-powered by Gemini</span>
+              <span className="text-sm font-medium">AI-powered by Groq Llama</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-500">
               <span className="flex items-center gap-1">

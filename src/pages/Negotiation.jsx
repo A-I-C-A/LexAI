@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { callGroqAPI } from '../utils/groqHelper';
+
+// Suppress remark-gfm React 19 warning - this is a known compatibility issue
+const MarkdownRenderer = ({ children }) => (
+  <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
+);
 
 const TABS = [
   { key: 'counter', label: 'Counter-Proposal', icon: '' },
@@ -36,40 +42,20 @@ const Negotiation = () => {
   const [winwinTheirGoals, setWinwinTheirGoals] = useState('');
   const [winwinInput, setWinwinInput] = useState('');
 
-  // Gemini API call helper
-  const callGemini = async (prompt, { details, typeLabel } = {}) => {
+  // Groq API call helper
+  const callGroq = async (prompt, { details, typeLabel } = {}) => {
     setLoading(true);
     setAiResponse('');
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error('API key not found');
-      }
-      
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [ { role: 'user', parts: [ { text: prompt } ] } ],
-          generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024
-          }
-        }),
+      const responseText = await callGroqAPI(prompt, { 
+        maxTokens: 1024,
+        temperature: 0.7 
       });
       
-      if (!res.ok) {
-        const errText = await res.text().catch(() => '');
-        throw new Error(`API error: ${res.status} ${errText}`);
-      }
-      const data = await res.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
-      setAiResponse(responseText);
+      setAiResponse(responseText || 'No response generated.');
       
       // Add to history if it's a successful generation
-      if (responseText !== 'No response generated.') {
+      if (responseText && responseText !== 'No response generated.') {
         const newHistoryItem = {
           id: negotiationHistory.length + 1,
           date: new Date().toISOString().split('T')[0],
@@ -91,7 +77,6 @@ const Negotiation = () => {
     
     setLoading(true);
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       const prompt = `Analyze the power dynamics in this negotiation scenario: ${powerAnalysisInput}. 
       Provide a JSON response with this structure: 
       {
@@ -100,26 +85,11 @@ const Negotiation = () => {
         "recommendations": []
       }`;
       
-      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [ { role: 'user', parts: [ { text: prompt } ] } ],
-          generationConfig: {
-            temperature: 0.3,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
-            response_mime_type: 'application/json'
-          }
-        }),
+      const responseText = await callGroqAPI(prompt, {
+        temperature: 0.3,
+        maxTokens: 1024,
+        jsonMode: true
       });
-      if (!res.ok) {
-        const errText = await res.text().catch(() => '');
-        throw new Error(`API error: ${res.status} ${errText}`);
-      }
-      const data = await res.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
       
       try {
         // Extract JSON from response
@@ -179,7 +149,7 @@ const Negotiation = () => {
             />
             <button
               className="bg-foreground text-background px-6 py-3 rounded-xl font-medium hover:bg-foreground/90 transition-colors duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center transform hover:-translate-y-0.5"
-              onClick={() => callGemini(`Suggest 3 professional counter-proposals for this clause: ${inputClause}. Format each with a heading and bullet points.`)}
+              onClick={() => callGroq(`Suggest 3 professional counter-proposals for this clause: ${inputClause}. Format each with a heading and bullet points.`)}
               disabled={!inputClause || loading}
             >
               {loading ? (
@@ -195,7 +165,7 @@ const Negotiation = () => {
               <div className="mt-4 p-4 bg-background border border-foreground/20 rounded-xl text-foreground animate-fadeIn">
                 <h3 className="font-medium text-dark-primary mb-2">AI Suggestions:</h3>
                 <div className="prose prose-invert max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
+                  <MarkdownRenderer>{aiResponse}</MarkdownRenderer>
                 </div>
               </div>
             )}
@@ -258,7 +228,7 @@ const Negotiation = () => {
               />
               <button
                 className="bg-foreground text-background px-4 py-2 rounded-xl font-medium hover:bg-foreground/90 transition-colors duration-300 text-sm disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
-                onClick={() => callGemini(
+                onClick={() => callGroq(
                   `Create a concise negotiation playbook for this scenario: ${playbookInput}. Include 3-5 talking points, best practices, and common pitfalls to avoid. Use Markdown with headings and bullet points.`,
                   { details: playbookInput, typeLabel: 'Playbook' }
                 )}
@@ -272,7 +242,7 @@ const Negotiation = () => {
               <div className="mt-4 p-4 bg-background border border-foreground/20 rounded-xl text-foreground animate-fadeIn">
                 <h3 className="font-medium text-dark-primary mb-2">Playbook Suggestions:</h3>
                 <div className="prose prose-invert max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
+                  <MarkdownRenderer>{aiResponse}</MarkdownRenderer>
                 </div>
               </div>
             )}
@@ -312,7 +282,7 @@ const Negotiation = () => {
             <div className="flex gap-3">
               <button
                 className="bg-foreground text-background px-6 py-3 rounded-xl font-medium hover:bg-foreground/90 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
-                onClick={() => callGemini(
+                onClick={() => callGroq(
                   `Draft a professional negotiation email. Context: ${emailContext}. Details: ${emailInput}. Use clear subject, polite tone, structured paragraphs, and a concise call-to-action. Format in Markdown.`,
                   { details: emailInput, typeLabel: 'Email Draft' }
                 )}
@@ -333,7 +303,7 @@ const Negotiation = () => {
               <div className="mt-6 p-4 bg-background border border-foreground/20 rounded-xl animate-fadeIn">
                 <h3 className="font-medium text-dark-primary mb-3">Email Draft:</h3>
                 <div className="bg-background backdrop-blur-xl p-4 rounded text-foreground prose prose-invert max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
+                  <MarkdownRenderer>{aiResponse}</MarkdownRenderer>
                 </div>
                 <div className="mt-4 flex justify-end">
                   <button 
@@ -469,7 +439,7 @@ const Negotiation = () => {
             
             <button
               className="bg-foreground text-background px-6 py-3 rounded-xl font-medium hover:bg-foreground/90 transition-colors duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
-              onClick={() => callGemini(
+              onClick={() => callGroq(
                 `Suggest win-win solutions for this negotiation. Our goals: ${winwinOurGoals || 'N/A'}. Their goals: ${winwinTheirGoals || 'N/A'}. Context: ${winwinInput || 'N/A'}. Provide 3-5 creative, mutually-beneficial options with trade-offs and implementation steps. Use Markdown lists and headings.`,
                 { details: winwinInput || `${winwinOurGoals} | ${winwinTheirGoals}`, typeLabel: 'Win-Win' }
               )}
@@ -482,7 +452,7 @@ const Negotiation = () => {
               <div className="mt-4 p-4 bg-background border border-foreground/20 rounded-xl text-foreground animate-fadeIn">
                 <h3 className="font-medium text-dark-primary mb-2">Win-Win Suggestions:</h3>
                 <div className="prose prose-invert max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{aiResponse}</ReactMarkdown>
+                  <MarkdownRenderer>{aiResponse}</MarkdownRenderer>
                 </div>
               </div>
             )}
@@ -598,7 +568,7 @@ const Negotiation = () => {
         
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-border text-center text-muted-foreground text-sm">
-          <p>AI-powered by Gemini • For professional guidance only</p>
+          <p>AI-powered by Groq Llama • For professional guidance only</p>
         </div>
       </div>
 

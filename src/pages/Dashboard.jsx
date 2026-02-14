@@ -85,7 +85,7 @@ const Dashboard = () => {
       icon: <MessageCircle className="w-6 h-6" />,
       actionText: 'Chat',
       metrics: [
-        { label: 'AI Model', value: 'Gemini 1.5' },
+        { label: 'AI Model', value: 'Groq Llama' },
         { label: 'Realtime', value: 'Yes' }
       ],
       onAction: () => navigate('/chatbot')
@@ -97,7 +97,7 @@ const Dashboard = () => {
       icon: <Mic className="w-6 h-6" />,
       actionText: 'Speak',
       metrics: [
-        { label: 'AI Model', value: 'Gemini 1.5' },
+        { label: 'AI Model', value: 'Groq Llama' },
         { label: 'Voice', value: 'Enabled' }
       ],
       onAction: () => navigate('/voice-assistant')

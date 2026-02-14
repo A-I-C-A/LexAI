@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth/mammoth.browser';
 import Tesseract from 'tesseract.js';
+import { callGroqAPI } from '../utils/groqHelper';
 
 const Risk = () => {
   const [activeTab, setActiveTab] = useState('heatmap');
@@ -85,19 +86,14 @@ const Risk = () => {
     }
   };
 
-  const analyzeContractWithGemini = async () => {
+  const analyzeContractWithGroq = async () => {
     if (!extractedText.trim()) {
       setFileError('Please upload a document to analyze.');
       return;
     }
     setIsAnalyzing(true);
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error('Gemini API key not found');
-      }
-
-  const contractBody = extractedText.trim();
+      const contractBody = extractedText.trim();
 
       const prompt = `
         Analyze this legal contract for risks and fairness. Provide a detailed assessment including:
@@ -135,32 +131,14 @@ const Risk = () => {
         }
       `;
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: 'user',
-              parts: [{ text: prompt }]
-            }
-          ],
-          generationConfig: {
-            response_mime_type: 'application/json'
-          }
-        })
+      const text = await callGroqAPI(prompt, {
+        temperature: 0.3,
+        maxTokens: 2048,
+        jsonMode: true
       });
 
-      if (!response.ok) {
-        const errText = await response.text().catch(() => '');
-        throw new Error(`Gemini HTTP ${response.status}: ${response.statusText} ${errText}`);
-      }
-
-      const data = await response.json();
-      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!text) throw new Error('Empty response from model');
+      
       let result;
       try {
         result = JSON.parse(text);
@@ -174,7 +152,7 @@ const Risk = () => {
       setExecutiveSummary(result.executiveSummary || '');
       setIndustryBenchmarks(result.industryBenchmarks || null);
     } catch (error) {
-      console.error('Error calling Gemini API:', error);
+      console.error('Error calling Groq API:', error);
       setFileError('Analysis failed. Please try again.');
       setAnalysisResult(null);
       setExecutiveSummary('');
@@ -186,7 +164,7 @@ const Risk = () => {
 
   useEffect(() => {
     // Do not auto-analyze on mount; wait for user action
-    // analyzeContractWithGemini();
+    // analyzeContractWithGroq();
   }, []);
 
   const getRiskColor = (riskLevel) => {
@@ -234,7 +212,7 @@ const Risk = () => {
                 />
               </label>
               <button 
-                onClick={analyzeContractWithGemini}
+                onClick={analyzeContractWithGroq}
                 disabled={isAnalyzing}
                 className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 flex items-center justify-center gap-2"
               >
@@ -287,7 +265,7 @@ const Risk = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <p className="mt-4 text-foreground">Analyzing contract with Gemini AI...</p>
+                    <p className="mt-4 text-foreground">Analyzing contract with Groq AI...</p>
                   </div>
                 </div>
               ) : analysisResult ? (

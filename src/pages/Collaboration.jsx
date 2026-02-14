@@ -15,13 +15,14 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { useUserAuth } from '../context/UserAuthContext';
+import { callGroqAPI } from '../utils/groqHelper';
 // File parsing libs for document ingestion
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import mammoth from 'mammoth/mammoth.browser';
 
 const Collaboration = () => {
   const { user } = useUserAuth();
-  const [geminiResponse, setGeminiResponse] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [documentAnalysis, setDocumentAnalysis] = useState('');
   const [documentMeta, setDocumentMeta] = useState({ name: 'Untitled Document', type: 'contract', status: 'in_review' });
@@ -308,43 +309,26 @@ const Collaboration = () => {
     }
   ];
 
-  // Function to analyze document with Gemini API
-  const analyzeDocumentWithGemini = async () => {
+  // Function to analyze document with Groq API
+  const analyzeDocumentWithGroq = async () => {
     setIsLoading(true);
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error('Gemini API key not found');
-      }
+      const body = extractedText?.trim() || documentMeta.name;
+      const prompt = `Analyze this legal document and provide suggestions for improvement. 
+      Document: ${body}
+      Focus on clarity, potential risks, enforceability, and standard legal practices. Provide bullet points.`;
 
-  const body = extractedText?.trim() || documentMeta.name;
-  const prompt = `Analyze this legal document and provide suggestions for improvement. 
-  Document: ${body}
-  Focus on clarity, potential risks, enforceability, and standard legal practices. Provide bullet points.`;
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            role: 'user',
-            parts: [{ text: prompt }]
-          }]
-        })
-      });
-
-      const data = await response.json();
-      if (data.candidates && data.candidates[0].content.parts[0].text) {
-        setGeminiResponse(data.candidates[0].content.parts[0].text);
-        setDocumentAnalysis(data.candidates[0].content.parts[0].text);
+      const analysisText = await callGroqAPI(prompt, { maxTokens: 1024 });
+      
+      if (analysisText) {
+        setAiResponse(analysisText);
+        setDocumentAnalysis(analysisText);
       } else {
-        setGeminiResponse('No analysis available at this time.');
+        setAiResponse('No analysis available at this time.');
       }
     } catch (error) {
-      console.error('Error calling Gemini API:', error);
-      setGeminiResponse('Error analyzing document. Please try again later.');
+      console.error('Error calling Groq API:', error);
+      setAiResponse('Error analyzing document. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -358,7 +342,7 @@ const Collaboration = () => {
 
   useEffect(() => {
     // Optionally analyze on mount
-    // analyzeDocumentWithGemini();
+    // analyzeDocumentWithGroq();
   }, []);
 
   return (
@@ -430,7 +414,7 @@ const Collaboration = () => {
                     AI Analysis
                   </h3>
                   <button 
-                    onClick={analyzeDocumentWithGemini}
+                    onClick={analyzeDocumentWithGroq}
                     disabled={isLoading}
                     className="text-xs bg-card hover:bg-muted px-2 py-1 rounded-md transition-colors flex items-center gap-1"
                   >
@@ -459,10 +443,10 @@ const Collaboration = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Analyzing document with Gemini AI...
+                      Analyzing document with Groq AI...
                     </div>
                   ) : (
-                    documentAnalysis || geminiResponse || 'Click "Re-analyze" to get AI suggestions for this document.'
+                    documentAnalysis || aiResponse || 'Click "Re-analyze" to get AI suggestions for this document.'
                   )}
                 </div>
               </div>
