@@ -20,9 +20,9 @@
   --border: 38 38 38;
   
   /* Landing page accents */
-  --landing-accent: 255 255 255; /* White for icons/text in dark mode */
+  --landing-accent: 255 255 255; /* White button bg in dark mode */
   --landing-accent-hover: 229 229 229; /* Light gray for hover */
-  --landing-accent-text: 255 255 255; /* White text in dark mode */
+  --landing-accent-text: 0 0 0; /* Black text in dark mode (on white bg) */
   
   /* Dashboard accents (replacing emerald/green) */
   --dashboard-accent: 255 255 255; /* White accent */
@@ -54,7 +54,7 @@
   /* Landing page accents */
   --landing-accent: 0 0 0; /* Black for icons/text in light mode */
   --landing-accent-hover: 38 38 38; /* Dark gray for hover */
-  --landing-accent-text: 0 0 0; /* Black text in light mode */
+  --landing-accent-text: 255 255 255; /* White text in light mode (on black bg) */
   
   /* Dashboard accents (replacing emerald/green) */
   --dashboard-accent: 0 0 0; /* Black accent */

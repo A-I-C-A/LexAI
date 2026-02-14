@@ -359,7 +359,7 @@ const Negotiation = () => {
               {loading ? 'Analyzing...' : 'Analyze Power Dynamics'}
             </button>
             
-            {powerAnalysisResult ? (
+            {powerAnalysisResult && (
               <div className="mt-4 animate-fadeIn">
                 <h3 className="font-medium text-dark-primary mb-4 text-lg">Analysis Results</h3>
                 
@@ -407,10 +407,6 @@ const Negotiation = () => {
                     ))}
                   </ul>
                 </div>
-              </div>
-            ) : (
-              <div className="bg-background p-6 rounded-xl ring-1 ring-border ring-dashed text-center">
-                <p className="text-muted-foreground">Enter negotiation details to analyze power dynamics</p>
               </div>
             )}
           </div>

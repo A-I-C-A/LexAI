@@ -218,12 +218,6 @@ const Research = () => {
           <p className="text-sm text-muted-foreground">
             Powered by CourtListener API - Search millions of legal opinions, dockets, and court records
           </p>
-          {!import.meta.env.VITE_COURTLISTENER_TOKEN && (
-            <div className="mt-3 p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg text-foreground text-xs">
-              <strong>Note:</strong> For best results, add a CourtListener API token to your .env file as VITE_COURTLISTENER_TOKEN. 
-              Get one free at  <a href="https://www.courtlistener.com/api/" target="_blank" rel="noopener noreferrer" className="underline hover:text-dashboard-accent">courtlistener.com/api</a>
-            </div>
-          )}
         </div>
         
         <div className="bg-card p-6 rounded-lg mb-6">
