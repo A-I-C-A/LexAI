@@ -42,6 +42,22 @@ const Negotiation = () => {
   const [winwinTheirGoals, setWinwinTheirGoals] = useState('');
   const [winwinInput, setWinwinInput] = useState('');
 
+  // Reset all form fields for a new negotiation
+  const handleNewNegotiation = () => {
+    setActiveTab('counter');
+    setInputClause('');
+    setAiResponse('');
+    setPowerAnalysisInput('');
+    setPowerAnalysisResult(null);
+    setPlaybookInput('');
+    setEmailContext('Initial Proposal');
+    setEmailInput('');
+    setWinwinOurGoals('');
+    setWinwinTheirGoals('');
+    setWinwinInput('');
+    setCopied(false);
+  };
+
   // Groq API call helper
   const callGroq = async (prompt, { details, typeLabel } = {}) => {
     setLoading(true);
@@ -534,7 +550,10 @@ const Negotiation = () => {
               </h1>
               <p className="text-foreground mt-3 text-base">Generate counter-proposals and negotiation strategies based on contract analysis</p>
             </div>
-            <button className="px-6 py-3 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-xl transition-colors duration-300 hover:shadow-lg hover:shadow-foreground/20 w-full sm:w-auto transform hover:-translate-y-0.5">
+            <button 
+              onClick={handleNewNegotiation}
+              className="px-6 py-3 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-xl transition-colors duration-300 hover:shadow-lg hover:shadow-foreground/20 w-full sm:w-auto transform hover:-translate-y-0.5"
+            >
               New Negotiation
             </button>
           </div>
