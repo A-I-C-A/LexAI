@@ -8,7 +8,7 @@ const Chatbot = () => {
   const { theme } = useTheme();
   const [mode, setMode] = useState('text'); // 'text' or 'voice'
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hi! I'm your LegalAxis AI assistant powered by Groq Llama. How can I help you today?" },
+    { sender: "bot", text: "Hi! I'm your Lex AI assistant powered by Groq Llama. How can I help you today?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -91,7 +91,7 @@ User's question: ${currentInput}`;
       setLoading(true);
       setIsTyping(true);
       try {
-        const prompt = `You are LegalAxis AI, an advanced legal intelligence assistant. Provide helpful, accurate legal information while reminding users you are not a substitute for professional legal advice. Be concise but thorough in your responses.
+        const prompt = `You are Lex AI, an advanced legal intelligence assistant. Provide helpful, accurate legal information while reminding users you are not a substitute for professional legal advice. Be concise but thorough in your responses.
 
 Current conversation context:
 ${messages.map(msg => `${msg.sender}: ${msg.text}`).join('\n')}
@@ -133,7 +133,7 @@ User's question: ${transcript}`;
                 <Sparkles className="w-6 h-6 text-dashboard-accent" />
               </div>
               <div>
-                <h1 className="text-3xl font-light tracking-tighter">LegalAxis AI</h1>
+                <h1 className="text-3xl font-light tracking-tighter">Lex AI</h1>
                 <p className="text-sm text-muted-foreground font-light">
                   {mode === 'text' ? 'Advanced Legal Intelligence' : 'Hands-Free Legal Intelligence'}
                 </p>

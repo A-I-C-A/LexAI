@@ -88,13 +88,13 @@ const Signup = () => {
             <div className="w-20 h-20 flex items-center justify-center bg-muted rounded-2xl p-2 shadow-lg backdrop-blur-sm border border-border">
               <img 
                 src="/logolegal.png" 
-                alt="LegalAxis Logo" 
+                alt="Lex AI Logo" 
                 className="h-16 w-auto object-contain select-none transform transition-transform duration-300 hover:scale-110" 
                 draggable="false" 
               />
             </div>
           </div>
-          <h2 className="text-3xl font-bold text-foreground animate-fade-in-down">Join LegalAxis</h2>
+          <h2 className="text-3xl font-bold text-foreground animate-fade-in-down">Join Lex AI</h2>
           <p className="mt-2 text-muted-foreground animate-fade-in-down" style={{animationDelay: '0.2s'}}>Create your account to get started</p>
         </div>
 

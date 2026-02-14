@@ -37,11 +37,11 @@ const Navbar = ({ toggleSidebar }) => {
             <span className="text-xl sm:text-2xl font-light tracking-tighter text-foreground truncate flex items-center">
               <img 
               src="/logolegal.png" 
-              alt="LegalAxis Logo" 
+              alt="Lex AI Logo" 
               className="h-9 sm:h-12 w-auto no-underline object-contain select-none mr-2 drop-shadow-[0_0_10px_rgba(16,185,129,0.3)]" 
               draggable="false"
             />
-              LegalAxis
+              Lex AI
             </span>
           </Link>
         </div>

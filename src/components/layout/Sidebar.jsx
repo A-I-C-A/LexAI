@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               letterSpacing: '0.3px'
             }}
           >
-            LegalAxis
+            Lex AI
           </div>
         </div>
 

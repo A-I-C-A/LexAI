@@ -59,7 +59,7 @@ const Landing = () => {
               <div className="w-12 h-12 rounded-full bg-card backdrop-blur-xl border border-border flex items-center justify-center mr-3">
                 <Scale className="w-6 h-6 text-landing-accent" />
               </div>
-              <span className="text-2xl font-light tracking-tighter text-landing-accent" style={{ fontFamily: '"Inter", sans-serif' }}>LegalAxis</span>
+              <span className="text-2xl font-light tracking-tighter text-landing-accent" style={{ fontFamily: '"Inter", sans-serif' }}>Lex AI</span>
             </motion.div>
             
             <motion.div 
