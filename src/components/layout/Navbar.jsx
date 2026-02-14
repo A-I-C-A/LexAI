@@ -3,11 +3,10 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Search, Bell, Menu, User, Settings, LogOut, Sun, Moon } from 'lucide-react';
+import { Bell, Menu, User, Settings, LogOut, Sun, Moon } from 'lucide-react';
 
 const Navbar = ({ toggleSidebar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   
   const { user, logOut } = useUserAuth();
@@ -48,28 +47,6 @@ const Navbar = ({ toggleSidebar }) => {
         </div>
 
         <div className="flex items-center space-x-3 sm:space-x-5">
-          {/* Desktop Search */}
-          <div className="relative hidden md:block">
-            <input 
-              type="text" 
-              className="bg-muted backdrop-blur-xl border border-border text-foreground text-sm rounded-full focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent block w-48 lg:w-64 pl-10 p-2.5 placeholder-muted-foreground transition-all duration-300 font-light"
-
-              placeholder="Search..."
-            />
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-8 h-10 text-muted-foreground" />
-            </div>
-          </div>
-
-          {/* Mobile Search Button */}
-          <button 
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="md:hidden text-foreground hover:text-muted-foreground focus:outline-none transition-all duration-300 p-2 hover:bg-accent rounded-lg"
-            aria-label="Toggle search"
-          >
-            <Search className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-
           {/* Theme Toggle */}
           <button 
             onClick={toggleTheme}
@@ -168,23 +145,6 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
         </div>
       </div>
-
-      {/* Mobile Search Bar */}
-      {isSearchOpen && (
-        <div className="md:hidden mt-3 pt-3 border-t border-border">
-          <div className="relative">
-            <input 
-              type="text" 
-              className="bg-muted backdrop-blur-xl border border-border text-foreground text-sm rounded-full focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent block w-full pl-10 p-2.5 placeholder-muted-foreground transition-all duration-300 font-light" 
-              placeholder="Search..."
-              autoFocus
-            />
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-5 h-5 text-muted-foreground" />
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };
