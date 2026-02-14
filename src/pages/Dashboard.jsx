@@ -7,9 +7,9 @@ import {
   MessageSquare,
   Play,
   MessageCircle,
-  Mic,
   Search,
-  FileText
+  FileText,
+  Users
 } from 'lucide-react';
 import { useUserAuth } from '../context/UserAuthContext';
 
@@ -79,28 +79,16 @@ const Dashboard = () => {
       onAction: () => navigate('/scenarios')
     },
     {
-      title: 'AI Chatbot',
+      title: 'AI Assistant',
       description:
-        'Chat with LegalAxis AI for instant legal insights and support.',
+        'Chat or speak with LegalAxis AI for instant legal insights and support.',
       icon: <MessageCircle className="w-6 h-6" />,
-      actionText: 'Chat',
+      actionText: 'Open',
       metrics: [
         { label: 'AI Model', value: 'Groq Llama' },
-        { label: 'Realtime', value: 'Yes' }
+        { label: 'Text & Voice', value: 'Enabled' }
       ],
       onAction: () => navigate('/chatbot')
-    },
-    {
-      title: 'Voice Assistant',
-      description:
-        'Use your voice to interact with LegalAxis AI for hands-free help.',
-      icon: <Mic className="w-6 h-6" />,
-      actionText: 'Speak',
-      metrics: [
-        { label: 'AI Model', value: 'Groq Llama' },
-        { label: 'Voice', value: 'Enabled' }
-      ],
-      onAction: () => navigate('/voice-assistant')
     },
     {
       title: 'Legal Research & Citation',
@@ -125,6 +113,18 @@ const Dashboard = () => {
         { label: 'Recent Uploads', value: '12' }
       ],
       onAction: () => navigate('/documents')
+    },
+    {
+      title: 'Collaboration',
+      description:
+        'Work together with your team on contracts, share insights, and track progress.',
+      icon: <Users className="w-6 h-6" />,
+      actionText: 'View',
+      metrics: [
+        { label: 'Team Members', value: '8' },
+        { label: 'Active Projects', value: '5' }
+      ],
+      onAction: () => navigate('/collaboration')
     }
   ];
 
