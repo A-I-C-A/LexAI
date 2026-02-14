@@ -252,7 +252,7 @@ const Landing = () => {
         {/* Footer */}
         <footer className="container mx-auto px-6 py-12 border-t border-border">
           <div className="text-center text-muted-foreground font-light">
-            <p>© 2026 LegalAxis. All rights reserved.</p>
+            <p>© 2026 Lex AI. All rights reserved.</p>
           </div>
         </footer>
       </div>
