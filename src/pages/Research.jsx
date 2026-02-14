@@ -4,22 +4,10 @@ import { callGroqAPI } from '../utils/groqHelper';
 
 const COURTLISTENER_ENDPOINTS = {
   search: "https://www.courtlistener.com/api/rest/v4/search/",
-  opinions: "https://www.courtlistener.com/api/rest/v4/opinions/",
-  dockets: "https://www.courtlistener.com/api/rest/v4/dockets/",
-  clusters: "https://www.courtlistener.com/api/rest/v4/clusters/",
-  people: "https://www.courtlistener.com/api/rest/v4/people/",
-  courts: "https://www.courtlistener.com/api/rest/v4/courts/",
-  audio: "https://www.courtlistener.com/api/rest/v4/audio/",
 };
 
 const API_TYPE_LABELS = {
-  search: "Search All (Recommended)",
-  opinions: "Opinions",
-  dockets: "Dockets",
-  clusters: "Opinion Clusters",
-  people: "People (Judges, Attorneys)",
-  courts: "Courts",
-  audio: "Oral Arguments Audio",
+  search: "Search All",
 };
 
 const Research = () => {
