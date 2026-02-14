@@ -27,7 +27,7 @@ const Landing = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Shield className="w-full h-full text-emerald-500" />
+        <Shield className="w-full h-full text-landing-accent" />
       </motion.div>
       
       <motion.div
@@ -35,7 +35,7 @@ const Landing = () => {
         animate={{ y: [0, -20, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       >
-        <Zap className="w-full h-full text-emerald-500" />
+        <Zap className="w-full h-full text-landing-accent" />
       </motion.div>
       
       <motion.div
@@ -43,7 +43,7 @@ const Landing = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       >
-        <Scale className="w-full h-full text-emerald-500" />
+        <Scale className="w-full h-full text-landing-accent" />
       </motion.div>
 
       <div className="relative z-10">
@@ -57,9 +57,9 @@ const Landing = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="w-12 h-12 rounded-full bg-card backdrop-blur-xl border border-border flex items-center justify-center mr-3">
-                <Scale className="w-6 h-6 text-emerald-500" />
+                <Scale className="w-6 h-6 text-landing-accent" />
               </div>
-              <span className="text-2xl font-light tracking-tighter text-emerald-500" style={{ fontFamily: '"Inter", sans-serif' }}>LegalAxis</span>
+              <span className="text-2xl font-light tracking-tighter text-landing-accent" style={{ fontFamily: '"Inter", sans-serif' }}>LegalAxis</span>
             </motion.div>
             
             <motion.div 
@@ -91,10 +91,10 @@ const Landing = () => {
                   <Moon className="w-5 h-5 text-foreground" />
                 )}
               </button>
-              <Link to="/login" className="text-foreground hover:text-emerald-500 transition-colors duration-300 font-light no-underline" style={{ fontFamily: '"Inter", sans-serif' }}>Login</Link>
+              <Link to="/login" className="text-foreground hover:text-landing-accent transition-colors duration-300 font-light no-underline" style={{ fontFamily: '"Inter", sans-serif' }}>Login</Link>
               <Link 
                 to="/signup" 
-                className="rounded-full px-9 py-3.5 bg-emerald-500 text-white font-semibold border border-emerald-500 shadow-lg hover:shadow-emerald-500/50 hover:scale-[1.04] active:scale-[0.98] transition-all duration-300 ease-out text-lg no-underline"
+                className="rounded-full px-9 py-3.5 bg-landing-accent text-landing-accent-text font-semibold border border-landing-accent shadow-lg hover:bg-landing-accent-hover hover:border-landing-accent-hover hover:scale-[1.04] active:scale-[0.98] transition-all duration-300 ease-out text-lg no-underline"
                 style={{ fontFamily: '"Inter", sans-serif' }}
               >
                 Sign Up
@@ -115,7 +115,7 @@ const Landing = () => {
     animate={{ scale: 1, rotate: 0 }}
     transition={{ duration: 0.8, type: "spring" }}
   >
-    <Scale className="w-12 h-12 text-emerald-500" />
+    <Scale className="w-12 h-12 text-landing-accent" />
   </motion.div>
 
   {/* Title */}
@@ -140,7 +140,7 @@ const Landing = () => {
     className="mt-6 px-8 py-4 rounded-2xl bg-secondary/50 backdrop-blur-xl border border-border mb-12"
 
     initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 0.3, y: 0 }}
+    animate={{ opacity: 0.5, y: 0 }}
     transition={{ duration: 0.8, delay: 0.5 }}
   >
     <p 
@@ -163,7 +163,7 @@ const Landing = () => {
   >
     <Link 
       to="/signup"
-      className="rounded-full bg-emerald-500 text-white shadow-lg hover:shadow-emerald-500/50 hover:scale-[1.04] active:scale-[0.98] transition-all duration-300 ease-out inline-block no-underline"
+      className="rounded-full bg-landing-accent text-landing-accent-text shadow-lg hover:bg-landing-accent-hover hover:scale-[1.04] active:scale-[0.98] transition-all duration-300 ease-out inline-block no-underline"
       style={{ 
         fontFamily: '"Inter", sans-serif',
         fontWeight: '600',
@@ -232,14 +232,14 @@ const Landing = () => {
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="p-8 rounded-3xl bg-card backdrop-blur-xl border border-border hover:border-emerald-500/50 transition-all duration-300"
+                className="p-8 rounded-3xl bg-card backdrop-blur-xl border border-border hover:border-landing-accent/50 transition-all duration-300"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ y: -10, scale: 1.02 }}
               >
-                <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-6 text-emerald-500">
+                <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-6 text-landing-accent">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-medium tracking-tight mb-4 text-foreground">{feature.title}</h3>

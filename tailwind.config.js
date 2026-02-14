@@ -21,6 +21,26 @@ export default {
         accent: 'rgb(var(--accent) / <alpha-value>)',
         border: 'rgb(var(--border) / <alpha-value>)',
         
+        // Landing page accent colors (black in light, white in dark)
+        'landing-accent': 'rgb(var(--landing-accent) / <alpha-value>)',
+        'landing-accent-hover': 'rgb(var(--landing-accent-hover) / <alpha-value>)',
+        'landing-accent-text': 'rgb(var(--landing-accent-text) / <alpha-value>)',
+        'landing-accent-border': 'rgb(var(--landing-accent) / <alpha-value>)',
+        
+        // Dashboard accent colors (replacing emerald/green)
+        'dashboard-accent': 'rgb(var(--dashboard-accent) / <alpha-value>)',
+        'dashboard-accent-hover': 'rgb(var(--dashboard-accent-hover) / <alpha-value>)',
+        'dashboard-accent-text': 'rgb(var(--dashboard-accent-text) / <alpha-value>)',
+        'dashboard-accent-muted': 'rgb(var(--dashboard-accent-muted) / <alpha-value>)',
+        'dashboard-accent-border': 'rgb(var(--dashboard-accent) / <alpha-value>)',
+        
+        // Chart colors
+        'chart-primary': 'rgb(var(--chart-primary) / <alpha-value>)',
+        'chart-secondary': 'rgb(var(--chart-secondary) / <alpha-value>)',
+        'chart-success': 'rgb(var(--chart-success) / <alpha-value>)',
+        'chart-warning': 'rgb(var(--chart-warning) / <alpha-value>)',
+        'chart-danger': 'rgb(var(--chart-danger) / <alpha-value>)',
+        
         // Neon Emerald Accent
         'neon-emerald': '#10b981',
         

@@ -16,11 +16,13 @@ import {
 } from 'firebase/firestore';
 import { useUserAuth } from '../context/UserAuthContext';
 import { callGroqAPI } from '../utils/groqHelper';
+import { useTheme } from '../context/ThemeContext';
 // File parsing libs for document ingestion
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import mammoth from 'mammoth/mammoth.browser';
 
 const Collaboration = () => {
+  const { theme } = useTheme();
   const { user } = useUserAuth();
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -361,7 +363,7 @@ const Collaboration = () => {
             </div>
             <div className="flex items-center gap-3">
               <label className="inline-flex items-center gap-2 px-3 py-2 bg-card backdrop-blur-xl border border-border rounded-lg text-sm cursor-pointer hover:bg-card">
-                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-4 h-4 text-dashboard-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                 </svg>
                 <span>{uploading ? 'Reading...' : 'Upload document'}</span>
@@ -369,7 +371,7 @@ const Collaboration = () => {
               </label>
               <button 
               onClick={initiateDocuSignWorkflow}
-              className="bg-foreground text-background px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2"
+              className="bg-foreground text-background px-6 py-3 rounded-lg font-medium hover:bg-dashboard-accent-hover transition-colors flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
@@ -389,7 +391,7 @@ const Collaboration = () => {
                   {documentMeta.name}
                 </h2>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                  <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted text-emerald-500 border border-border whitespace-nowrap">
+                  <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted text-dashboard-accent border border-border whitespace-nowrap">
                     {documentMeta.type}
                   </span>
                   <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 whitespace-nowrap">
@@ -408,7 +410,7 @@ const Collaboration = () => {
                 )}
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-lg font-medium text-foreground flex items-center gap-2">
-                    <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-5 h-5 text-dashboard-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                     AI Analysis
@@ -453,7 +455,7 @@ const Collaboration = () => {
               
               <div className="border-t border-border pt-5 sm:pt-6">
                 <h3 className="text-xl sm:text-2xl font-medium text-foreground mb-5 sm:mb-6 flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 mr-2 text-dashboard-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
                   </svg>
                   Comments & Annotations
@@ -469,7 +471,7 @@ const Collaboration = () => {
                 <div className="mt-6 p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
                   <h4 className="text-md font-medium text-foreground mb-3">Add a comment</h4>
                   <textarea 
-                    className="w-full bg-card text-foreground p-3 rounded-md border border-border focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none"
+                    className="w-full bg-card text-foreground p-3 rounded-md border border-border focus:border-dashboard-accent focus:ring-1 focus:ring-dashboard-accent resize-none"
                     rows="3"
                     placeholder={user ? "Type your comment here..." : "Sign in to comment"}
                     value={inlineComment}
@@ -490,7 +492,7 @@ const Collaboration = () => {
                       </button>
                     </div>
                     <button 
-                      className="bg-foreground text-background px-4 py-2 rounded-md font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-foreground text-background px-4 py-2 rounded-md font-medium hover:bg-dashboard-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={!user || !inlineComment.trim()}
                       onClick={async () => { await postComment(inlineComment); setInlineComment(''); }}
                     >
@@ -524,7 +526,7 @@ const Collaboration = () => {
             {/* Team Workspace Section */}
             <div className="bg-card rounded-2xl p-5 sm:p-6 backdrop-blur-xl border border-border shadow-lg">
               <h3 className="text-xl font-medium text-foreground mb-4 flex items-center">
-                <svg className="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-5 h-5 mr-2 text-dashboard-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
                 Team Workspace
@@ -532,7 +534,7 @@ const Collaboration = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 bg-card backdrop-blur-xl rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-emerald-500 font-medium">
+                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-dashboard-accent font-medium">
                       JS
                     </div>
                     <div>
@@ -540,7 +542,7 @@ const Collaboration = () => {
                       <p className="text-xs text-muted-foreground">Legal Department</p>
                     </div>
                   </div>
-                  <span className="px-2 py-1 text-xs bg-green-500/20 text-green-300 rounded-md">Online</span>
+                  <span className="px-2 py-1 text-xs bg-chart-success/20 text-chart-success rounded-md">Online</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-card backdrop-blur-xl rounded-lg">
                   <div className="flex items-center gap-3">
@@ -552,7 +554,7 @@ const Collaboration = () => {
                       <p className="text-xs text-muted-foreground">Compliance</p>
                     </div>
                   </div>
-                  <span className="px-2 py-1 text-xs bg-green-500/20 text-green-300 rounded-md">Online</span>
+                  <span className="px-2 py-1 text-xs bg-chart-success/20 text-chart-success rounded-md">Online</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-card backdrop-blur-xl rounded-lg">
                   <div className="flex items-center gap-3">

@@ -29,9 +29,9 @@ const AnimatedBackground = () => {
         end: 'rgba(192,192,192,0)'
       }
     : {
-        start: 'rgba(16,185,129,0)',
-        middle: 'rgba(16,185,129,0.3)',
-        end: 'rgba(16,185,129,0)'
+        start: 'rgba(0,0,0,0)',
+        middle: 'rgba(0,0,0,0.3)',
+        end: 'rgba(0,0,0,0)'
       };
 
   return (

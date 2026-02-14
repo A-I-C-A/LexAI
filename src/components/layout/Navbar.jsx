@@ -52,7 +52,7 @@ const Navbar = ({ toggleSidebar }) => {
           <div className="relative hidden md:block">
             <input 
               type="text" 
-              className="bg-muted backdrop-blur-xl border border-border text-foreground text-sm rounded-full focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent block w-48 lg:w-64 pl-10 p-2.5 placeholder-muted-foreground transition-all duration-300 font-light"
+              className="bg-muted backdrop-blur-xl border border-border text-foreground text-sm rounded-full focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent block w-48 lg:w-64 pl-10 p-2.5 placeholder-muted-foreground transition-all duration-300 font-light"
 
               placeholder="Search..."
             />
@@ -124,7 +124,7 @@ const Navbar = ({ toggleSidebar }) => {
           <div className="relative">
             <button 
               type="button" 
-              className="flex text-sm bg-foreground rounded-full focus:ring-2 focus:ring-emerald-500/40 transition-all duration-300 hover:scale-105"
+              className="flex text-sm bg-foreground rounded-full focus:ring-2 focus:ring-dashboard-accent/40 transition-all duration-300 hover:scale-105"
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               aria-label="Open user menu"
             >
@@ -175,7 +175,7 @@ const Navbar = ({ toggleSidebar }) => {
           <div className="relative">
             <input 
               type="text" 
-              className="bg-muted backdrop-blur-xl border border-border text-foreground text-sm rounded-full focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent block w-full pl-10 p-2.5 placeholder-muted-foreground transition-all duration-300 font-light" 
+              className="bg-muted backdrop-blur-xl border border-border text-foreground text-sm rounded-full focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent block w-full pl-10 p-2.5 placeholder-muted-foreground transition-all duration-300 font-light" 
               placeholder="Search..."
               autoFocus
             />

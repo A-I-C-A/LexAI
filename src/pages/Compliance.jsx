@@ -12,10 +12,12 @@ import {
 } from "firebase/firestore";
 import app from "../firebase/firebase";
 import { callGroqAPI } from "../utils/groqHelper";
+import { useTheme } from "../context/ThemeContext";
 
 const db = getFirestore(app);
 
 export default function ComplianceGuardian() {
+  const { theme } = useTheme();
   const [modalOpen, setModalOpen] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -305,7 +307,7 @@ ${text.substring(0, 5000)}`
         <div className="flex justify-end mb-6">
           <button
             onClick={() => setModalOpen(true)}
-            className="px-6 py-3 bg-emerald-600 text-white rounded-full hover:scale-105 transition"
+            className="px-6 py-3 bg-dashboard-accent text-dashboard-accent-text rounded-full hover:bg-dashboard-accent-hover hover:scale-105 transition"
           >
             Scan New Contract
           </button>
@@ -323,7 +325,7 @@ ${text.substring(0, 5000)}`
                 No document analyzed yet.
               </p>
             ) : analysis.alerts.length === 0 ? (
-              <p className="text-green-400">
+              <p className="text-chart-success ">
                 No compliance issues found.
               </p>
             ) : (
@@ -367,7 +369,7 @@ ${text.substring(0, 5000)}`
                   cx="96"
                   cy="96"
                   r={RADIUS}
-                  stroke="#10b981"
+                  stroke="#6B7280"
                   strokeWidth="16"
                   fill="none"
                   strokeDasharray={circumference}
@@ -375,7 +377,7 @@ ${text.substring(0, 5000)}`
                   strokeLinecap="round"
                 />
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center text-3xl">
+              <div className="absolute inset-0 flex font-color:black items-center justify-center text-3xl">
                 {score}%
               </div>
             </div>
@@ -394,7 +396,7 @@ ${text.substring(0, 5000)}`
                 type="file"
                 accept=".pdf,.docx,.txt"
                 onChange={handleFileUpload}
-                className="w-full p-4 rounded-xl bg-muted border border-border text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer"
+                className="w-full p-4 rounded-xl bg-muted border border-border text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-dashboard-accent file:text-dashboard-accent-text hover:file:bg-dashboard-accent-hover cursor-pointer"
               />
               <div className="flex justify-end mt-6">
                 <button
@@ -413,7 +415,7 @@ ${text.substring(0, 5000)}`
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
             <div className="bg-card p-8 rounded-3xl border border-border">
               <div className="flex flex-col items-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-dashboard-accent mb-4"></div>
                 <p className="text-lg">Analyzing document...</p>
                 <p className="text-sm text-muted-foreground mt-2">This may take 10-30 seconds</p>
               </div>

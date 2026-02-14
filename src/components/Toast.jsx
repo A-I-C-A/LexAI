@@ -75,7 +75,7 @@ const Toast = ({ id, message, type, onClose }) => {
   };
 
   const colors = {
-    success: 'text-green-400',
+    success: 'text-chart-success',
     error: 'text-red-400',
     warning: 'text-yellow-400',
     info: 'text-blue-400'

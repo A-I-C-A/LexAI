@@ -69,7 +69,7 @@ const SharingControls = ({ documentId, currentPermissions = [], onAddPermission,
           <button 
             className={`py-3 px-4 rounded-xl sm:rounded-r-xl sm:rounded-l-none font-medium text-sm whitespace-nowrap transition-colors duration-300 flex items-center justify-center ${
               copied 
-                ? 'bg-green-500 text-foreground' 
+                ? 'bg-chart-success text-dashboard-accent-text' 
                 : 'bg-foreground text-background hover:bg-foreground/90'
             }`}
             onClick={handleCopyLink}
