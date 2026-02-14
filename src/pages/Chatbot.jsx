@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { useState, useRef, useEffect } from "react";
 import { Send, Sparkles } from 'lucide-react';
 import { callGroqAPI } from '../utils/groqHelper';
+import { useTheme } from '../context/ThemeContext';
 
 const Chatbot = () => {
+  const { theme } = useTheme();
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hi! I'm your LegalAxis AI assistant powered by Groq Llama. How can I help you today?" },
   ]);
@@ -65,8 +67,8 @@ User's question: ${currentInput}`;
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-emerald-500" />
+            <div className="w-12 h-12 rounded-2xl bg-dashboard-accent/20 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-dashboard-accent" />
             </div>
             <div>
               <h1 className="text-3xl font-light tracking-tighter">LegalAxis AI</h1>
@@ -90,7 +92,7 @@ User's question: ${currentInput}`;
                 <div className={`max-w-[80%] ${msg.sender === "user" ? "order-1" : "order-2"}`}>
                   <div className={`rounded-2xl p-4 ${
                     msg.sender === "user"
-                      ? "bg-emerald-600 text-white ml-4"
+                      ? "bg-dashboard-accent text-dashboard-accent-text ml-4"
                       : "bg-muted backdrop-blur-xl border border-border text-foreground mr-4"
                   }`}>
                     <p className="text-sm font-light leading-relaxed">{msg.text}</p>
@@ -100,13 +102,13 @@ User's question: ${currentInput}`;
                 <div className={`flex items-end ${msg.sender === "user" ? "order-2 ml-3" : "order-1 mr-3"}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     msg.sender === "user" 
-                      ? "bg-emerald-500/20"
-                      : "bg-emerald-500/20"
+                      ? "bg-dashboard-accent/20"
+                      : "bg-dashboard-accent/20"
                   }`}>
                     {msg.sender === "user" ? (
-                      <span className="text-xs font-medium text-emerald-500">U</span>
+                      <span className="text-xs font-medium text-dashboard-accent">U</span>
                     ) : (
-                      <Sparkles className="w-4 h-4 text-emerald-500" />
+                      <Sparkles className="w-4 h-4 text-dashboard-accent" />
                     )}
                   </div>
                 </div>
@@ -121,9 +123,9 @@ User's question: ${currentInput}`;
               >
                 <div className="bg-muted backdrop-blur-xl border border-border rounded-2xl p-4 mr-4">
                   <div className="flex space-x-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></div>
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-dashboard-accent animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-dashboard-accent animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-dashboard-accent animate-bounce" style={{animationDelay: '0.4s'}}></div>
                   </div>
                 </div>
               </motion.div>
@@ -151,7 +153,7 @@ User's question: ${currentInput}`;
             <form onSubmit={sendMessage} className="flex gap-3">
               <input
                 type="text"
-                className="flex-1 px-6 py-4 rounded-2xl bg-muted backdrop-blur-xl border border-border text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light"
+                className="flex-1 px-6 py-4 rounded-2xl bg-muted backdrop-blur-xl border border-border text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent transition-all duration-300 font-light"
                 placeholder="Ask me anything about legal matters..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -159,11 +161,11 @@ User's question: ${currentInput}`;
               />
               <button
                 type="submit"
-                className="px-8 py-4 rounded-2xl bg-emerald-600 text-white font-medium hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300 flex items-center gap-2"
+                className="px-8 py-4 rounded-2xl bg-dashboard-accent text-dashboard-accent-text font-medium hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300 flex items-center gap-2"
                 disabled={loading || !input.trim()}
               >
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 border-2 border-dashboard-accent-text/30 border-t-dashboard-accent-text rounded-full animate-spin"></div>
                 ) : (
                   <Send className="w-5 h-5" />
                 )}

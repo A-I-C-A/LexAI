@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { callGroqAPI } from '../utils/groqHelper';
+import { useTheme } from '../context/ThemeContext';
 
 const COURTLISTENER_ENDPOINTS = {
   search: "https://www.courtlistener.com/api/rest/v4/search/",
@@ -11,6 +12,7 @@ const API_TYPE_LABELS = {
 };
 
 const Research = () => {
+  const { theme } = useTheme();
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -217,9 +219,9 @@ const Research = () => {
             Powered by CourtListener API - Search millions of legal opinions, dockets, and court records
           </p>
           {!import.meta.env.VITE_COURTLISTENER_TOKEN && (
-            <div className="mt-3 p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg text-yellow-200 text-xs">
+            <div className="mt-3 p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg text-foreground text-xs">
               <strong>Note:</strong> For best results, add a CourtListener API token to your .env file as VITE_COURTLISTENER_TOKEN. 
-              Get one free at <a href="https://www.courtlistener.com/api/" target="_blank" rel="noopener noreferrer" className="underline hover:text-yellow-100">courtlistener.com/api</a>
+              Get one free at  <a href="https://www.courtlistener.com/api/" target="_blank" rel="noopener noreferrer" className="underline hover:text-dashboard-accent">courtlistener.com/api</a>
             </div>
           )}
         </div>
@@ -244,7 +246,7 @@ const Research = () => {
           </div>
           
           <button
-            className="px-6 py-2 bg-foreground text-background font-medium rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-foreground text-background font-medium rounded-lg hover:bg-dashboard-accent-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleResearch}
             disabled={loading || !query.trim()}
           >
@@ -260,24 +262,24 @@ const Research = () => {
 
         {results.length > 0 && (
           <div className="space-y-4">
-            <p className="text-gray-400 text-sm">Found {results.length} result(s)</p>
+            <p className="text-muted-foreground text-sm">Found {results.length} result(s)</p>
             {results.map((item, idx) => (
               <div key={idx} className="bg-card p-5 rounded-lg border border-border hover:border-border/30 transition">
-                <h3 className="font-bold text-lg text-emerald-500 mb-3 line-clamp-2">
+                <h3 className="font-bold text-lg text-foreground mb-3 line-clamp-2">
                   {item.title}
                 </h3>
                 
-                <div className="text-sm text-gray-400 mb-4 space-y-1">
-                  {item.citation && <p><span className="text-gray-500">ID:</span> {item.citation}</p>}
-                  {item.court && <p><span className="text-gray-500">Court:</span> {item.court}</p>}
-                  {item.date && <p><span className="text-gray-500">Date:</span> {item.date}</p>}
+                <div className="text-sm text-muted-foreground mb-4 space-y-1">
+                  {item.citation && <p><span className="text-foreground">ID:</span> {item.citation}</p>}
+                  {item.court && <p><span className="text-foreground">Court:</span> {item.court}</p>}
+                  {item.date && <p><span className="text-foreground">Date:</span> {item.date}</p>}
                 </div>
 
                 {item.summary ? (
-                  <p className="text-gray-200 mb-4 text-sm leading-relaxed">{item.summary}</p>
+                  <p className="text-foreground mb-4 text-sm leading-relaxed">{item.summary}</p>
                 ) : (
                   <button
-                    className="text-xs px-4 py-2 bg-foreground text-black rounded hover:bg-emerald-700 mb-4 font-medium disabled:opacity-50"
+                    className="text-xs px-4 py-2 bg-foreground text-background rounded hover:bg-dashboard-accent-hover mb-4 font-medium disabled:opacity-50"
                     onClick={() => handleSummarize(idx)}
                     disabled={item.summarizing}
                   >
@@ -288,7 +290,7 @@ const Research = () => {
                 {item.url && (
                   <a
                     href={item.url}
-                    className="text-xs text-emerald-500 hover:text-emerald-400 px-3 underline transition-colors duration-300"
+                    className="text-xs text-dashboard-accent hover:text-dashboard-accent-hover px-3 underline transition-colors duration-300"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -302,7 +304,7 @@ const Research = () => {
 
         {!loading && results.length === 0 && !error && (
           <div className="text-center text-gray-500 py-12">
-            Enter a search query to begin legal research
+            
           </div>
         )}
       </div>

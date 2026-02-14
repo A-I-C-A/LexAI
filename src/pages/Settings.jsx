@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const Settings = () => {
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [slackNotifications, setSlackNotifications] = useState(false);
@@ -46,7 +48,7 @@ const Settings = () => {
           <div className="lg:col-span-2 space-y-8">
 
             {/* User Preferences */}
-           <div className="bg-background rounded-2xl p-6 border-border">
+           <div className="bg-background rounded-2xl p-6 border border-border shadow-lg">
 
               <h2 className="text-2xl font-medium mb-6">
                 User Preferences
@@ -59,7 +61,7 @@ const Settings = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-emerald-500 focus:outline-none transition-all"
+                    className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-primary focus:outline-none transition-all"
                     defaultValue="John Smith"
                   />
                 </div>
@@ -70,7 +72,7 @@ const Settings = () => {
                   </label>
                   <input
                     type="email"
-                    className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-emerald-500 focus:outline-none transition-all"
+                    className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-primary focus:outline-none transition-all"
                     defaultValue="john.smith@company.com"
                   />
                 </div>
@@ -79,7 +81,7 @@ const Settings = () => {
                   <label className="text-sm text-muted-foreground block mb-2">
                     Language
                   </label>
-                  <select className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-emerald-500 focus:outline-none transition-all">
+                  <select className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-primary focus:outline-none transition-all">
                     <option>English</option>
                     <option>Spanish</option>
                     <option>French</option>
@@ -156,7 +158,7 @@ const Settings = () => {
                 Appearance
               </h2>
 
-              <select className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-emerald-500 focus:outline-none transition-all">
+              <select className="w-full p-3 rounded-xl bg-card border border-border text-foreground focus:border-primary focus:outline-none transition-all">
                 <option>Small</option>
                 <option>Medium</option>
                 <option>Large</option>

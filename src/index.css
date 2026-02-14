@@ -18,6 +18,24 @@
   --muted-foreground: 156 163 175; /* Gray-400 */
   --accent: 38 38 38; /* Gray-800 */
   --border: 38 38 38;
+  
+  /* Landing page accents */
+  --landing-accent: 255 255 255; /* White for icons/text in dark mode */
+  --landing-accent-hover: 229 229 229; /* Light gray for hover */
+  --landing-accent-text: 255 255 255; /* White text in dark mode */
+  
+  /* Dashboard accents (replacing emerald/green) */
+  --dashboard-accent: 255 255 255; /* White accent */
+  --dashboard-accent-hover: 229 229 229; /* Light gray hover */
+  --dashboard-accent-text: 0 0 0; /* Black text on white accent */
+  --dashboard-accent-muted: 255 255 255; /* White muted accent */
+  
+  /* Chart colors for dark mode */
+  --chart-primary: 255 255 255; /* White */
+  --chart-secondary: 156 163 175; /* Gray */
+  --chart-success: 255 255 255; /* White instead of green */
+  --chart-warning: 251 191 36; /* Amber-400 */
+  --chart-danger: 239 68 68; /* Red-500 */
 }
 
 .light-mode {
@@ -32,6 +50,24 @@
   --muted-foreground: 107 114 128; /* Gray-500 */
   --accent: 229 231 235; /* Gray-200 */
   --border: 229 231 235;
+  
+  /* Landing page accents */
+  --landing-accent: 0 0 0; /* Black for icons/text in light mode */
+  --landing-accent-hover: 38 38 38; /* Dark gray for hover */
+  --landing-accent-text: 0 0 0; /* Black text in light mode */
+  
+  /* Dashboard accents (replacing emerald/green) */
+  --dashboard-accent: 0 0 0; /* Black accent */
+  --dashboard-accent-hover: 38 38 38; /* Dark gray hover */
+  --dashboard-accent-text: 255 255 255; /* White text on black accent */
+  --dashboard-accent-muted: 0 0 0; /* Black muted accent */
+  
+  /* Chart colors for light mode */
+  --chart-primary: 0 0 0; /* Black */
+  --chart-secondary: 107 114 128; /* Gray-500 */
+  --chart-success: 107 114 128; /* Grey instead of green */
+  --chart-warning: 245 158 11; /* Amber-500 */
+  --chart-danger: 220 38 38; /* Red-600 */
 }
 
 body {
@@ -51,50 +87,80 @@ body {
 
 /* Enhanced card component */
 .card {
-  @apply bg-card border border-emerald-500/20 rounded-2xl p-4 sm:p-6 transition-all duration-300;
+  @apply bg-card border border-border/20 rounded-2xl p-4 sm:p-6 transition-all duration-300;
 }
 
 .dark-mode .card {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .light-mode .card {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .card:hover {
-  transform: translateY(-4px) scale(1.02);
-  @apply border-emerald-500/50;
+  transform: translateY(-6px) scale(1.01);
+  @apply border-border;
 }
 
 .dark-mode .card:hover {
-  box-shadow: 0 12px 40px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 20px 50px rgba(255, 255, 255, 0.2);
 }
 
 .light-mode .card:hover {
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Universal card hover effects for bg-card elements */
+.dark-mode .bg-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.light-mode .bg-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dark-mode .bg-card:hover {
+  box-shadow: 0 16px 40px rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+.light-mode .bg-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Specific hover effects for rounded cards */
+.dark-mode .rounded-2xl.bg-card:hover,
+.dark-mode .rounded-3xl.bg-card:hover {
+  box-shadow: 0 20px 50px rgba(255, 255, 255, 0.2);
+}
+
+.light-mode .rounded-2xl.bg-card:hover,
+.light-mode .rounded-3xl.bg-card:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
 }
 
 /* Enhanced buttons */
 .dark-mode .btn-primary {
   @apply bg-white text-black border-none rounded-xl px-6 py-3 font-semibold transition-all duration-300;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
 .light-mode .btn-primary {
   @apply bg-black text-white border-none rounded-xl px-6 py-3 font-semibold transition-all duration-300;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .dark-mode .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
   @apply bg-gray-100;
 }
 
 .light-mode .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   @apply bg-gray-800;
 }
 
@@ -111,6 +177,7 @@ body {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .light-mode .glass {
@@ -119,6 +186,7 @@ body {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .glass-card {
@@ -126,15 +194,26 @@ body {
 }
 
 .dark-mode .glass-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: translateY(-8px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 24px 60px rgba(255, 255, 255, 0.15);
 }
 
 .light-mode .glass-card:hover {
-  transform: translateY(-10px) scale(1.02);
+  transform: translateY(-8px) scale(1.01);
   border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* Glass effect hover */
+.dark-mode .glass:hover {
+  box-shadow: 0 16px 48px rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.light-mode .glass:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 /* Custom scrollbar */
@@ -191,13 +270,50 @@ body {
 }
 
 /* Focus states for accessibility */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible {
-  outline: 2px solid #10b981;
+.dark-mode button:focus-visible,
+.dark-mode a:focus-visible,
+.dark-mode input:focus-visible,
+.dark-mode select:focus-visible {
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.light-mode button:focus-visible,
+.light-mode a:focus-visible,
+.light-mode input:focus-visible,
+.light-mode select:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Dashboard accent buttons with themed borders */
+.dark-mode .bg-dashboard-accent {
+  border: 1px solid rgba(255, 255, 255, 1) !important;
+}
+
+.light-mode .bg-dashboard-accent {
+  border: 1px solid rgba(0, 0, 0, 1) !important;
+}
+
+.dark-mode .bg-dashboard-accent-hover {
+  border: 1px solid rgba(229, 229, 229, 1) !important;
+}
+
+.light-mode .bg-dashboard-accent-hover {
+  border: 1px solid rgba(38, 38, 38, 1) !important;
+}
+
+/* File input buttons */
+.dark-mode input[type="file"]::file-selector-button,
+.dark-mode .file\:bg-dashboard-accent {
+  border: 1px solid rgba(255, 255, 255, 1) !important;
+}
+
+.light-mode input[type="file"]::file-selector-button,
+.light-mode .file\:bg-dashboard-accent {
+  border: 1px solid rgba(0, 0, 0, 1) !important;
 }
 
 /* Dashboard responsive grid */
@@ -229,6 +345,28 @@ select:focus-visible {
   .dashboard-grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
+}
+
+/* Universal hover shadows for all cards and card-like elements */
+.dark-mode [class*="rounded-"][class*="bg-card"]:not(button):not(input),
+.dark-mode [class*="rounded-"][class*="p-"]:has(.text-foreground):not(button):not(input) {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.light-mode [class*="rounded-"][class*="bg-card"]:not(button):not(input),
+.light-mode [class*="rounded-"][class*="p-"]:has(.text-foreground):not(button):not(input) {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Enhanced shadows for cards with borders */
+.dark-mode [class*="border"].bg-card:hover {
+  box-shadow: 0 18px 45px rgba(255, 255, 255, 0.18) !important;
+  transform: translateY(-5px);
+}
+
+.light-mode [class*="border"].bg-card:hover {
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.16) !important;
+  transform: translateY(-5px);
 }
 
 /* Text utilities */

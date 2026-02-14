@@ -26,7 +26,7 @@ const GlassLoader = ({ size = 'md', fullScreen = false }) => {
         
         {/* Spinning ring */}
         <motion.div
-          className={`absolute inset-0 ${sizeClasses[size]} rounded-full border-2 border-emerald-500 border-t-transparent`}
+          className={`absolute inset-0 ${sizeClasses[size]} rounded-full border-2 border-dashboard-accent border-t-transparent`}
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
         ></motion.div>
@@ -34,7 +34,7 @@ const GlassLoader = ({ size = 'md', fullScreen = false }) => {
         {/* Center dot */}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            className="w-2 h-2 rounded-full bg-emerald-500"
+            className="w-2 h-2 rounded-full bg-dashboard-accent"
             animate={{ scale: [1, 1.5, 1] }}
             transition={{ duration: 1, repeat: Infinity }}
           ></motion.div>

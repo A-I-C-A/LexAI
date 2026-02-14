@@ -4,10 +4,12 @@ import { Upload, Search, Filter, FileText, Download, Share2, Clock } from 'lucid
 import { db } from '../firebase/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { useUserAuth } from '../context/UserAuthContext';
+import { useTheme } from '../context/ThemeContext';
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 
 const Documents = () => {
+  const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
@@ -133,7 +135,7 @@ const Documents = () => {
   const DocumentCard = ({ document }) => {
     const getStatusColor = (status) => {
       switch (status) {
-        case 'Active': return 'bg-green-500/20 text-green-400 border-green-500/30';
+        case 'Active': return 'bg-chart-success/20 text-chart-success border-chart-success/30';
         case 'Draft': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
         case 'Under Review': return 'bg-blue-500/20 text-blue-400 border-accent/30';
         case 'Expiring Soon': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
@@ -152,7 +154,7 @@ const Documents = () => {
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-start space-x-3 flex-1">
             <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0">
-              <FileText className="w-5 h-5 text-emerald-500" />
+              <FileText className="w-5 h-5 text-dashboard-accent" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-medium text-foreground text-base mb-1 truncate">{document.name}</h3>
@@ -172,7 +174,7 @@ const Documents = () => {
             {document.fileType} • {document.size}
           </span>
           {document.ocrProcessed && (
-            <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded-lg text-xs border border-green-500/30">
+            <span className="bg-chart-success/20 text-chart-success px-2 py-1 rounded-lg text-xs border border-chart-success/30">
               OCR Processed
             </span>
           )}
@@ -180,7 +182,7 @@ const Documents = () => {
         
         <div className="flex flex-wrap gap-1 mb-4">
           {document.tags && document.tags.map((tag, index) => (
-            <span key={index} className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-md text-xs border border-emerald-500/30">
+            <span key={index} className="bg-dashboard-accent/10 text-dashboard-accent px-2 py-1 rounded-md text-xs border border-dashboard-accent/30">
               {tag}
             </span>
           ))}
@@ -192,10 +194,10 @@ const Documents = () => {
             {document.lastUpdated}
           </div>
           <div className="flex space-x-2">
-            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-emerald-500" title="Download">
+            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-dashboard-accent" title="Download">
               <Download className="w-4 h-4" />
             </button>
-            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-emerald-500" title="Share">
+            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-dashboard-accent" title="Share">
               <Share2 className="w-4 h-4" />
             </button>
           </div>
@@ -227,7 +229,7 @@ const Documents = () => {
               </div>
               <input 
                 type="text" 
-                className="w-full pl-12 pr-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light" 
+                className="w-full pl-12 pr-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent transition-all duration-300 font-light" 
                 placeholder="Search documents..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -236,7 +238,7 @@ const Documents = () => {
             
             <div className="flex flex-col sm:flex-row gap-3">
               <select 
-                className="px-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light"
+                className="px-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent transition-all duration-300 font-light"
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
               >
@@ -246,7 +248,7 @@ const Documents = () => {
               </select>
               
               <select 
-                className="px-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground focus:ring-2 focus:ring-emerald-500/40 focus:border-transparent transition-all duration-300 font-light"
+                className="px-4 py-3 rounded-2xl bg-background backdrop-blur-xl border border-border text-foreground focus:ring-2 focus:ring-dashboard-accent/40 focus:border-transparent transition-all duration-300 font-light"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -256,7 +258,7 @@ const Documents = () => {
               </select>
               
               <button 
-                className="px-6 py-3 rounded-2xl bg-emerald-600 text-white font-medium hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2"
+                className="px-6 py-3 rounded-2xl bg-dashboard-accent text-dashboard-accent-text font-medium hover:bg-dashboard-accent-hover hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-5 h-5" />
@@ -279,7 +281,7 @@ const Documents = () => {
         <div 
           className={`p-8 rounded-3xl border-2 border-dashed mb-8 transition-all duration-300 ${
             isDragging 
-              ? 'border-emerald-500 bg-emerald-500/10 backdrop-blur-xl' 
+              ? 'border-dashboard-accent bg-dashboard-accent/10 backdrop-blur-xl' 
               : 'border-border bg-card backdrop-blur-xl hover:border-border/80'
           }`}
           onDragOver={handleDragOver}
@@ -287,8 +289,8 @@ const Documents = () => {
           onDrop={handleDrop}
         >
           <div className="text-center">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
-              <Upload className="w-8 h-8 text-emerald-500" />
+            <div className="w-16 h-16 rounded-2xl bg-dashboard-accent/20 flex items-center justify-center mx-auto mb-4">
+              <Upload className="w-8 h-8 text-dashboard-accent" />
             </div>
             <h3 className="text-lg font-medium text-foreground mb-2">Drag & Drop Files Here</h3>
             <p className="text-muted-foreground mb-4 font-light">Supported formats: PDF, DOC, DOCX, TXT</p>
@@ -306,11 +308,11 @@ const Documents = () => {
           <div className="mb-6 p-4 rounded-2xl bg-card backdrop-blur-xl border border-border">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-light text-foreground">Uploading documents...</span>
-              <span className="text-sm font-medium text-emerald-500">{Math.round(uploadProgress)}%</span>
+              <span className="text-sm font-medium text-dashboard-accent">{Math.round(uploadProgress)}%</span>
             </div>
             <div className="w-full bg-muted rounded-full h-2">
               <div 
-                className="bg-emerald-500 h-2 rounded-full transition-all duration-300" 
+                className="bg-dashboard-accent h-2 rounded-full transition-all duration-300" 
                 style={{ width: `${uploadProgress}%` }}
               ></div>
             </div>
@@ -324,15 +326,15 @@ const Documents = () => {
             ))
           ) : (
             <div className="xl:col-span-2 p-12 rounded-3xl bg-card backdrop-blur-xl border border-border text-center">
-              <div className="w-20 h-20 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
-                <FileText className="w-10 h-10 text-emerald-500" />
+              <div className="w-20 h-20 rounded-2xl bg-dashboard-accent/20 flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-10 h-10 text-dashboard-accent" />
               </div>
               <h3 className="text-xl font-medium text-foreground mb-3">No documents found</h3>
               <p className="text-muted-foreground max-w-md mx-auto mb-6 font-light">
                 We couldn't find any documents matching your search. Try adjusting your filters or upload a new document.
               </p>
               <button 
-                className="px-6 py-3 rounded-2xl bg-emerald-600 text-white font-medium hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2"
+                className="px-6 py-3 rounded-2xl bg-dashboard-accent text-dashboard-accent-text font-medium hover:bg-dashboard-accent-hover hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-5 h-5" />

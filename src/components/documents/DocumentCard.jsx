@@ -2,7 +2,7 @@ const DocumentCard = ({ document }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Active':
-        return 'bg-emerald-500/20 text-emerald-500 border-emerald-500/30';
+        return 'bg-dashboard-accent/20 text-dashboard-accent border-dashboard-accent/30';
       case 'Draft':
         return 'bg-muted text-muted-foreground border-border';
       case 'Expired':
@@ -17,7 +17,7 @@ const DocumentCard = ({ document }) => {
   };
 
   const getDocumentTypeIcon = (type) => {
-    const iconClasses = "w-6 h-6 sm:w-8 sm:h-8 text-emerald-500 bg-muted rounded-full p-1.5";
+    const iconClasses = "w-6 h-6 sm:w-8 sm:h-8 text-dashboard-accent bg-muted rounded-full p-1.5";
     switch (type) {
       case 'Contract':
       case 'Legal Brief':
@@ -48,14 +48,14 @@ const DocumentCard = ({ document }) => {
   };
 
   return (
-    <div className="bg-card backdrop-blur-xl rounded-2xl p-5 border border-border hover:border-emerald-500/30 transition-all duration-300 group shadow-lg hover:shadow-xl">
+    <div className="bg-card backdrop-blur-xl rounded-2xl p-5 border border-border hover:border-dashboard-accent/30 transition-all duration-300 group shadow-lg hover:shadow-xl">
       <div className="flex items-start">
         <div className="p-2 sm:p-3 bg-muted rounded-xl mr-4 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
           {getDocumentTypeIcon(document.type)}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start mb-3 gap-2">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground group-hover:text-emerald-500 transition-colors duration-300 truncate">
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground group-hover:text-dashboard-accent transition-colors duration-300 truncate">
               {document.name}
             </h3>
             <span className={`text-xs font-medium px-3 py-1.5 rounded-full flex-shrink-0 border ${getStatusColor(document.status)}`}>
@@ -66,7 +66,7 @@ const DocumentCard = ({ document }) => {
           
           <div className="flex flex-wrap gap-2 mb-4">
             {document.tags.map((tag, index) => (
-              <span key={index} className="bg-muted text-emerald-500 text-xs px-3 py-1.5 rounded-full border border-border">
+              <span key={index} className="bg-muted text-dashboard-accent text-xs px-3 py-1.5 rounded-full border border-border">
                 {tag}
               </span>
             ))}
@@ -74,24 +74,24 @@ const DocumentCard = ({ document }) => {
           
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-sm text-muted-foreground gap-2">
             <div className="flex items-center">
-              <svg className="w-4 h-4 mr-2 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-4 h-4 mr-2 text-dashboard-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
               <span className="truncate">{document.lastUpdated}</span>
             </div>
             
             <div className="flex space-x-3 self-end sm:self-center">
-              <button className="text-muted-foreground hover:text-emerald-500 transition-colors duration-300 transform hover:scale-110 p-1.5" title="Edit">
+              <button className="text-muted-foreground hover:text-dashboard-accent transition-colors duration-300 transform hover:scale-110 p-1.5" title="Edit">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                 </svg>
               </button>
-              <button className="text-muted-foreground hover:text-emerald-500 transition-colors duration-300 transform hover:scale-110 p-1.5" title="Download">
+              <button className="text-muted-foreground hover:text-dashboard-accent transition-colors duration-300 transform hover:scale-110 p-1.5" title="Download">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
               </button>
-              <button className="text-muted-foreground hover:text-emerald-500 transition-colors duration-300 transform hover:scale-110 p-1.5" title="More options">
+              <button className="text-muted-foreground hover:text-dashboard-accent transition-colors duration-300 transform hover:scale-110 p-1.5" title="More options">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>

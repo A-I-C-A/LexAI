@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { callGroqAPI } from '../utils/groqHelper';
+import { useTheme } from '../context/ThemeContext';
 
 // Suppress remark-gfm React 19 warning - this is a known compatibility issue
 const MarkdownRenderer = ({ children }) => (
@@ -25,6 +26,7 @@ const MOCK_HISTORY = [
 ];
 
 const Negotiation = () => {
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('counter');
   const [inputClause, setInputClause] = useState('');
   const [aiResponse, setAiResponse] = useState('');
@@ -492,7 +494,7 @@ const Negotiation = () => {
                         <p className="text-sm text-muted-foreground mt-1">{item.date} • {item.type}</p>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        item.outcome === 'Successful' ? 'bg-green-500/20 text-green-400' : 
+                        item.outcome === 'Successful' ? 'bg-dashboard-accent/20 text-dashboard-accent-text' : 
                         item.outcome === 'Partially Successful' ? 'bg-yellow-500/20 text-yellow-400' : 
                         'bg-background text-muted-foreground'
                       }`}>

@@ -19,7 +19,7 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
 
   const getStepStatusColor = (status) => {
     switch (status) {
-      case 'completed': return 'bg-gradient-to-br from-green-500 to-green-600';
+      case 'completed': return 'bg-gradient-to-br from-chart-success to-chart-success';
       case 'in_progress': return 'bg-gradient-to-br from-foreground to-foreground';
       case 'rejected': return 'bg-gradient-to-br from-red-500 to-red-600';
       default: return 'bg-gradient-to-br from-muted to-card';
@@ -37,7 +37,7 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
 
   const getStatusBadgeColor = (status) => {
     switch (status) {
-      case 'completed': return 'bg-green-500/20 text-green-300';
+      case 'completed': return 'bg-chart-success/20 text-chart-success';
       case 'in_progress': return 'bg-foreground/20 text-dark-primary';
       case 'rejected': return 'bg-red-500/20 text-red-300';
       default: return 'bg-muted text-muted-foreground';
@@ -91,7 +91,7 @@ const ApprovalWorkflow = ({ documentId, workflowSteps = [] }) => {
                               </div>
                               <span className="text-xs text-foreground">{approver.name}</span>
                               <span className={`ml-2 w-2 h-2 rounded-full ${
-                                approver.status === 'approved' ? 'bg-green-400' :
+                                approver.status === 'approved' ? 'bg-chart-success' :
                                 approver.status === 'pending' ? 'bg-foreground' :
                                 approver.status === 'rejected' ? 'bg-red-400' :
                                 'bg-muted-foreground'

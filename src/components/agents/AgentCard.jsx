@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const AgentCard = ({ title, icon, description, actionText, onAction, metrics }) => {
   return (
-    <div className="bg-card rounded-2xl p-5 sm:p-6 ring-1 ring-border hover:ring-emerald-500/30 shadow-lg hover:shadow-xl transition-all duration-500 group h-full flex flex-col">
+    <div className="bg-card rounded-2xl p-5 sm:p-6 ring-1 ring-border hover:ring-dashboard-accent/30 shadow-lg hover:shadow-xl transition-all duration-500 group h-full flex flex-col">
       <div className="flex-1 flex flex-col">
         <div className="flex items-start justify-between mb-4 gap-2">
           <div className="flex items-start min-w-0 flex-1 gap-3">
@@ -36,8 +36,8 @@ const AgentCard = ({ title, icon, description, actionText, onAction, metrics }) 
         {metrics && metrics.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
             {metrics.map((metric, index) => (
-              <div key={index} className="bg-muted p-3 rounded-lg ring-1 ring-border hover:ring-emerald-500/30 transition-all duration-300 hover:shadow-md group/metric">
-                <p className="text-xs text-muted-foreground mb-1 group-hover/metric:text-emerald-500 transition-all duration-300 break-words leading-tight">
+              <div key={index} className="bg-muted p-3 rounded-lg ring-1 ring-border hover:ring-dashboard-accent/30 transition-all duration-300 hover:shadow-md group/metric">
+                <p className="text-xs text-muted-foreground mb-1 group-hover/metric:text-dashboard-accent transition-all duration-300 break-words leading-tight">
                   {metric.label}
                 </p>
                 <div className="flex items-end flex-wrap gap-1">

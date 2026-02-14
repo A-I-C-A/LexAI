@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { useState, useRef } from "react";
 import { Mic, MicOff, Volume2, Sparkles } from 'lucide-react';
 import { callGroqAPI } from '../utils/groqHelper';
+import { useTheme } from '../context/ThemeContext';
 
 const VoiceAssistant = () => {
+  const { theme } = useTheme();
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hi! I'm your LegalAxis Voice Assistant. Tap the mic and ask me anything!" },
   ]);
@@ -72,8 +74,8 @@ const VoiceAssistant = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
-              <Volume2 className="w-6 h-6 text-emerald-500" />
+            <div className="w-12 h-12 rounded-2xl bg-dashboard-accent/20 flex items-center justify-center">
+              <Volume2 className="w-6 h-6 text-dashboard-accent" />
             </div>
             <div>
               <h1 className="text-3xl font-light tracking-tighter">Voice Assistant</h1>
@@ -97,7 +99,7 @@ const VoiceAssistant = () => {
                 <div className={`max-w-[80%] ${msg.sender === "user" ? "order-1" : "order-2"}`}>
                   <div className={`rounded-2xl p-4 ${
                     msg.sender === "user"
-                      ? "bg-emerald-600 text-background ml-4"
+                      ? "bg-dashboard-accent text-dashboard-accent-text ml-4"
                       : "bg-card backdrop-blur-xl border border-border text-foreground mr-4"
                   }`}>
                     <p className="text-sm font-light leading-relaxed">{msg.text}</p>
@@ -107,13 +109,13 @@ const VoiceAssistant = () => {
                 <div className={`flex items-end ${msg.sender === "user" ? "order-2 ml-3" : "order-1 mr-3"}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     msg.sender === "user" 
-                      ? "bg-emerald-500/20"
-                      : "bg-emerald-500/20"
+                      ? "bg-dashboard-accent/20"
+                      : "bg-dashboard-accent/20"
                   }`}>
                     {msg.sender === "user" ? (
-                      <span className="text-xs font-medium text-emerald-500">U</span>
+                      <span className="text-xs font-medium text-dashboard-accent">U</span>
                     ) : (
-                      <Sparkles className="w-4 h-4 text-emerald-500" />
+                      <Sparkles className="w-4 h-4 text-dashboard-accent" />
                     )}
                   </div>
                 </div>
@@ -128,9 +130,9 @@ const VoiceAssistant = () => {
               >
                 <div className="bg-card backdrop-blur-xl border border-border rounded-2xl p-4 mr-4">
                   <div className="flex space-x-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-600 animate-bounce"></div>
-                    <div className="w-2 h-2 rounded-full bg-emerald-600 animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-2 h-2 rounded-full bg-emerald-600 animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-dashboard-accent animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-dashboard-accent animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-dashboard-accent animate-bounce" style={{animationDelay: '0.4s'}}></div>
                   </div>
                 </div>
               </motion.div>
@@ -145,12 +147,12 @@ const VoiceAssistant = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <p className="text-sm text-emerald-500 font-light mb-2">Listening...</p>
+                <p className="text-sm text-dashboard-accent font-light mb-2">Listening...</p>
                 <div className="flex justify-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-1 h-8 bg-emerald-600 rounded-full animate-pulse"
+                      className="w-1 h-8 bg-dashboard-accent rounded-full animate-pulse"
                       style={{ animationDelay: `${i * 0.1}s` }}
                     ></div>
                   ))}
@@ -163,13 +165,13 @@ const VoiceAssistant = () => {
               className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 ${
                 recording
                   ? 'bg-red-500 hover:bg-red-600 scale-110'
-                  : 'bg-emerald-600 hover:bg-emerald-700 hover:scale-110'
+                  : 'bg-dashboard-accent hover:bg-dashboard-accent-hover hover:scale-110'
               }`}
             >
               {recording ? (
                 <MicOff className="w-10 h-10 text-background" />
               ) : (
-                <Mic className="w-10 h-10 text-background" />
+                <Mic className="w-10 h-10 text-dashboard-accent-text" />
               )}
             </button>
 
