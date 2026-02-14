@@ -221,26 +221,17 @@ const Research = () => {
         </div>
         
         <div className="bg-card p-6 rounded-lg mb-6">
-          <div className="mb-4 flex flex-col sm:flex-row gap-3">
+          <div className="mb-4">
             <textarea
-              className="flex-1 h-24 p-3 rounded-lg bg-card text-foreground border border-border focus:outline-none focus:border-accent transition-colors duration-300"
+              className="w-full h-24 p-3 rounded-lg bg-card text-foreground border border-border focus:outline-none focus:border-accent transition-colors duration-300"
               placeholder="Enter case name, party name, or legal query..."
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
-            <select
-              className="bg-card text-foreground border border-border rounded-lg p-2 focus:outline-none transition-colors duration-300"
-              value={apiType}
-              onChange={e => setApiType(e.target.value)}
-            >
-              {Object.keys(COURTLISTENER_ENDPOINTS).map(key => (
-                <option key={key} value={key}>{API_TYPE_LABELS[key] || key}</option>
-              ))}
-            </select>
           </div>
           
           <button
-            className="px-6 py-2 bg-foreground text-background font-medium rounded-lg hover:bg-dashboard-accent-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-foreground text-background font-medium rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleResearch}
             disabled={loading || !query.trim()}
           >
