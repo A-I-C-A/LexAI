@@ -155,6 +155,47 @@ const Collaboration = () => {
     });
   };
 
+  const handleSubmitComment = async () => {
+    try {
+      if (!user) {
+        alert('Please sign in to post a comment');
+        return;
+      }
+      if (!inlineComment.trim()) {
+        alert('Please enter a comment');
+        return;
+      }
+      
+      const commentText = inlineComment;
+      
+      // Optimistic UI update - add comment immediately to local state
+      const optimisticComment = {
+        id: 'temp-' + Date.now(),
+        author: {
+          name: user?.displayName || user?.email || 'You',
+          initials: (user?.displayName || user?.email || 'Y').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase(),
+          avatar: ''
+        },
+        text: commentText,
+        timestamp: 'Just now',
+        replies: []
+      };
+      
+      // Add to state immediately
+      setComments(prev => [optimisticComment, ...prev]);
+      setInlineComment('');
+      
+      // Then sync with Firebase in background
+      console.log('Posting comment:', commentText);
+      await postComment(commentText);
+    } catch (error) {
+      console.error('Error posting comment:', error);
+      alert(`Failed to post comment: ${error.message}`);
+      // Remove optimistic comment on error
+      setComments(prev => prev.filter(c => !c.id.startsWith('temp-')));
+    }
+  };
+
   const addPermission = async (email, permission) => {
     if (!email) return;
     await addDoc(collection(db, 'documents', documentId, 'permissions'), {
@@ -460,15 +501,29 @@ const Collaboration = () => {
                   </svg>
                   Comments & Annotations
                 </h3>
-                <CommentThread 
-                  comments={comments} 
-                  documentId={documentId}
-                  onPostComment={postComment}
-                  onPostReply={postReply}
-                />
-                
-                {/* Sample Comments */}
+                {/* Comments Section */}
                 <div className="mt-6 space-y-4">
+                  {/* Dynamic Comments from Firebase */}
+                  {comments.map((comment) => (
+                    <div key={comment.id} className="p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-sm">
+                          {comment.author.initials}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-foreground">{comment.author.name}</span>
+                            <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
+                          </div>
+                          <p className="text-foreground text-sm">
+                            {comment.text}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Static Sample Comments */}
                   <div className="p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-sm">
@@ -518,6 +573,29 @@ const Collaboration = () => {
                         </p>
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                {/* Add Comment Input */}
+                <div className="mt-6 p-4 bg-card backdrop-blur-xl rounded-lg border border-border">
+                  <h4 className="text-md font-medium text-foreground mb-3">Add a comment</h4>
+                  <textarea 
+                    className="w-full bg-card text-foreground p-3 rounded-md border border-border focus:border-dashboard-accent focus:ring-1 focus:ring-dashboard-accent resize-none"
+                    rows="3"
+                    placeholder={user ? "Type your comment here..." : "Sign in to comment"}
+                    value={inlineComment}
+                    onChange={(e) => setInlineComment(e.target.value)}
+                    disabled={!user}
+                  ></textarea>
+                  <div className="flex justify-end mt-3">
+                    <button 
+                      type="button"
+                      className="bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-md font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={!user || !inlineComment.trim()}
+                      onClick={handleSubmitComment}
+                    >
+                      Submit Comment
+                    </button>
                   </div>
                 </div>
               </div>
