@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { Bell, Menu, User, Settings, LogOut, Sun, Moon } from 'lucide-react';
+import Logo from '../Logo';
 
 const Navbar = ({ toggleSidebar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -34,15 +35,7 @@ const Navbar = ({ toggleSidebar }) => {
             <Menu className="w-6 h-6" />
           </button>
           <Link to="/" className="flex items-center min-w-0">
-            <span className="text-xl sm:text-2xl font-light tracking-tighter text-foreground truncate flex items-center">
-              <img 
-              src="/logolegal.png" 
-              alt="Lex AI Logo" 
-              className="h-9 sm:h-12 w-auto no-underline object-contain select-none mr-2 drop-shadow-[0_0_10px_rgba(16,185,129,0.3)]" 
-              draggable="false"
-            />
-              Lex AI
-            </span>
+            <Logo variant="navbar" />
           </Link>
         </div>
 

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import Logo from '../Logo';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { user } = useUserAuth();
@@ -54,23 +55,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
         }}
       >
-        {/* ===== LOGO SECTION (RESTORED) ===== */}
+        {/* ===== LOGO SECTION ===== */}
         <div
           className="border-b border-border"
           style={{
             padding: '20px 20px 16px 20px'
           }}
         >
-          <div
-            className="text-foreground"
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              letterSpacing: '0.3px'
-            }}
-          >
-            Lex AI
-          </div>
+          <Logo variant="sidebar" />
         </div>
 
         {/* ===== SCROLLABLE MENU ===== */}

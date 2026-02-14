@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Shield, Zap, Scale, ChevronDown, Sun, Moon } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
 import { useTheme } from '../context/ThemeContext';
+import Logo from '../components/Logo';
 
 const Landing = () => {
   const [loaded, setLoaded] = useState(false);
@@ -110,12 +111,12 @@ const Landing = () => {
 
   {/* Logo */}
   <motion.div
-    className="w-24 h-24 rounded-full bg-card backdrop-blur-xl border border-border flex items-center justify-center mb-8 shadow-lg"
     initial={{ scale: 0, rotate: -180 }}
     animate={{ scale: 1, rotate: 0 }}
     transition={{ duration: 0.8, type: "spring" }}
+    className="mb-8"
   >
-    <Scale className="w-12 h-12 text-landing-accent" />
+    <Logo variant="hero" />
   </motion.div>
 
   {/* Title */}

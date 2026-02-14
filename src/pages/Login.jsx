@@ -4,6 +4,7 @@ import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { Sun, Moon } from "lucide-react";
+import Logo from "../components/Logo";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -89,12 +90,7 @@ const Login = () => {
         <div className="text-center transform transition-all duration-700 hover:scale-105">
           <div className="flex justify-center mb-6 animate-float" style={{animationDuration: '6s'}}>
             <div className="w-20 h-20 flex items-center justify-center bg-muted rounded-2xl p-2 shadow-lg backdrop-blur-sm border border-border">
-              <img 
-                src="/logolegal.png" 
-                alt="Lex AI Logo" 
-                className="h-16 w-auto object-contain select-none transform transition-transform duration-300 hover:scale-110" 
-                draggable="false" 
-              />
+              <Logo variant="default" className="scale-75" />
             </div>
           </div>
           <h2 className="text-3xl font-bold text-foreground animate-fade-in-down">Welcome to Lex AI</h2>
